@@ -1,0 +1,27 @@
+# ── 這個 repo 只能有公開版的產出檔 ──────────────────────
+# 下面每一條都是「進了 git 歷史就刪不掉」的東西。不要為了方便而放寬。
+
+# 內部完整版（含代號、面試腳本、保密分層表）
+*_內部.html
+*Internal*.html
+*internal*
+
+# 母版（含 PRIVATE 區塊）與建置腳本
+_source/
+portfolio_zh.html
+portfolio_en.html
+build.py
+og_zh.html
+og_en.html
+
+# 所有文件：深談文件、事實台帳、審查報告、上線步驟
+*.md
+!README.md
+
+# 常見意外
+.DS_Store
+*.key
+*.numbers
+*.pages
+*.docx
+*.xlsx

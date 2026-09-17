@@ -1,0 +1,1284 @@
+<!doctype html>
+<html lang="zh-Hant">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="從四人把測試軟體團隊做到八十人，同時親手寫 Swift 與裝置端 LLM。十一年、六條產品線、上百個工站。">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="ChengHan Tsai">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:title" content="蔡政翰 ChengHan Tsai — 技術檔案">
+<meta property="og:description" content="從四人把測試軟體團隊做到八十人，同時親手寫 Swift 與裝置端 LLM。十一年、六條產品線、上百個工站。">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="蔡政翰 ChengHan Tsai — 技術檔案">
+<meta name="twitter:description" content="從四人把測試軟體團隊做到八十人，同時親手寫 Swift 與裝置端 LLM。十一年、六條產品線、上百個工站。">
+<title>蔡政翰 技術檔案</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --ground:#EDF0F1; --surface:#FFFFFF; --surface-2:#F5F7F8; --surface-3:#E9EEF0;
+    --ink:#131A1F; --ink-2:#3B4A54; --muted:#66787F;
+    --rule:#C8D2D6; --rule-soft:#DEE5E8;
+    --work:#0F6693; --work-wash:rgba(15,102,147,.11);
+    --own:#A5651A;  --own-wash:rgba(165,101,26,.13);
+    --danger:#A5372B; --danger-wash:rgba(165,55,43,.09);
+    --on-work:#FFFFFF;
+    --shadow:0 1px 2px rgba(19,26,31,.06),0 8px 24px -14px rgba(19,26,31,.22);
+    --sans:"Archivo","PingFang TC","Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;
+    --mono:"IBM Plex Mono","PingFang TC",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --maxw:78rem;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --ground:#101619; --surface:#182025; --surface-2:#1E282E; --surface-3:#243037;
+      --ink:#E4EAEC; --ink-2:#B4C2C8; --muted:#8A9AA3;
+      --rule:#2C373D; --rule-soft:#232E34;
+      --work:#3F94BC; --work-wash:rgba(63,148,188,.16);
+      --own:#B8802E;  --own-wash:rgba(184,128,46,.18);
+      --danger:#E0796B; --danger-wash:rgba(224,121,107,.12);
+      --on-work:#0B1216;
+      --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px -16px rgba(0,0,0,.75);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#101619; --surface:#182025; --surface-2:#1E282E; --surface-3:#243037;
+    --ink:#E4EAEC; --ink-2:#B4C2C8; --muted:#8A9AA3;
+    --rule:#2C373D; --rule-soft:#232E34;
+    --work:#3F94BC; --work-wash:rgba(63,148,188,.16);
+    --own:#B8802E;  --own-wash:rgba(184,128,46,.18);
+    --danger:#E0796B; --danger-wash:rgba(224,121,107,.12);
+    --on-work:#0B1216;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px -16px rgba(0,0,0,.75);
+  }
+
+  *{box-sizing:border-box}
+  body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,h4{margin:0;line-height:1.25;text-wrap:balance}
+  p{margin:0}
+  button{font-family:inherit}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding-inline:20px}
+  .eyebrow{font-family:var(--mono);font-size:.7rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+
+  /* header */
+  header.top{background:var(--surface);border-bottom:1px solid var(--rule)}
+  .top-in{max-width:var(--maxw);margin:0 auto;padding:30px 20px 24px;display:flex;flex-wrap:wrap;gap:24px;align-items:flex-end;justify-content:space-between}
+  h1{font-size:clamp(1.7rem,4vw,2.4rem);font-weight:700;letter-spacing:-.015em}
+  .tagline{color:var(--ink-2);max-width:46ch;margin-top:10px;font-size:.96rem}
+  .modeswitch{display:inline-flex;border:1px solid var(--rule);border-radius:999px;overflow:hidden;background:var(--surface-2)}
+  .modeswitch button{appearance:none;background:none;border:0;cursor:pointer;font-family:var(--mono);font-size:.74rem;letter-spacing:.05em;color:var(--muted);padding:7px 15px}
+  .modeswitch button[aria-pressed="true"]{background:var(--work);color:var(--on-work)}
+  .modeswitch button:focus-visible{outline:2px solid var(--work);outline-offset:-2px}
+
+  .privbar{background:var(--danger-wash);border-bottom:1px solid var(--rule);font-size:.84rem;color:var(--ink-2)}
+  .privbar .wrap{padding-block:10px;display:flex;gap:10px;align-items:baseline}
+  .privbar b{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--danger)}
+
+  section{padding-block:56px;border-bottom:1px solid var(--rule-soft)}
+  section:last-of-type{border-bottom:0}
+  .sec-head{max-width:62ch;margin-bottom:28px}
+  .sec-head h2{font-size:clamp(1.25rem,2.6vw,1.6rem);font-weight:600;margin-top:8px;letter-spacing:-.01em}
+  .sec-head p{color:var(--ink-2);margin-top:10px;font-size:.93rem}
+
+  /* stat tiles */
+  .statusbar{border-bottom:1px solid var(--rule-soft);background:var(--surface-2)}
+  .statusbar .wrap{padding-top:16px;padding-bottom:16px;display:grid;gap:14px}
+  .st-rows{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:10px 26px}
+  .st-item{font-size:.86rem;color:var(--ink-2);line-height:1.55}
+  .st-item b{display:block;font-family:var(--mono);font-size:.66rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:2px;font-weight:600}
+  .st-cta{display:flex;flex-wrap:wrap;gap:8px}
+  .cta{display:inline-flex;align-items:center;gap:6px;text-decoration:none;font-size:.84rem;
+       padding:7px 13px;border-radius:999px;border:1px solid var(--rule);background:var(--surface);color:var(--ink);transition:border-color .12s,color .12s}
+  .cta:hover{border-color:var(--work);color:var(--work)}
+  .cta:focus-visible{outline:2px solid var(--work);outline-offset:2px}
+  .cta.primary{background:var(--work);border-color:var(--work);color:var(--on-work)}
+  .cta.primary:hover{opacity:.9;color:var(--on-work)}
+  .cta .ico{font-family:var(--mono);font-size:.8rem;opacity:.8}
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));gap:1px;background:var(--rule-soft);border:1px solid var(--rule-soft);border-radius:4px;overflow:hidden}
+  #tiles{grid-template-columns:repeat(4,1fr)}
+  #tiles .tile{display:flex;flex-direction:column}
+  #tiles .tile .l{flex:1}
+  .tile{background:var(--surface);padding:18px 16px}
+  .tile .n{font-family:var(--mono);font-size:1.5rem;font-weight:600;color:var(--work);font-variant-numeric:tabular-nums;line-height:1.2}
+  .tile .l{font-size:.85rem;color:var(--ink-2);margin-top:5px}
+  .tile .s{font-size:.74rem;color:var(--muted);margin-top:3px;font-family:var(--mono)}
+
+  /* gantt */
+  .chartbox{background:var(--surface);border:1px solid var(--rule-soft);border-radius:4px;padding:20px 20px 16px;box-shadow:var(--shadow)}
+  .gscroll{overflow-x:auto}
+  .gantt{min-width:44rem;display:grid;grid-template-columns:11.5rem 1fr;gap:0 16px;align-items:center}
+  .gyears{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;font-family:var(--mono);font-size:.68rem;color:var(--muted);border-bottom:1px solid var(--rule-soft);padding-bottom:5px;margin-bottom:8px}
+  .gyears span{text-align:center}
+  .grow-l{font-size:.86rem;font-weight:600;padding:8px 0;align-self:center;cursor:pointer;background:none;border:0;text-align:left;color:var(--ink);width:100%}
+  .grow-l:hover{color:var(--work)}
+  .grow-l[aria-pressed="true"]{color:var(--work)}
+  .grow-l small{display:block;font-family:var(--mono);font-size:.68rem;font-weight:400;color:var(--muted);letter-spacing:.02em}
+  .grow-l:focus-visible{outline:2px solid var(--work);outline-offset:2px;border-radius:3px}
+  .gtrack{position:relative;margin:8px 0;background:linear-gradient(to right,var(--rule-soft) 1px,transparent 1px);background-size:calc(100%/12) 100%}
+  .gbar{position:absolute;border-radius:3px;box-shadow:0 0 0 1.5px var(--surface);display:flex;align-items:center;padding-inline:6px;font-family:var(--mono);font-size:.63rem;white-space:nowrap;overflow:hidden;cursor:default}
+  .gbar.work{background:var(--work);color:var(--on-work)}
+  .gbar.own{background:var(--own);color:var(--on-work)}
+  .gbar.faint{opacity:.42}
+  .glegend{display:flex;flex-wrap:wrap;gap:16px;margin-top:14px;padding-top:12px;border-top:1px solid var(--rule-soft);font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+  .glegend i{display:inline-block;width:14px;height:11px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+  .ghint{margin-top:10px;font-size:.8rem;color:var(--muted)}
+
+  /* filters */
+  .filters{display:flex;flex-direction:column;gap:12px;margin-bottom:24px}
+  .frow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .flabel{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);width:4.2rem;flex:none}
+  .chip{appearance:none;border:1px solid var(--rule);background:var(--surface);color:var(--ink-2);border-radius:999px;padding:5px 13px;font-size:.82rem;cursor:pointer}
+  .chip:hover{border-color:var(--work);color:var(--work)}
+  .chip[aria-pressed="true"]{background:var(--work);border-color:var(--work);color:var(--on-work)}
+  .chip:focus-visible{outline:2px solid var(--work);outline-offset:2px}
+  .fmeta{font-family:var(--mono);font-size:.76rem;color:var(--muted);margin-left:auto}
+  .fclear{appearance:none;background:none;border:0;color:var(--work);font-size:.8rem;cursor:pointer;text-decoration:underline;padding:0}
+
+  /* cards */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(20rem,1fr));gap:16px;align-items:start}
+  .card{background:var(--surface);border:1px solid var(--rule-soft);border-radius:4px;overflow:hidden;box-shadow:var(--shadow)}
+  .card.open{border-color:var(--work);grid-column:1/-1}
+  .chead{width:100%;text-align:left;background:none;border:0;cursor:pointer;padding:18px 18px 16px;display:block;color:inherit}
+  .chead:focus-visible{outline:2px solid var(--work);outline-offset:-2px}
+  .ctop{display:flex;gap:10px;align-items:baseline;justify-content:space-between}
+  .card h3{font-size:1rem;font-weight:600}
+  .cera{font-family:var(--mono);font-size:.72rem;color:var(--muted);white-space:nowrap}
+  .crole{display:inline-block;font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;padding:2px 8px;border-radius:3px;margin-top:9px}
+  .crole.built{background:var(--work);color:var(--on-work)}
+  .crole.arch{background:var(--work-wash);color:var(--work);box-shadow:inset 0 0 0 1px var(--work)}
+  .crole.led{background:var(--surface-3);color:var(--ink-2);box-shadow:inset 0 0 0 1px var(--rule)}
+  .crole.own{background:var(--own);color:var(--on-work)}
+  .ctag{font-size:.88rem;color:var(--ink-2);margin-top:10px}
+  .cstats{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px}
+  .cstats div{font-family:var(--mono);font-size:.74rem;color:var(--muted)}
+  .cstats b{display:block;font-size:1.02rem;color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+  .ctech{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px}
+  .ctech span{font-family:var(--mono);font-size:.68rem;color:var(--muted);border:1px solid var(--rule-soft);border-radius:3px;padding:1px 6px}
+  .cmore{font-family:var(--mono);font-size:.7rem;color:var(--work);margin-top:12px}
+
+  .cbody{border-top:1px solid var(--rule-soft);padding:18px;display:grid;gap:14px;background:var(--surface-2)}
+  .cbody h4{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .cbody p{font-size:.9rem;color:var(--ink-2)}
+  .dec{border-left:3px solid var(--work);padding:2px 0 2px 12px}
+  .dec p{margin-top:3px}
+  .dec.flawmark{border-left-color:var(--danger)}
+  .links{display:flex;flex-wrap:wrap;gap:8px}
+  .lnk{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;text-decoration:none;color:var(--work);border:1px solid var(--work);border-radius:999px;padding:4px 12px}
+  .lnk:hover{background:var(--work-wash)}
+  .lnk.soon{color:var(--muted);border-color:var(--rule);border-style:dashed;cursor:default}
+  .lnk.priv{color:var(--danger);border-color:var(--danger)}
+  .lnk .ico{font-family:var(--mono);font-size:.66rem;opacity:.75}
+
+  /* coverage matrix */
+  .covwrap{overflow-x:auto;border:1px solid var(--rule-soft);border-radius:4px;background:var(--surface);box-shadow:var(--shadow)}
+  table.cov{border-collapse:collapse;width:100%;min-width:40rem;font-size:.86rem}
+  table.cov th,table.cov td{padding:8px 12px;border-bottom:1px solid var(--rule-soft);text-align:left}
+  table.cov thead th{position:sticky;top:0;background:var(--surface-2);font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;color:var(--muted);font-weight:600;vertical-align:bottom;z-index:1}
+  table.cov thead th.st{text-align:center;color:var(--ink);font-size:.82rem;letter-spacing:0}
+  table.cov thead th.st small{display:block;font-family:var(--mono);font-size:.66rem;color:var(--muted);font-weight:400;margin-top:3px}
+  table.cov td.c{text-align:center;font-size:1rem;line-height:1}
+  table.cov td.c .y{color:var(--work);font-weight:700}
+  table.cov td.c .p{color:var(--own);font-weight:700;font-size:.74rem;font-family:var(--mono)}
+  table.cov td.c .n{color:var(--rule)}
+  table.cov tbody tr:hover{background:var(--surface-2)}
+  table.cov tr.grp td{background:var(--surface-3);font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;color:var(--muted);padding:6px 12px;border-bottom:1px solid var(--rule)}
+  table.cov tr.sum td{font-weight:600;background:var(--surface-2)}
+  table.cov tr.sum td.c{font-family:var(--mono);font-size:.82rem;color:var(--ink)}
+
+  /* stacks */
+  .stackbox{background:var(--surface);border:1px solid var(--rule-soft);border-radius:4px;padding:20px;box-shadow:var(--shadow)}
+  .stackbox + .stackbox{margin-top:18px}
+  .stackbox h3{font-size:1rem;font-weight:600}
+  .stackbox .cap{font-size:.88rem;color:var(--ink-2);margin-top:9px;max-width:66ch}
+  .stackbox svg{display:block;width:100%;height:auto;max-width:100%;margin-top:18px}
+  .sscroll{overflow-x:auto}
+  .sscroll svg{min-width:52rem}
+  .note{margin-top:16px;border-top:1px solid var(--rule-soft);padding-top:14px;display:grid;gap:10px}
+  .note div{font-size:.86rem;color:var(--ink-2)}
+  .note b{display:block;font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px;font-weight:600}
+
+  /* tools pareto */
+  .pareto{display:grid;grid-template-columns:minmax(0,15rem) minmax(0,1fr) 4.2rem;gap:0 12px;align-items:center}
+  .pbtn{appearance:none;background:none;border:0;padding:5px 0;text-align:left;font-family:inherit;font-size:.83rem;color:var(--ink);cursor:pointer;width:100%;line-height:1.4}
+  .pbtn:hover{color:var(--work)}
+  .pbtn[aria-expanded="true"]{color:var(--work);font-weight:600}
+  .pbtn:focus-visible{outline:2px solid var(--work);outline-offset:2px;border-radius:3px}
+  .ptrack{height:15px;background:var(--surface-2);border-radius:2px;overflow:hidden}
+  .pfill{height:100%;border-radius:2px}
+  .pfill.in{background:var(--work)}
+  .pfill.out{background:var(--own)}
+  .pfill.both{background:linear-gradient(90deg,var(--work) 0%,var(--work) 45%,var(--own) 55%,var(--own) 100%)}
+  .pval{font-family:var(--mono);font-size:.76rem;color:var(--ink-2);text-align:right;font-variant-numeric:tabular-nums}
+  .pcut{grid-column:1/-1;border-top:1px dashed var(--own);margin:9px 0 4px;position:relative;height:0}
+  .pcut span{position:absolute;right:0;top:-9px;background:var(--surface);padding-left:8px;font-family:var(--mono);font-size:.68rem;color:var(--own)}
+  .pdet{grid-column:1/-1;background:var(--surface-2);border-left:3px solid var(--work);border-radius:0 3px 3px 0;padding:11px 14px;margin:4px 0 8px;font-size:.84rem;color:var(--ink-2);display:grid;gap:6px}
+  .pdet b{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .cfig{overflow-x:auto;margin:0 0 16px;padding:12px 0;border-top:1px solid var(--rule-soft);border-bottom:1px solid var(--rule-soft)}
+  .cfig svg{display:block;min-width:600px;max-width:100%;height:auto;margin:0 auto}
+  .cfig .fcap{font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;color:var(--muted);text-align:center;margin-top:8px}
+  .pgen{display:inline-block;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;color:var(--own);border:1px solid var(--own);border-radius:2px;padding:0 4px;margin-right:6px;vertical-align:1px}
+  .pnote{grid-column:1/-1;background:var(--surface-2);border-left:3px solid var(--own);border-radius:0 3px 3px 0;padding:10px 14px;margin:4px 0 8px;font-size:.83rem;line-height:1.65;color:var(--ink-2)}
+  .pnote b{display:block;font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--own);margin-bottom:4px}
+  .lessons{display:grid;grid-template-columns:repeat(auto-fit,minmax(18rem,1fr));gap:16px;margin-top:26px}
+  .lesson{background:var(--surface);border:1px solid var(--rule-soft);border-left:3px solid var(--own);border-radius:0 4px 4px 0;padding:16px 17px}
+  .lesson h4{font-size:.92rem;font-weight:600}
+  .lesson p{font-size:.86rem;color:var(--ink-2);margin-top:7px}
+
+  /* strata */
+  .strata{display:flex;flex-direction:column;gap:2px}
+  .stratum{display:grid;grid-template-columns:minmax(0,14rem) minmax(0,1fr);gap:0 20px;align-items:center;background:var(--surface);border:1px solid var(--rule-soft);padding:14px 16px}
+  .stratum:first-child{border-radius:4px 4px 0 0}
+  .stratum:last-child{border-radius:0 0 4px 4px}
+  .stratum .gn{font-family:var(--mono);font-size:.68rem;color:var(--muted);letter-spacing:.1em}
+  .stratum .gname{font-weight:600;font-size:.94rem}
+  .stratum .gy{font-family:var(--mono);font-size:.74rem;color:var(--muted)}
+  .bar{display:flex;height:30px;border-radius:2px;overflow:hidden;border:1px solid var(--rule-soft)}
+  .bar span{display:flex;align-items:center;padding-inline:9px;font-family:var(--mono);font-size:.68rem;white-space:nowrap;overflow:hidden}
+  .bar .mine{background:var(--work);color:var(--on-work)}
+  .bar .theirs{background:var(--own-wash);color:var(--own);border-left:1px solid var(--rule-soft)}
+  .pull{margin-top:26px;border-left:3px solid var(--work);padding:4px 0 4px 18px;font-size:1.02rem;max-width:56ch;font-weight:500}
+  .pull small{display:block;font-size:.8rem;color:var(--muted);font-weight:400;margin-top:7px;font-family:var(--mono)}
+
+  /* patterns */
+  .pats{display:grid;grid-template-columns:repeat(auto-fit,minmax(21rem,1fr));gap:18px}
+  .fig{background:var(--surface);border:1px solid var(--rule-soft);border-radius:4px;padding:20px;box-shadow:var(--shadow)}
+  .fig h3{font-size:1rem;font-weight:600}
+  .fig .cap{font-size:.87rem;color:var(--ink-2);margin-top:9px}
+  .fig svg{display:block;width:100%;height:auto;max-width:100%;margin-top:16px}
+  .tro{margin-top:16px;border-top:1px solid var(--rule-soft);padding-top:14px;display:grid;gap:11px}
+  .tro div{font-size:.86rem;color:var(--ink-2)}
+  .tro b{display:block;font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px;font-weight:600}
+
+  /* qa */
+  .qa{display:flex;flex-direction:column;gap:9px}
+  details.q{background:var(--surface);border:1px solid var(--rule-soft);border-radius:4px;overflow:hidden}
+  details.q[open]{border-color:var(--rule)}
+  details.q summary{cursor:pointer;list-style:none;padding:14px 17px;display:flex;gap:12px;align-items:flex-start;font-weight:600;font-size:.94rem}
+  details.q summary::-webkit-details-marker{display:none}
+  details.q summary:focus-visible{outline:2px solid var(--work);outline-offset:-2px}
+  .qn{font-family:var(--mono);font-size:.7rem;color:var(--muted);padding-top:4px;flex:none}
+  .chev{margin-left:auto;color:var(--muted);transition:transform .18s}
+  details.q[open] .chev{transform:rotate(90deg)}
+  .qbody{padding:15px 17px 18px 45px;border-top:1px solid var(--rule-soft);background:var(--surface-2)}
+  .spoken{background:var(--work-wash);border-radius:3px;padding:13px 15px;font-size:.93rem;line-height:1.8}
+  .spoken .lbl{font-family:var(--mono);font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--work);display:block;margin-bottom:5px;font-weight:600}
+  .full{margin-top:14px;font-size:.89rem;color:var(--ink-2);display:grid;gap:9px}
+
+  .tablewrap{overflow-x:auto;border:1px solid var(--rule-soft);border-radius:4px;background:var(--surface)}
+  table{border-collapse:collapse;width:100%;min-width:32rem;font-size:.87rem}
+  th,td{text-align:left;padding:11px 15px;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+  th{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--surface-2)}
+  tr:last-child td{border-bottom:0}
+  td.no{color:var(--danger)}
+
+  footer{padding-block:36px 52px;color:var(--muted);font-size:.8rem;font-family:var(--mono);line-height:1.9}
+  [hidden]{display:none!important}
+  @media (max-width:980px){ #tiles{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:720px){
+    .stratum{grid-template-columns:1fr;gap:9px}
+    .qbody{padding-left:17px}
+    .flabel{width:100%}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<header class="top">
+  <div class="top-in">
+    <div>
+      <div class="eyebrow" id="kicker">技術檔案 · 公開版</div>
+      <h1>蔡政翰 ChengHan Tsai</h1>
+      <p class="tagline">從四人把測試軟體團隊做到八十人，同時親手寫 Swift 與裝置端 LLM。十一年、六條產品線、上百個工站。</p>
+    </div>
+
+  </div>
+</header>
+
+<div class="statusbar">
+  <div class="wrap">
+    <div class="st-rows" id="st-rows"></div>
+    <div class="st-cta" id="st-cta"></div>
+  </div>
+</div>
+
+</div>
+
+<div class="wrap">
+
+  <section>
+    <div class="sec-head">
+      <div class="eyebrow">總覽</div>
+      <h2>一眼看完</h2>
+      <p>下面每一個數字都查得到出處。細節在「作品集」裡點開。</p>
+    </div>
+    <div class="tiles" id="tiles"></div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <div class="eyebrow">能力軌跡</div>
+      <h2>我在哪些年份、做哪一類的事</h2>
+      <p>每一條長條都對應到具體的專案與提交紀錄，不是自評。<strong>點左邊的能力名稱</strong>可以把下面的作品集篩成該能力的證據。</p>
+    </div>
+    <div class="chartbox">
+      <div class="gscroll"><div class="gantt" id="gantt"></div></div>
+      <div class="glegend">
+        <span><i style="background:var(--work)"></i>主業 · 主力投入</span>
+        <span><i style="background:var(--work);opacity:.42"></i>主業 · 零星</span>
+        <span><i style="background:var(--own)"></i>個人 · 下班時間</span>
+        <span>長條上的文字是當時的代表作</span>
+      </div>
+      <p class="ghint" id="ghint"></p>
+      <p class="ghint" style="border-top:1px solid var(--rule-soft);padding-top:12px;margin-top:12px">
+        <strong style="color:var(--ink)">最後一列不是技術能力，是「影響力半徑」</strong>——那一列的每一段，對口都在我的部門之外：自家的高階主管、客戶的平台團隊、客戶的產品設計團隊、公司裡其他部門，以及<strong style="color:var(--ink)">量產單位</strong>。
+        代工廠的軟體團隊通常只對到客戶的製造與測試工程窗口；這幾段說明我接觸的面比那個窄口寬。
+        量產那兩段值得單獨說：<strong style="color:var(--ink)">產線設備自動化與自動光學檢測都是支援量產單位的，不是給我自己部門用的</strong>——使用者是產線，效益也記在產線人力那一本帳上，跟下面工具組那本部門工時的帳是分開的。
+        同一件事在下面的工具組也看得到：24 個內部工具裡有 7 個的使用者不在我的部門，佔總效益約 16%——那些是沒有指揮權、只能靠工具真的好用才推得動的。
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <div class="eyebrow">作品集</div>
+      <h2>做過的東西</h2>
+      <p>用下面的條件篩選，點卡片展開細節與連結。角色標籤分四種：<strong>親手寫</strong>、<strong>架構決策</strong>、<strong>帶團隊交付</strong>、<strong>個人作品</strong>——我不會把團隊寫的算成自己寫的。</p>
+    </div>
+    <div class="filters" id="filters"></div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section id="sec-tools">
+    <div class="sec-head">
+      <div class="eyebrow">效率與自動化</div>
+      <h2>24 個內部工具，效益集中在前十個</h2>
+      <p>在測試軟體團隊裡設了一個常態 4–5 人的工具組，六年半做了 24 個工具。下面是它們的效益分布——<strong>點任何一條</strong>看它做了什麼、服務誰、改善多少。</p>
+    </div>
+    <div class="tiles" id="tooltiles" style="margin-bottom:26px"></div>
+    <div class="chartbox">
+      <div class="pareto" id="pareto"></div>
+      <div class="glegend">
+        <span><i style="background:var(--work)"></i>服務本部門</span>
+        <span><i style="background:var(--own)"></i>服務其他部門</span>
+        <span id="punit"></span>
+      </div>
+    </div>
+    <div class="lessons" id="lessons"></div>
+  </section>
+
+  <section id="sec-strata">
+    <div class="sec-head">
+      <div class="eyebrow">脈絡</div>
+      <h2>設計權一代一代移到客戶那邊</h2>
+      <p>十一年裡「測試要怎麼跑」這個決定的歸屬變化。這條軌跡同時是我離職的原因。</p>
+    </div>
+    <div class="strata" id="strata"></div>
+    <div class="glegend">
+      <span><i style="background:var(--work)"></i>我們決定</span>
+      <span><i style="background:var(--own-wash);box-shadow:inset 0 0 0 1px var(--own)"></i>客戶平台決定</span>
+    </div>
+    <p class="pull">
+      「我們在第二代自己做出來的那套『測試計畫寫成表、程式只當執行器』，兩年後成為客戶的官方標準。這既是對那個設計的肯定，也正是我離開的原因——不是因為累，是因為需要判斷的部分被拿走了。」
+      <small>離職原因與代表作是同一個故事的兩半。</small>
+    </p>
+  </section>
+
+  <section id="sec-stack">
+    <div class="sec-head">
+      <div class="eyebrow">軟體堆疊</div>
+      <h2>四個世代的堆疊，顏色就是答案</h2>
+      <p>同一件事——讓一台受測物跑完一輪測試——在四個世代裡由不同的層負責。深藍是我們寫的，琥珀是客戶平台的。<strong>不用讀文字，看兩個顏色的比例變化就知道我為什麼離開。</strong></p>
+    </div>
+    <div class="stackbox">
+      <div class="sscroll" id="stack4"></div>
+      <div class="glegend">
+        <span><i style="background:var(--work)"></i>我們寫的</span>
+        <span><i style="background:var(--own-wash);box-shadow:inset 0 0 0 1px var(--own)"></i>客戶平台</span>
+        <span><i style="background:var(--own);border:1.5px dashed var(--own)"></i>雙方一起做</span>
+        <span><i style="background:var(--surface-3);box-shadow:inset 0 0 0 1px var(--rule)"></i>作業系統</span>
+      </div>
+      <div class="note" id="stacknote"></div>
+    </div>
+
+    <div class="stackbox">
+      <h3>一個新機種要寫的三個檔，是怎麼站在四層之上的</h3>
+      <p class="cap">最後一代的依賴鏈。機種專案依賴機種家族的共用件，家族依賴技術別共用件，技術別依賴那份所有站都用的共用程式碼。每一層都是獨立版控、獨立發布的套件，不是口頭上的分層——這條鏈在建置清單裡寫得死死的。</p>
+      <div class="sscroll" id="stackdep"></div>
+      <div class="note" id="depnote"></div>
+    </div>
+  </section>
+
+  <section id="sec-pats">
+    <div class="sec-head">
+      <div class="eyebrow">架構模式</div>
+      <h2>三個可以直接拿去白板重畫的設計</h2>
+      <p>都在真實量產環境驗證過，也都可以往下深談到取捨與代價。</p>
+    </div>
+    <div class="pats" id="pats"></div>
+  </section>
+
+  <footer id="foot"></footer>
+</div>
+
+<script>
+/* ============================================================================
+   要新增一個作品：在 DATA.items 後面加一個物件就好，畫面會自動長出卡片。
+   要更新某個作品的細節：只改那一個物件的 detail / stats / links。
+   要新增一條能力軌跡：在 DATA.tracks 加一列，spans 用 [起年, 迄年, 類型, 標籤]。
+   類型：'work' 主業 · 'work-faint' 主業零星 · 'own' 個人作品。
+   ========================================================================== */
+
+const Y0 = 2015, Y1 = 2026;
+
+const DATA = {
+  // 聯絡與求職狀態。resume 為 null 時那個按鈕不會出現。
+  contact:{
+    rows:[
+      ['目前狀態','2026 年 6 月結束前一份工作，正在找下一個位置'],
+      ['想找的方向','測試自動化與產線系統　·　AI 應用落地　·　工程團隊管理'],
+      ['地點','桃園']
+    ],
+    email:'tsai.schumi@gmail.com',
+    emailLabel:'寫信給我',
+    linkedin:'https://www.linkedin.com/in/chenghan-tsai',
+    linkedinLabel:'LinkedIn',
+    resume:null,
+    resumeLabel:'履歷 PDF'
+  },
+
+  tiles: [
+    {n:'4 → 22 → 80', l:'團隊人數：2015 創始四人之一 · 2020 年 22 人 · 2022 併入其他測試軟體團隊後 80 人', s:'0→1，不是接手成熟組織'},
+    {n:'1 → 6', l:'產品線，2015 年 1 條到 2020 年 6 條', s:'工站 1 → 100+（2025）'},
+    {n:'11 年', l:'同一家公司，從一級專員做到資深經理', s:'2015 → 2026'},
+    {n:'約一半', l:'最近的 log 診斷工具兩千多次提交中我個人寫的比例', s:'主要作者，不是唯一作者'},
+    {n:'4 代', l:'2015–2026 經歷四個世代的測試平台，前兩代是我們自己建的', s:'第二代成為六條產線的標準做法'},
+    {n:'8 年', l:'2015 年寫的測試引擎，2023–24 還被拿去實作一個全新的站別', s:'不需要為新需求改架構'},
+    {n:'10 季', l:'最長的一條開發期：把測試軟體接到產線的搬運機器手臂與治具', s:'2019–2021，全部專案裡最久的'},
+    {n:'24 個', l:'內部工具，前十個佔了八成七的效益，七個的使用者在我的部門之外', s:'投入產出約 6×'}
+  ],
+
+  tracks: [
+    {id:'handson', name:'親手寫程式', sub:'macOS · Swift · Obj-C · Python', spans:[
+      [2015,2016,'work','自建測試引擎核心'],
+      [2017,2019,'work-faint','零星'],
+      [2020,2021,'work','進料條碼驗證'],
+      [2022,2024,'work-faint','零星'],
+      [2025,2026,'work','log 診斷工具'],
+      [2025,2025,'own','Swift 套件']
+    ]},
+    {id:'arch', name:'測試系統架構', sub:'引擎 · 測試流程表 · 共用程式碼', spans:[
+      [2015,2019,'work','自建引擎與腳本語言'],
+      [2018,2020,'work','測試計畫寫成表'],
+      [2020,2026,'work','共用程式碼 + 轉接層']
+    ]},
+    {id:'platform', name:'平台遷移與相容', sub:'兩代 sequencer 並存', spans:[
+      [2020,2023,'work','第一代 sequencer'],
+      [2023,2026,'work','遷移到第二代']
+    ]},
+    {id:'ai', name:'AI 應用', sub:'裝置端模型 · 方法論 DSL', spans:[
+      [2025,2026,'work','失效根因分析'],
+      [2026,2026,'own','個人 agent']
+    ]},
+    {id:'auto', name:'自動化與內部工具', sub:'24 個工具 · 建置簽章', spans:[
+      [2019,2025,'work','內部工具組'],
+      [2020,2024,'work','進料檢驗自動化'],
+      [2025,2025,'work','自動建置與簽章']
+    ]},
+    {id:'hw', name:'硬體與治具整合', sub:'序列埠 · 扭力 · 影像 · 工業通訊', spans:[
+      [2015,2019,'work','序列埠 · 多層遠端 shell · 力量感測'],
+      [2019,2021,'work','SMT 線：控制器 · 機器手臂 · 微控制器治具'],
+      [2022,2024,'work','起子扭力 · 相機 · 工業通訊 · 大螢幕']
+    ]},
+    {id:'lead', name:'帶團隊', sub:'一級專員 → 副理 → 經理 → 資深經理', spans:[
+      [2015,2015,'work','一級專員'],
+      [2016,2018,'work','副理'],
+      [2019,2021,'work','經理'],
+      [2022,2026,'work','資深經理']
+    ]},
+    {id:'collab', name:'影響力半徑', sub:'我的部門以外的對口', spans:[
+      [2019,2019,'work','自家高階主管：解釋新平台'],
+      [2019,2020,'work','客戶平台團隊：共同開發 sequencer'],
+      [2019,2021,'work','量產單位：產線設備自動化'],
+      [2020,2021,'work','量產單位：自動光學檢測'],
+      [2020,2024,'work','其他部門：供應鏈進料檢驗'],
+      [2023,2024,'work','客戶設計團隊：新站別需求']
+    ]}
+  ],
+
+  // 24 個內部工具。公開欄位：功能、效益佔比、服務對象（本部門/跨部門）、開發季數、改善幅度。
+  toolTotalNote:'部門工時類 24 個專案的加總',
+  tools:[
+    {id:'t1', f:'測試報表自動產生（第一代）',      share:21.3, dept:'in',  q:8, imp:75, gen:'rep', noteH:'世代關係',
+     note:'同一條產品線的第一代。把原本人工整理的測試報表整條自動化，開發了 8 個季度，是 24 項裡效益最大的一個。四年後回頭做第二代（第 6 項），把剩下的人工步驟再砍一次。'},
+    {id:'t2', f:'產線 log 自動搬運與歸檔',        share:15.7, dept:'in',  q:2, imp:50},
+    {id:'t3', f:'Run-in 失效自動驗證',            share:10.3, dept:'in',  q:3, imp:60},
+    {id:'t4', f:'測試 log 分析工具',              share:9.5,  dept:'in',  q:5, imp:50},
+    {id:'t5', f:'測試腳本圖形化編輯器',            share:6.1,  dept:'in',  q:5, imp:50},
+    {id:'t6', f:'測試報表流程再簡化（第二代 · 61 步 → 1 步）', share:5.9, dept:'in', q:1, imp:97, gen:'rep', noteH:'世代關係',
+     note:'同一條產品線的第二代，不是新專案。第一代（第 1 項）上線四年後，實際作業仍有 61 個人工步驟殘留在前後兩端——第一代自動化的是「產生報表」，沒有動到取得資料與發送的流程。第二代把整條收斂成 1 步，只花 1 個季度就做完，作業時間改善 97%，是所有項目裡單位投入產出最高的。原因是第一代已經把資料模型與格式都立好了，第二代站在上面做。'},
+    {id:'t7', f:'製程工程站別作業時間優化',        share:5.4,  dept:'out', q:5, imp:40},
+    {id:'t8', f:'進料檢驗條碼驗證',               share:4.8,  dept:'out', q:1, imp:70},
+    {id:'t9', f:'顯示失效分析工具',               share:4.0,  dept:'in',  q:null, imp:80},
+    {id:'t10',f:'Run-in 報表自動化',              share:3.8,  dept:'in',  q:3, imp:24},
+    {id:'t11',f:'產品設計端排程預約系統',          share:2.0,  dept:'out', q:null, imp:50},
+    {id:'t12',f:'主管自助報表',                   share:1.5,  dept:'in',  q:3, imp:80},
+    {id:'t13',f:'實驗室資產管理系統',              share:1.4,  dept:'in',  q:3, imp:51},
+    {id:'t14',f:'部門知識庫（後推廣到其他單位）',   share:1.3,  dept:'both',q:5, imp:55, noteH:'擴散範圍',
+     note:'一開始只給自己部門用，做起來之後被其他單位拿去用。這類工具的擴散不是靠推廣，是靠內容累積到某個密度之後別人自己會來——所以我一直把重點放在「有沒有人願意持續寫」而不是介面。'},
+    {id:'t15',f:'研發資產系統整合',               share:1.0,  dept:'out', q:2, imp:36},
+    {id:'t16',f:'線上測驗系統',                   share:1.0,  dept:'in',  q:null, imp:30},
+    {id:'t17',f:'設計端作業監看',                 share:0.9,  dept:'out', q:4, imp:23},
+    {id:'t18',f:'團隊管理雲端工具',               share:0.8,  dept:'in',  q:7, imp:90},
+    {id:'t19',f:'工站狀態監控網頁',               share:0.8,  dept:'in',  q:null, imp:35},
+    {id:'t20',f:'測試覆蓋資料匯集',               share:0.8,  dept:'in',  q:null, imp:87},
+    {id:'t21',f:'可靠度循環測試工具',             share:0.7,  dept:'out', q:3, imp:30},
+    {id:'t22',f:'NPI 議題查詢網站',               share:0.3,  dept:'in',  q:1, imp:70},
+    {id:'t24',f:'應用版本檢查',                   share:0.2,  dept:'in',  q:null, imp:90},
+    {id:'t25',f:'教育訓練系統',                   share:0.2,  dept:'in',  q:1, imp:45}
+  ],
+  toolTiles:[
+    {n:'約 6×', l:'工具組的投入產出比：一個常態 4–5 人小組，做出持續每年發生的工時節省', s:'效益是每年重複發生，不是一次性'},
+    {n:'87%', l:'效益集中在前 10 個工具；後 10 個加起來只佔 7%', s:'標準的 Pareto 形狀'},
+    {n:'7 / 24', l:'使用者不只在我的部門——製程工程、供應鏈進料檢驗、產品設計、研發、可靠度，加上後來推廣出去的部門知識庫', s:'佔總效益約 16%'}
+  ],
+  toolLessons:[
+    {h:'我的重要性自評，中間那層是無效的', p:'收案時每個工具會自評重要性 1–5。回頭對照實際效益：評 5 分的確實在前段、評 1 分的確實在後段，但評 3 分那 11 個從 0.18 到 11.39 全散開——中間那層完全分不出來。而且全表效益最高的那一個，收案時根本沒有被評分。'},
+    {h:'省下的工時沒有變成減編', p:'這是工時釋放，不是裁員。釋放出來的時間轉去做別的專案。這題我會直接承認——內部工具的效益本來就多半是這種性質，迴避反而顯得數字有問題。'},
+    {h:'職能自己演化了三次', p:'產線自動化（解放重工）→ 效率改善（流程、溝通、交接）→ 資料視覺化（決策用的數據與監控面板）。從支援產線變成支援管理決策。'}
+  ],
+
+  stacks:[
+    {g:'01', name:'自建引擎', yrs:'2015 – 2019', layers:[
+      {t:'測試腳本（每個工站一份）', own:'us'},
+      {t:'自有腳本語言與編輯器', own:'us'},
+      {t:'測試執行引擎', own:'us'},
+      {t:'儀器抽象層', own:'us'},
+      {t:'硬體 I/O：序列埠 · 力量感測', own:'us'},
+      {t:'macOS', own:'os'}
+    ]},
+    {g:'02', name:'平台工具箱，排程仍自建', yrs:'2018 – 2020', layers:[
+      {t:'測試計畫（CSV）', own:'us'},
+      {t:'自建執行器：讀表 · 過濾 · 逐項執行', own:'us'},
+      {t:'平台序列語言', own:'cust'},
+      {t:'平台外掛體系', own:'cust'},
+      {t:'平台執行環境 ＋ 產線操作 GUI', own:'cust'},
+      {t:'macOS', own:'os'}
+    ]},
+    {g:'03', name:'官方 sequencer 第一代', yrs:'2020 試作 · 2021 正式 – 2023', layers:[
+      {t:'機種 overlay（三個內容檔）', own:'us'},
+      {t:'機種家族 overlay', own:'us'},
+      {t:'技術別共用件（依測試領域）', own:'us'},
+      {t:'共用程式碼（只有一份）', own:'us'},
+      {t:'轉接層', own:'both'},
+      {t:'外掛與 wrapper', own:'cust'},
+      {t:'官方 sequencer · 第一版共同開發', own:'both'},
+      {t:'平台核心（執行、UI、資料回報）', own:'cust'},
+      {t:'macOS', own:'os'}
+    ]},
+    {g:'04', name:'sequencer 再換一次', yrs:'2023 – 2026', layers:[
+      {t:'機種 overlay（三個內容檔）', own:'us'},
+      {t:'機種家族 overlay', own:'us'},
+      {t:'技術別共用件（依測試領域）', own:'us'},
+      {t:'共用程式碼（只有一份）', own:'us'},
+      {t:'轉接層 ×2（新舊並存約一年半）', own:'both'},
+      {t:'外掛與 wrapper', own:'cust'},
+      {t:'官方 sequencer 第二代', own:'cust'},
+      {t:'平台核心（新增編譯器與三層測試計畫）', own:'cust'},
+      {t:'macOS', own:'os'}
+    ]}
+  ],
+  stackNotes:[
+    ['讀法','第一代整座堆疊除了作業系統都是我們寫的。第四代我們只剩最上面四層——而那四層裡最上面那個，新機種只要三個檔。中間被拿走的不是程式碼量，是「測試要怎麼跑」這個決定。'],
+    ['第二代常被跳過','客戶給了語言、外掛體系跟產線 GUI，但沒有官方的執行器——所以「測試計畫寫成表、程式照著跑」那一層是我們自己補的。兩年後客戶的官方版本是同一套做法。'],
+    ['三、四代的差別只有兩格','sequencer 換了一代，平台核心多了編譯器；我們那四層一格沒動。這就是共用程式碼真正付現的地方。']
+  ],
+  dep:[
+    {t:'機種 overlay', s:'站別組態 · 專案邏輯 · 覆蓋資料', n:'3 個內容檔'},
+    {t:'機種家族 overlay', s:'同一家族機種共用的測項與參數', n:''},
+    {t:'技術別共用件', s:'依測試領域分層建置', n:''},
+    {t:'共用程式碼', s:'受測物 · 治具 · 流程 · 量測 · 記錄格式', n:'只有一份'},
+    {t:'轉接層 ＋ 外掛', s:'接到當代的 sequencer', n:''}
+  ],
+  depNotes:[
+    ['不是口頭上的分層','每一層都是獨立版控、獨立發布的套件，依賴關係寫在建置清單裡。機種專案的清單第一行就是它依賴的家族共用件。'],
+    ['版本全部鎖死','平台版本、作業系統版本、十幾個外掛各自鎖到明確版本號。測試站不能有「在我機器上會動」這種事——整個 image 要可重現。']
+  ],
+
+  roles: {built:'親手寫', arch:'架構決策', led:'帶團隊交付', own:'個人作品'},
+  eras: {e1:'2015–2019', e2:'2020–2022', e3:'2023–2026'},
+
+  items: [
+    {
+      id:'logsight', name:'產線 log 診斷工具', era:'2025 – 2026', eraKey:'e3', role:'built',
+      roleNote:'主要作者，約一半提交',
+      tracks:['handson','ai','arch'],
+      tech:['Swift','SwiftUI','裝置端 LLM','SPM','GRDB','GitHub Actions'],
+      tagline:'把八年的失效分析判斷外部化成模型能執行的方法論文件——判斷由程式做，解讀才交給模型。',
+      stats:[{b:'126',l:'應用程式 Swift 檔'},{b:'245',l:'測試檔'},{b:'117',l:'設計文件'}],
+      detail:[
+        {h:'為什麼做', p:'客戶平台把需要判斷的部分標準化之後，失效分析是產線上唯一還沒被標準化的問題。八年的判斷經驗在幾個資深工程師腦子裡，新人要三年才判得準。'},
+        {h:'核心設計', p:'方法論文件用六個標籤區段描述每一種失效類型，每段對應執行流程的一個階段：載入 → 比對 → 蒐集 → 產出。其中一個欄位標記這類失效需不需要模型——數值超規格用一個比較式就判得出來，完全不碰模型；回傳格式對不上才需要模型讀懂內容。'},
+        {h:'關鍵的不是技術，是寫作流程', p:'資深失效分析工程師用他自己習慣的方式寫初稿，AI 工具再轉成六區段結構。我沒有要求專家學我的格式——要求他學，他會寫一次就不寫第二次，這套東西就停在第一版。門檻由工具吃掉。'},
+        {h:'資料不出機器', p:'測試 log 是客戶資產，所以推論都在裝置上跑。模型能力有限反而是好事，逼我把能用程式解的都用程式解。'},
+        {h:'品質怎麼控', p:'我自己寫了一份十二條的工程契約放在專案根目錄，涵蓋「簡單優先」「外科式修改」「只讓模型做 judgment call」「測試驗證意圖不只是行為」「大聲失敗」。規則被違反過一次之後，我寫了腳本讓它不可能再發生——腳本的檔頭註解就寫著它是為了哪一個 PR 的錯誤而生的。每個 PR 另外自動請 AI 審查。'},
+        {h:'效能是數字不是感覺', p:'每個 commit 量一次並存成可比較的紀錄。目標寫在契約裡：一百 MB 的檔案三十秒內處理完，因為產線工程師等不了。'},
+        {h:'協作', p:'我負責架構、方法論的執行引擎、跟模型那一層；另一位工程師主要做 UI 與使用者體驗設計，也開發部分功能。兩千多次提交我大約寫了一半，另一半是我帶的工程師。', flaw:false}
+      ],
+      flaw:'方法論的自訂格式沒有 schema 驗證，寫錯欄位名要跑起來才知道——跟我十年前做自有腳本語言時同一個坑，這次我沒修掉。另外資料蒐集那個模組九百多行，來源一多就該拆。'
+    },
+    {
+      id:'engine', name:'自建測試站引擎', era:'2015 – 2019', eraKey:'e1', role:'built',
+      roleNote:'52 個實作檔中 18 個核心檔是我寫的',
+      tracks:['handson','arch','hw'],
+      tech:['Objective-C','Cocoa','序列埠','多層遠端 shell','力量感測'],
+      tagline:'客戶還沒有統一平台的年代，測試站軟體的每一層都得自己長出來：執行引擎、腳本語言、儀器抽象層、產線介面，外加文件與教育訓練。',
+      stats:[{b:'23,000',l:'行 Obj-C'},{b:'18 / 52',l:'我親筆的實作檔'},{b:'9',l:'種判定策略'}],
+      detail:[
+        {h:'分層', p:'執行引擎（背景執行緒測試迴圈、重試與跳過語意、測項狀態機）／腳本層（自有 JSON 腳本語言 + 編輯器 + 教材）／儀器抽象（一個協定加一張註冊表：序列埠、三層深度的遠端 shell、檔案傳輸、本機指令）／硬體 I/O（序列埠、力量感測）／測試站介面（測項表格、結果顯示、作業員提示）。'},
+        {h:'為什麼自建腳本語言', p:'產線工程師不是 app 工程師；要他們改專案，等於把每次測項微調都變成一次軟體發版。而需要的表達力其實很窄——送指令、比對回應、判上下限、重試、跳過。如果需求再寬一點，要迴圈、條件、平行，我會直接嵌入現成腳本語言。'},
+        {h:'判定是資料驅動的', p:'九種判定寫成同型別的純函式（字串比對、格式、上下限區間、自訂函式、結構化狀態…）。腳本說用哪一種，引擎不需要知道有哪幾種。'},
+        {h:'最硬的部分', p:'測試迴圈跑在背景執行緒，但「人」和「硬體」都是它控制不了的非同步事件源——作業員什麼時候按確認、儀器什麼時候把量測值送回來。當時用鎖讓測試腳本維持線性可讀：測試工程師看得懂「送指令 → 等結果 → 判定」，看不懂 continuation。比結構化並行早了六年。'},
+        {h:'七年後又長出一層', p:'2022 年底客戶的產品設計團隊提出一個全新站別的需求，需要電動起子扭力、相機、工業通訊治具、大螢幕作業指引——這些 2015 年的版本一個都沒有。團隊在這個引擎上加了一整層新的硬體 I/O 與作業員互動（一口氣多了 39 個實作檔），而引擎本身的分層沒有改。一個七年前的設計能接住當初完全沒想過的硬體，這比任何人稱讚它都有說服力。'}
+      ],
+      flaw:'測項的資料模型直接繼承了 UI 的表格列元件。當時的理由是每個測項在畫面上就是一列，綁在一起改值就能觸發重繪；代價是模型無法脫離 UI 測試、不能安全地跨執行緒存取——後來那些鎖有一部分是在補這個洞。十年後我改用 MVVM，而且寫腳本放在 CI 上擋這件事。'
+    },
+    {
+      id:'dsl', name:'自有測試腳本語言與編輯器', era:'2016 – 2019', eraKey:'e1', role:'built',
+      roleNote:'語言、編輯器、文件、教材都是團隊自產',
+      tracks:['handson','arch'],
+      tech:['JSON DSL','動態派送','Obj-C'],
+      tagline:'讓「改測試」和「改程式」脫鉤——這是後來能擴到上百個工站的前提。',
+      stats:[{b:'1',l:'套自有語言'},{b:'4',l:'份教材與 SOP'}],
+      detail:[
+        {h:'怎麼綁', p:'腳本的指令名以動態查找對應到程式方法，所以新增一個指令不需要改分派邏輯。'},
+        {h:'配套', p:'除了語言本身，還有圖形化的腳本編輯器、使用手冊、內部函式說明、以及一門教育訓練課程。一套語言如果沒有這些，三個月後只有作者會用。'},
+        {h:'代價', p:'自己的語言就要自己養。打錯字要跑起來才會炸，沒有編譯期檢查。現在會改的是：在載入時加一層 schema 驗證，把 runtime 錯誤搬到 load time。'}
+      ]
+    },
+    {
+      id:'rushseq', name:'平台語言上的自建排程器', era:'2018 – 2020', eraKey:'e1', role:'arch',
+      roleNote:'我主導；2020 成為六條產品線的標準做法',
+      tracks:['arch','platform'],
+      tech:['客戶平台序列語言','CSV','自動建置簽章'],
+      tagline:'客戶給了工具箱與序列語言，但沒有官方 sequencer——所以「測試計畫怎麼寫、程式怎麼照著跑」是我們自己定的。兩年後客戶的官方版本是同一套做法。',
+      stats:[{b:'22',l:'當時團隊人數'},{b:'6',l:'條產品線採用'}],
+      detail:[
+        {h:'做了什麼', p:'以站別名稱推導出測試計畫與上下限檔案的位置（不寫死在程式裡）；測試覆蓋放進 CSV 由程式載入——規格是資料不是程式碼；依測試模式（量產／工程／量測系統分析／可靠度）過濾測項；逐項執行、蒐集失效子項、統一改名 log；自動化的建置與簽章流程。'},
+        {h:'為什麼這一代最重要', p:'這是架構能力最直接的證據：在沒有官方模型的情況下，我們自己定義出「CSV 當測試覆蓋、程式只負責執行」的分離。'},
+        {h:'同期的另一件事', p:'2019 年初由我向公司資深副總層級簡報這個新平台是什麼、它會如何改變我們的工作方式。當時我剛升經理。這也是為什麼一年後我會先動手加隔離層——因為看懂了。'}
+      ]
+    },
+    {
+      id:'common', name:'一份共用程式碼，加上轉接層', era:'2020 – 2026', eraKey:'e2', role:'arch',
+      roleNote:'共用程式碼是我拍板；轉接層是客戶要求、雙方一起做',
+      tracks:['arch','platform'],
+      tech:['Lua','CSV / YAML','依賴管理','CI'],
+      tagline:'上百個專案不各自實作一次，而是共用同一份程式碼。後來客戶要換 sequencer，這份共用程式碼讓「兩套並存」只要包兩層薄轉接，而不是在上百個專案裡各做一次。',
+      stats:[{b:'1',l:'份共用程式碼（20 個模組）'},{b:'2',l:'層轉接（新舊各一）'},{b:'100+',l:'個工站受益'}],
+      detail:[
+        {h:'共用程式碼是什麼', p:'跟受測物講話、控治具、流程轉換、量測、錯誤碼、記錄格式、硬體組態解析——這些每個站都要用的東西，寫成一份共用模組，所有專案繼承。專案自己只留組態、專案特有邏輯、覆蓋資料三個檔。'},
+        {h:'轉接層是誰決定的（這點我會主動講清楚）', p:'客戶自己知道換 sequencer 會痛，所以要求遷移期間新舊兩套並存，讓產線可以分批轉。這個雙軌是客戶定義的，我們跟他們一起做出來。我不會把它說成我的架構決策。'},
+        {h:'我的部分是讓雙軌變得可行', p:'轉接層是薄的：取得外掛、呼叫共用模組、產生一筆記錄。因為邏輯只有一份，雙軌只要包兩次介面。如果沒有共用程式碼，客戶要的這個雙軌就等於在上百個專案裡各做一次——那不可能做得到。'},
+        {h:'用完就收', p:'兩套並存了大約一年半。遷移完成後，團隊把舊的那一套從各專案 repo 移除，只有共用程式碼那個 repo 還留著兩套。隔離層不是留著好看的，是用完就收。'},
+        {h:'錯誤處理的骨架', p:'每個轉接層函式都是同一個形狀：包住真正的邏輯 → 記 log → 產生一筆記錄 → 回傳。產線不會因為一個腳本錯誤整站掛掉，失敗變成一筆失敗記錄。這也是後來能做自動根因分析的前提——八年的失效都是結構化記錄。'}
+      ]
+    },
+    {
+      id:'overlay', name:'測試覆蓋交付與工程紀律', era:'2020 – 2026', eraKey:'e2', role:'led',
+      roleNote:'我定規範並要求遵守；實作由團隊完成',
+      tracks:['platform','auto'],
+      tech:['Lua','CSV / YAML','靜態檢查','CI','強制審查人'],
+      tagline:'把客戶的測試覆蓋規格翻成可執行的站別程式，跨六條產品線、上百個工站——而且新專案靠繼承與組態落地，不是複製貼上。',
+      stats:[{b:'3',l:'個內容檔（最精簡的新專案）'},{b:'26 / 27',l:'repo 有靜態檢查與 CI'},{b:'23 / 27',l:'repo 有強制審查人'}],
+      detail:[
+        {h:'新專案要寫什麼', p:'站別組態、專案邏輯、覆蓋資料——三個檔，其餘全部從共用層繼承。這是工站數成長約一百倍而人力沒有等比成長的實際機制。'},
+        {h:'誠實的但書', p:'不是每個專案都這麼小。有些機種光覆蓋資料就一百多個檔，那是規格本身龐大，不是複製貼上。被追問時要分得清這兩件事。'},
+        {h:'紀律怎麼守住', p:'強制審查人讓共用層的改動一定經過我的團隊；靜態檢查與 CI 讓不合規的提交進不了。但真正有效的是共用層必須好用——如果繼承比複製麻煩，規範擋不住任何人。這件事我推了很久，因為它對當週交期沒有幫助，回報在第三年。'},
+        {h:'驗收', p:'客戶提供覆蓋規格，我們實作，客戶簽核加上產線實機試跑才能上線。是正式的一線客戶稽核，不是自己說了算。'}
+      ]
+    },
+    {
+      id:'station', name:'作業指引與狀態記錄站', era:'2023 – 2024', eraKey:'e3', role:'led',
+      roleNote:'引擎是我寫的；這一輪實作我 0 次提交',
+      tracks:['hw','collab'],
+      tech:['Objective-C','相機','投影','可控測試序列'],
+      tagline:'客戶產品設計團隊提出的新站別需求，實作 100% 由我們完成——而我們選擇用自己八年前寫的引擎。',
+      stats:[{b:'202',l:'次提交'},{b:'8 年',l:'引擎當時的年紀'}],
+      detail:[
+        {h:'它做什麼', p:'記錄每一步作業動作的測試狀態，同時對作業員顯示指示與作業指引。可控的測試序列：上一步／下一步／跳過／重啟／中止／跳到指定測項——一般測試站只有「跑」跟「停」，這個站讓作業員能在流程中來回，因為它的用途是作業指引。'},
+        {h:'力道在哪', p:'需求來自客戶的設計端（一般代工軟體團隊只對到製造與測試工程窗口）；實作整站由我們交付；而八年前的引擎面對一個當初沒想過的新用途，不需要做任何架構讓步。最後這點是設計品質最誠實的檢驗。'},
+        {h:'分層還活著', p:'那一輪有一筆提交把 UI 上的跳轉按鈕拿掉，理由是「那件事屬於腳本指令層級」。團隊在爭論一個功能該放哪一層——爭論的是我 2015 年定的那幾層。'}
+      ]
+    },
+    {
+      id:'iqc', name:'進料檢驗條碼驗證', era:'2020 – 2024', eraKey:'e2', role:'built',
+      roleNote:'277 次提交中我 112 次（四成）',
+      tracks:['handson','auto','collab'],
+      tech:['Python','macOS 應用','Excel 規則檔','Web API'],
+      tagline:'服務的是供應鏈部門，不是我自己的團隊。四種編碼規則寫在 Excel 裡——規格即資料，比後來的 overlay 早兩年。',
+      stats:[{b:'112 / 277',l:'我的提交'},{b:'3.5 年',l:'持續維護'},{b:'4',l:'種編碼規則'}],
+      detail:[
+        {h:'我親手修的是什麼', p:'週別跨年（料件日期碼用週別編，第 52 週到次年第 1 週的邊界，不同曆法歸屬不一樣——那是上線後第一個一月才會爆的 bug，我連續改了三版才把邊界收乾淨）、檢查碼回傳型別、條碼前綴處理、API 特殊字元編碼、掃到碼但結果沒上傳。'},
+        {h:'為什麼主管在修這種細節', p:'那時團隊主力在做客戶的測試站，這個工具是給供應鏈用的、優先級排不上去。我不想讓它卡著就自己接了。主管親手做的前提是不排擠團隊的正事——這個專案剛好符合。'},
+        {h:'工具選擇跟著使用者走', p:'規則邏輯用 Python 寫得快、Excel 規則檔讀起來也直接；但使用者在產線的 Mac 上，所以外面包了一層 macOS 應用殼並掛上自動更新，讓產線不用手動裝版本。'},
+        {h:'它沒有死', p:'最後一次改規則是 2024 年——活了三年半還在維護。'}
+      ]
+    },
+    {
+      id:'utility', name:'內部工具組', era:'2019 – 2025', eraKey:'e2', role:'led',
+      roleNote:'我設立並帶這個常態小組',
+      tracks:['auto','lead'],
+      tech:['報表自動化','資料視覺化','網頁服務'],
+      tagline:'在測試軟體團隊裡設一個常態 4–5 人的內部工具組，職能從產線自動化演進到效率改善、再到資料視覺化。',
+      stats:[{b:'24',l:'個工具'},{b:'約 6×',l:'投入產出比'},{b:'87% / 7%',l:'前十項 / 後十項的效益佔比'}],
+      detail:[
+        {h:'為什麼要常態編制', p:'工具如果永遠是「有空再做」，就永遠做不完，也不會有人維護。固定編制才有人對這些工具的生命週期負責。'},
+        {h:'效益分布很不平均', p:'前十項佔了八成七的效益，後十項只佔百分之七。這個分布本身是管理上的教訓：真正的槓桿集中在少數幾個，而你事前分不出來——所以要能快速做、也要能誠實地停。'},
+        {h:'溢出到別的部門', p:'24 個裡有 7 個的使用者不在我的部門——製程工程、供應鏈進料檢驗、產品設計、研發、可靠度，再加上一開始只給自己部門用、後來被其他單位拿去用的部門知識庫，合計約佔總效益的 16%。跨部門的效益比團隊內的難推，因為你沒有指揮權，只能靠工具真的好用；知識庫那個更極端，是別人自己找上門的。'},
+        {h:'另有一條產線自動化的線，但我不報數字', p:'自動光學檢測與測試代理程式那一組，省下的是產線作業人力，不是部門工程師工時。我不會報那個數字——我不是產線單位，拿不到正確的人力節省基準，報一個我無法自己驗證的數字沒有意義。上面那 24 項每一項我都推導得出來，所以我只講那一批。'},
+        {h:'完整分布在下一節', p:'24 個工具逐項的效益佔比、服務對象、改善幅度與開發季數，在「效率與自動化」那一節可以逐條點開。'}
+      ]
+    },
+    {
+      id:'aoi', name:'自動光學檢測（導入 → 數年後失效）', era:'2020 – 2024', eraKey:'e2', role:'led',
+      roleNote:'我促成跨團隊合作並導入；近兩年因產品改版而退場',
+      tracks:['hw','collab','auto'],
+      tech:['機器視覺','跨團隊協作','產線自動化'],
+      tagline:'導入成功、在線上跑了好幾年，然後被產品自己的改版打敗——顯示面板換代，模型看到的東西變了，檢出能力就不再達標。',
+      stats:[{b:'數年',l:'實際在產線運行'},{b:'2 人 3 個月',l:'我這邊投入的建置'}],
+      detail:[
+        {h:'做了什麼', p:'在無塵室的顯示外觀檢查站，我建立了測試軟體團隊與視覺檢測團隊之間的對口與資料管道，把人工目檢換成自動光學檢測。這套有導入、有上線，在產線上實際運行了好幾年。'},{h:'這件事的對口不在我的部門', p:'使用者是量產單位，不是我自己的團隊；另一邊是視覺檢測團隊。兩邊都不歸我管，所以推得動靠的是把問題定義清楚、把資料介面接好，不是靠指派工作。這條跟下面的產線設備自動化一樣，屬於「影響力半徑」那一列，效益也記在產線人力那本帳上，跟部門工時的帳分開。'},
+        {h:'後來為什麼退場', p:'最近兩年顯示面板換代之後，缺陷在影像上的呈現跟過去不一樣，原本的檢出能力就不再滿足要求——不是樣本數不夠，是機台與模型能辨識的缺陷種類跟不上新面板。產線因此退回人工目檢。'},
+        {h:'我從這件事學到的', p:'視覺檢測的能力是綁在「被檢查的東西長什麼樣」上的。產品一改版，模型就過期了。當初導入時沒有把「面板改版就要重訓、重驗」寫進維護計畫，這是我現在回頭看會做不一樣的地方——上線不是終點，要先設計好什麼條件下要重做。'},
+        {h:'為什麼我會主動講這件事', p:'AI 寫的履歷從來不承認事情會退場。一個十一年的職涯一定有做成之後又被時間推翻的東西——講得出來、而且講得清楚是哪一個外部條件變了，比多列一條成就有用。'}
+      ]
+    },
+    {
+      id:'smtline', name:'SMT 線自動化：機器手臂與測試站的橋接', era:'2019 – 2021', eraKey:'e2', role:'arch',
+      roleNote:'我帶的專案；平台層與通訊協定的設計由我拍板',
+      fig:'smt',
+      tracks:['hw','arch','auto','collab'],
+      tech:['Objective-C','Socket 長連線','心跳監看','狀態機','工業控制器','序列埠','插件架構'],
+      tagline:'把「測試軟體」和「會動的機器」接起來：可程式化控制器指揮搬運手臂與治具，我們這一側要在同一個節拍上開關治具、跑測試、回報結果。',
+      stats:[{b:'10 個季度',l:'全部專案裡開發期最長的一條'},{b:'3 層',l:'控制器 → 主控台 → 站台代理'}],
+      detail:[
+        {h:'問題長什麼樣', p:'SMT 線上的無線通訊測試站原本是人送板、人按開始。要做到無人化，搬運手臂、治具的開合、測試軟體三者必須互相知道對方到哪一步了。手臂不能在治具還開著的時候放板，測試軟體也不能在板子還沒定位的時候開始跑。'},
+        {h:'架構：三層，各自只管一件事', p:'最上面是產線的可程式化控制器，它是整線的節拍來源，用文字命令下令；中間是一個主控台程式，負責把命令翻成站台聽得懂的動作、並且盯著所有站台還活著；最下面每個工站一個代理程式，實際去開關治具、啟動測試、把結果送回來。三層之間走 socket 長連線加心跳。'},
+        {h:'為什麼每個命令都是狀態機，不是呼叫', p:'機器動作有物理時間，一個「開治具」可能要好幾秒，中間還可能卡住。所以每一個命令都拆成「待處理 → 進行中 → 完成」三段，每一段都有明確的成功與例外分支，例外一律往上報而不是原地重試。重設、開、關、開始測試、清除結果，每一個都是一張這樣的圖。這樣產線出事的時候，看的是「卡在哪一段」而不是「程式沒有回應」。'},
+        {h:'心跳為什麼是必要的，不是加分項', p:'連線斷掉跟站台當掉在 socket 上長得一模一樣。沒有心跳，控制器會一直等一個永遠不會來的回覆，整線停住而且不知道為什麼。有心跳，主控台可以在幾秒內判定某一站失聯、把那一站從節拍裡拿掉，讓其他站繼續跑。'},
+        {h:'治具那一側', p:'治具是自己的硬體，用微控制器加序列埠溝通，站台代理用插件的方式掛上去——換一種治具就換一個插件，主控與通訊那層不用動。這個切法後來讓同一套東西能接到不只一種站。'},
+        {h:'我的邊界', p:'平台層（通訊協定、心跳、命令狀態機、插件介面）是我拍板並參與寫的；各站別的實際動作與治具驅動是團隊實作的。產線那一側的機構與控制器程式不是我們寫的，我們是跟他們定義介面。'},{h:'這件事的對口不在我的部門', p:'這套是支援量產單位的，使用者是產線，不是我自己的團隊；產線設備那一側還有另一組人。整個專案從頭到尾都在跟沒有隸屬關係的單位對介面、對節拍、對例外處理，做了十個季度。這是「影響力半徑」那一列裡最長的一段。'},
+        {h:'效益我不報數字', p:'這條省下的是產線作業人力，不是部門工程師工時。我不是產線單位，拿不到可驗證的基準，所以我只講做了什麼、不講省了幾個人。'}
+      ]
+    },
+    {
+      id:'team', name:'團隊建設 4 → 22 → 80', era:'2015 – 2026', eraKey:'e2', role:'led',
+      roleNote:'創始四人之一，一路帶到 80 人',
+      tracks:['lead'],
+      tech:['組織設計','跨地點管理','技術養成'],
+      tagline:'0→1 的建置，不是接手一個成熟組織把它維持住。',
+      stats:[{b:'4 → 22 → 80',l:'2015 / 2020 / 2022'},{b:'2',l:'個地點（台灣、上海）'}],
+      detail:[
+        {h:'三個階段', p:'2015 年四個人、一條產品線、一個工站，從零開始做測試軟體實作。2020 年台灣 10 人加上海 12 人共 22 人，六條產品線。2022 年併入其他測試軟體團隊後成為 80 人。'},
+        {h:'ownership 的分界', p:'前五年我自己動手，後五年我 review 團隊的產出。這條線跟升上經理、以及客戶平台到位的時間點是重疊的——我不會把後期團隊寫的程式說成自己寫的。'},
+        {h:'我沒有的權限', p:'我沒有預算、人頭或授權採購的決定權，負責的是技術與交付。這點我會主動說明，因為管理職面試常會問到，含糊反而扣分。'}
+      ]
+    },
+    {
+      id:'quoteskit', name:'Swift 套件（個人作品）', era:'2025', eraKey:'e3', role:'own',
+      roleNote:'下班時間寫的，100% 我自己',
+      tracks:['handson'],
+      tech:['Swift','SPM binary target','WeatherKit','執行緒安全'],
+      tagline:'一個小但完整的 Swift 套件：有測試、有文件，而且原始碼與二進位分成兩個 repo 發布。',
+      stats:[{b:'2',l:'個 repo（原始碼 / 二進位）'},{b:'3',l:'種內容模式'}],
+      detail:[
+        {h:'它做什麼', p:'依手動分類、天氣、或季節提供內容，整合系統的天氣服務自動判斷；內容在二進位裡做了混淆處理，避免直接被抽字串；對多執行緒存取安全。'},
+        {h:'為什麼值得單獨講', p:'重點不在功能，在發布策略——把實作編成二進位框架、另開一個只有套件宣告的 repo 對外提供。那是「怎麼交付一個函式庫」的問題，不是「怎麼寫 Swift」的問題。'},
+        {h:'狀態', p:'準備整理成公開版本並寫一篇技術文章。'}
+      ],
+      links:[{l:'GitHub（整理中）',soon:true}]
+    },
+    {
+      id:'agentops', name:'個人 agent 工作流框架', era:'2026', eraKey:'e3', role:'own',
+      roleNote:'100% 我自己',
+      tracks:['ai','auto','handson'],
+      tech:['shell','排程','事件掛鉤','訊息閘道'],
+      tagline:'把規劃 → 執行 → review → 開 PR → 回報整條編碼工作流寫成確定性的腳本，由 agent 驅動、用訊息遙控。',
+      stats:[{b:'10',l:'支工作流腳本'},{b:'2',l:'個自訂 skill'}],
+      detail:[
+        {h:'跟本業同一個原則', p:'腳本是確定性的，agent 只負責判斷——跟我在 log 診斷工具裡做的是同一件事：程式答得出來的就程式答，模型只做 judgment call。'},
+        {h:'一個值得講的細節', p:'我寫了一個去識別化工具，因為工作用的腳本要分享出去之前，路徑與識別資訊必須先拿掉。對一個要帶著十一年經驗換工作的人來說，這件事有工程層級的做法，不只是口頭承諾。'}
+      ]
+    }
+  ],
+
+  patterns:[
+    {
+      t:'一份共用程式碼，加上薄薄的轉接層',
+      c:'上百個專案共用同一份程式碼；要接哪一代 sequencer，靠上面一層薄轉接。客戶要求遷移期間新舊並存，因為邏輯只有一份，這件事才只需要包兩次介面，而不是在上百個專案裡各做一次。',
+      svg:`<svg viewBox="0 0 440 268" role="img" aria-label="兩代 sequencer 各自對應一層薄轉接，下方共用同一份程式碼與上百個專案"><defs><marker id="arA" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"/></marker></defs><g font-family="IBM Plex Mono, monospace" font-size="11" color="var(--rule)"><rect x="14" y="12" width="180" height="40" rx="3" fill="var(--own-wash)" stroke="var(--own)"/><text x="104" y="31" text-anchor="middle" fill="var(--own)" font-size="11.5">sequencer 第一代</text><text x="104" y="45" text-anchor="middle" fill="var(--own)" font-size="9.5">客戶提供</text><rect x="246" y="12" width="180" height="40" rx="3" fill="var(--own-wash)" stroke="var(--own)"/><text x="336" y="31" text-anchor="middle" fill="var(--own)" font-size="11.5">sequencer 第二代</text><text x="336" y="45" text-anchor="middle" fill="var(--own)" font-size="9.5">客戶更換</text><path d="M104,52 L104,76" stroke="var(--rule)" stroke-width="1.5" fill="none" marker-end="url(#arA)"/><path d="M336,52 L336,76" stroke="var(--rule)" stroke-width="1.5" fill="none" marker-end="url(#arA)"/><rect x="14" y="80" width="180" height="38" rx="3" fill="var(--work-wash)" stroke="var(--work)"/><text x="104" y="104" text-anchor="middle" fill="var(--work)" font-size="11.5">轉接層（舊）</text><rect x="246" y="80" width="180" height="38" rx="3" fill="var(--work-wash)" stroke="var(--work)"/><text x="336" y="104" text-anchor="middle" fill="var(--work)" font-size="11.5">轉接層（新）</text><g color="var(--work)"><path d="M104,118 L104,140 L220,140 L220,158" stroke="var(--work)" stroke-width="1.5" fill="none" marker-end="url(#arA)"/></g><path d="M336,118 L336,140 L220,140" stroke="var(--work)" stroke-width="1.5" fill="none"/><rect x="70" y="162" width="300" height="44" rx="3" fill="var(--surface-2)" stroke="var(--work)" stroke-width="1.5"/><text x="220" y="182" text-anchor="middle" fill="var(--ink)" font-size="11.5">共用程式碼（只有一份）</text><text x="220" y="197" text-anchor="middle" fill="var(--muted)" font-size="9.5">受測物 · 治具 · 流程 · 量測 · 記錄格式</text><path d="M220,206 L220,228" stroke="var(--rule)" stroke-width="1.5" fill="none" marker-end="url(#arA)"/><rect x="100" y="232" width="240" height="30" rx="3" fill="none" stroke="var(--rule)" stroke-dasharray="4 3"/><text x="220" y="252" text-anchor="middle" fill="var(--ink-2)" font-size="11">上百個專案（各留三個檔）</text></g></svg>`,
+      tro:[
+        ['雙軌是誰的主意','客戶的。他們知道換 sequencer 會痛，所以要求遷移期間新舊並存，讓產線分批轉；我們跟他們一起把這個雙軌做出來。我不會把它說成我的架構決策。'],
+        ['我的部分','共用程式碼。因為邏輯只有一份，雙軌才只要包兩次介面。沒有這一份，客戶要的雙軌就等於在上百個專案裡各做一次——做不到。'],
+        ['用完就收','兩套並存了大約一年半。遷移完成後團隊把舊的那套從各專案移除，只有共用程式碼那個 repo 還留著兩套。隔離層不是留著好看的。']
+      ]
+    },
+    {
+      t:'規格是資料，不是程式碼',
+      c:'測試覆蓋規格（測什麼、標準多少）以 CSV／YAML 獨立版控；測試邏輯用腳本語言。規格變動不需要動邏輯，新專案靠繼承與組態落地。',
+      svg:`<svg viewBox="0 0 440 250" role="img" aria-label="共用層提供邏輯，專案層只提供組態、專案邏輯與覆蓋資料三個檔案"><g font-family="IBM Plex Mono, monospace" font-size="11"><rect x="14" y="12" width="412" height="74" rx="3" fill="var(--surface-2)" stroke="var(--work)" stroke-width="1.5"/><text x="28" y="32" fill="var(--ink)" font-size="11.5">共用層</text><text x="28" y="50" fill="var(--muted)" font-size="9.5">受測物通訊 · 治具 · 流程轉換 · 量測 · 錯誤碼 · 記錄格式</text><text x="28" y="66" fill="var(--muted)" font-size="9.5">硬體組態解析 · 外掛載入 · 單位換算</text><text x="412" y="32" text-anchor="end" fill="var(--work)" font-size="9.5">一份，所有專案繼承</text><path d="M120,86 L120,108" stroke="var(--rule)" stroke-width="1.5" fill="none" marker-end="url(#arA)" color="var(--rule)"/><path d="M320,86 L320,108" stroke="var(--rule)" stroke-width="1.5" fill="none" marker-end="url(#arA)" color="var(--rule)"/><rect x="14" y="112" width="200" height="118" rx="3" fill="var(--surface)" stroke="var(--rule)"/><text x="28" y="132" fill="var(--ink-2)" font-size="11">專案 A</text><rect x="28" y="142" width="172" height="22" rx="2" fill="var(--work-wash)"/><text x="38" y="157" fill="var(--work)" font-size="10">站別組態</text><rect x="28" y="168" width="172" height="22" rx="2" fill="var(--work-wash)"/><text x="38" y="183" fill="var(--work)" font-size="10">專案邏輯</text><rect x="28" y="194" width="172" height="22" rx="2" fill="var(--own-wash)"/><text x="38" y="209" fill="var(--own)" font-size="10">覆蓋資料（CSV）</text><rect x="226" y="112" width="200" height="118" rx="3" fill="var(--surface)" stroke="var(--rule)"/><text x="240" y="132" fill="var(--ink-2)" font-size="11">專案 B</text><rect x="240" y="142" width="172" height="22" rx="2" fill="var(--work-wash)"/><text x="250" y="157" fill="var(--work)" font-size="10">站別組態</text><rect x="240" y="168" width="172" height="22" rx="2" fill="var(--work-wash)"/><text x="250" y="183" fill="var(--work)" font-size="10">專案邏輯</text><rect x="240" y="194" width="172" height="22" rx="2" fill="var(--own-wash)"/><text x="250" y="209" fill="var(--own)" font-size="10">覆蓋資料（CSV）</text></g></svg>`,
+      tro:[
+        ['結果','最精簡的新專案落地只需要三個內容檔：站別組態、專案邏輯、覆蓋資料。其餘全部繼承。'],
+        ['誠實的但書','不是每個專案都這麼小。有些機種光覆蓋資料就一百多個檔——那是規格本身龐大，不是複製貼上。'],
+        ['怎麼守住','強制審查人讓共用層的改動一定經過我的團隊；靜態檢查與 CI 讓不合規的提交進不了。但真正有效的是共用層必須好用。']
+      ]
+    },
+    {
+      t:'把專家判斷變成模型能執行的資料',
+      c:'八年的失效分析經驗在幾個資深工程師腦子裡。我把它寫成結構化的方法論文件——六個標籤區段，每段對應執行流程的一個階段。判斷由程式做，解讀才交給模型。',
+      svg:`<svg viewBox="0 0 440 300" role="img" aria-label="方法論文件的六個區段分別驅動載入、比對、蒐集、產出四個階段，只有標記需要模型的失效類型才走模型"><g font-family="IBM Plex Mono, monospace" font-size="11"><rect x="14" y="10" width="150" height="180" rx="3" fill="var(--surface-2)" stroke="var(--work)" stroke-width="1.5"/><text x="28" y="30" fill="var(--ink)" font-size="11.5">方法論文件</text><text x="28" y="45" fill="var(--muted)" font-size="9">資深工程師維護</text><g font-size="10" fill="var(--work)"><text x="28" y="68">@meta</text><text x="28" y="88">@match</text><text x="28" y="108">@gather</text><text x="28" y="128">@output</text><text x="28" y="148">@analysis</text><text x="28" y="168">@example</text></g><g color="var(--rule)"><path d="M164,62 L214,62" stroke="var(--rule)" stroke-width="1.2" fill="none" marker-end="url(#arA)"/><path d="M164,82 L214,82" stroke="var(--rule)" stroke-width="1.2" fill="none" marker-end="url(#arA)"/><path d="M164,102 L214,102" stroke="var(--rule)" stroke-width="1.2" fill="none" marker-end="url(#arA)"/><path d="M164,122 L214,122" stroke="var(--rule)" stroke-width="1.2" fill="none" marker-end="url(#arA)"/></g><rect x="218" y="50" width="208" height="24" rx="2" fill="var(--surface)" stroke="var(--rule)"/><text x="228" y="66" fill="var(--ink-2)" font-size="10">載入：解析文件成可執行結構</text><rect x="218" y="80" width="208" height="24" rx="2" fill="var(--surface)" stroke="var(--rule)"/><text x="228" y="96" fill="var(--ink-2)" font-size="10">比對：這筆失效是哪一型（確定性）</text><rect x="218" y="110" width="208" height="24" rx="2" fill="var(--surface)" stroke="var(--rule)"/><text x="228" y="126" fill="var(--ink-2)" font-size="10">蒐集：按清單從各來源抽資料</text><rect x="218" y="140" width="208" height="24" rx="2" fill="var(--surface)" stroke="var(--rule)"/><text x="228" y="156" fill="var(--ink-2)" font-size="10">產出：填模板生成報告</text><path d="M322,164 L322,188" stroke="var(--rule)" stroke-width="1.2" fill="none" marker-end="url(#arA)" color="var(--rule)"/><rect x="230" y="192" width="184" height="46" rx="3" fill="var(--own-wash)" stroke="var(--own)" stroke-dasharray="4 3"/><text x="322" y="211" text-anchor="middle" fill="var(--own)" font-size="10.5">選配：本地模型解讀</text><text x="322" y="227" text-anchor="middle" fill="var(--own)" font-size="9">只有標記需要模型的類型才走</text><rect x="60" y="248" width="320" height="40" rx="3" fill="none" stroke="var(--work)" stroke-width="1.2"/><text x="220" y="265" text-anchor="middle" fill="var(--ink)" font-size="10.5">同一筆 log，永遠判成同一型</text><text x="220" y="280" text-anchor="middle" fill="var(--muted)" font-size="9">判斷依據寫在文件裡，查得到</text></g></svg>`,
+      tro:[
+        ['關鍵是那個旗標','「需不需要模型」是寫在資料裡的欄位，不是程式裡的 if。數值超規格用一個比較式就判得出來——那類完全不碰模型。'],
+        ['誰寫這些文件','資深失效分析工程師寫初稿，用他自己習慣的方式；AI 工具再轉成六個區段。我沒有要求專家學我的格式——要求他學，他會寫一次就不寫第二次。門檻由工具吃掉。'],
+        ['代價','自訂格式就要自己養解析器，而且沒有 schema 驗證——寫錯欄位名要跑起來才知道。跟我十年前做自有腳本語言時同一個坑。']
+      ]
+    }
+  ],
+
+  strata:[
+    {no:'01', name:'自建引擎', yrs:'2015 – 2019', parts:[{c:'mine',f:100,t:'執行引擎 · 腳本語言 · 儀器抽象 · 產線 UI'}]},
+    {no:'02', name:'平台工具箱，排程仍自建', yrs:'2018 – 2020', parts:[{c:'mine',f:62,t:'測試計畫的格式 · 覆蓋載入 · 判定'},{c:'theirs',f:38,t:'執行環境 · 語言 · GUI'}]},
+    {no:'03', name:'官方 sequencer 登場', yrs:'2020 試作 · 2021 正式 – 2023', parts:[{c:'mine',f:30,t:'共用程式碼 · 轉接層'},{c:'theirs',f:70,t:'sequencer · 排程 · 判定 · 記錄格式'}]},
+    {no:'04', name:'sequencer 再換一次', yrs:'2023 – 2026', parts:[{c:'mine',f:16,t:'共用程式碼 · 轉接層'},{c:'theirs',f:84,t:'平台決定幾乎全部'}]}
+  ]
+};
+
+const PUBLIC_LINKS = {
+  _site:[
+    {l:'LinkedIn', h:'https://www.linkedin.com/in/chenghan-tsai'}
+  ]
+};
+
+/* ---------------------------------------------------------------- render */
+const $ = s => document.querySelector(s);
+const el = (t,c,h) => { const n=document.createElement(t); if(c)n.className=c; if(h!=null)n.innerHTML=h; return n; };
+const esc = s => String(s).replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+
+let MODE = 'pub';
+
+const sel = {track:new Set(), role:new Set(), era:new Set()};
+let openId = null;
+
+function itemName(it){
+  
+  return it.name;
+}
+
+function renderContact(){
+  const c=DATA.contact;
+  const rows=$('#st-rows'); rows.innerHTML='';
+  c.rows.forEach(([k,v])=>rows.append(el('div','st-item','<b>'+esc(k)+'</b>'+esc(v))));
+  const cta=$('#st-cta'); cta.innerHTML='';
+  const chip=(cls,href,ico,label)=>'<a class="cta'+cls+'" href="'+esc(href)+'"'+(href.startsWith('mailto:')?'':' target="_blank" rel="noopener"')+'><span class="ico">'+ico+'</span>'+esc(label)+'</a>';
+  let h = chip(' primary','mailto:'+c.email,'\u2709',c.emailLabel)
+        + chip('',c.linkedin,'in',c.linkedinLabel);
+  if(c.resume) h += chip('',c.resume,'\u2913',c.resumeLabel);
+  cta.innerHTML=h;
+}
+
+function renderTiles(){
+  const box=$('#tiles'); box.innerHTML='';
+  DATA.tiles.forEach(t=>{
+    const d=el('div','tile');
+    d.append(el('div','n',esc(t.n)), el('div','l',esc(t.l)), el('div','s',esc(t.s)));
+    box.append(d);
+  });
+}
+
+function renderGantt(){
+  const g=$('#gantt'); g.innerHTML='';
+  const span=Y1-Y0+1;
+  g.append(el('div','',''));
+  const yrs=el('div','gyears');
+  for(let y=Y0;y<=Y1;y++) yrs.append(el('span','',String(y).slice(2)));
+  g.append(yrs);
+
+  DATA.tracks.forEach(tr=>{
+    const b=el('button','grow-l','<span>'+esc(tr.name)+'</span><small>'+esc(tr.sub)+'</small>');
+    b.type='button';
+    b.setAttribute('aria-pressed', sel.track.has(tr.id)?'true':'false');
+    b.onclick=()=>{ sel.track.has(tr.id)?sel.track.delete(tr.id):sel.track.add(tr.id); openId=null; renderGantt(); renderFilters(); renderGrid(); $('#grid').scrollIntoView({behavior:'smooth',block:'start'}); };
+    g.append(b);
+
+    // lane packing: a span goes in the first lane where it doesn't overlap
+    const lanes=[];
+    const placed=tr.spans.map(sp=>{
+      const [a,z]=sp;
+      let li=lanes.findIndex(l=>l.every(([x,y])=>z<x||a>y));
+      if(li<0){ lanes.push([]); li=lanes.length-1; }
+      lanes[li].push([a,z]);
+      return {sp, lane:li};
+    });
+    const LH=18, GAP=3;
+    const track=el('div','gtrack');
+    track.style.height=(lanes.length*LH + (lanes.length-1)*GAP)+'px';
+    placed.forEach(({sp,lane})=>{
+      const [a,z,kind,label]=sp;
+      const left=((a-Y0)/span)*100, width=((z-a+1)/span)*100;
+      const cls='gbar '+(kind==='own'?'own':'work')+(kind==='work-faint'?' faint':'');
+      const bar=el('div',cls,esc(label||''));
+      bar.style.left=left+'%'; bar.style.width=width+'%';
+      bar.style.top=(lane*(LH+GAP))+'px';
+      bar.style.height=LH+'px';
+      bar.title=tr.name+'：'+a+'–'+z+(label?'（'+label+'）':'');
+      track.append(bar);
+    });
+    g.append(track);
+  });
+
+  $('#ghint').textContent = sel.track.size
+    ? '已篩選：'+[...sel.track].map(id=>DATA.tracks.find(t=>t.id===id).name).join('、')+'。再點一次可取消。'
+    : '2017–2019 與 2022–2024 那兩段淡色，是我以帶團隊與架構決策為主、只有零星提交的時期——這條線是誠實的，不是每一年都在寫程式。';
+}
+
+function renderFilters(){
+  const box=$('#filters'); box.innerHTML='';
+  const groups=[
+    {key:'role', label:'角色', opts:Object.entries(DATA.roles)},
+    {key:'track',label:'能力', opts:DATA.tracks.map(t=>[t.id,t.name])},
+    {key:'era',  label:'年代', opts:Object.entries(DATA.eras)}
+  ];
+  groups.forEach(gr=>{
+    const row=el('div','frow');
+    row.append(el('span','flabel',gr.label));
+    gr.opts.forEach(([v,lab])=>{
+      const c=el('button','chip',esc(lab)); c.type='button';
+      c.setAttribute('aria-pressed', sel[gr.key].has(v)?'true':'false');
+      c.onclick=()=>{ sel[gr.key].has(v)?sel[gr.key].delete(v):sel[gr.key].add(v); openId=null; renderFilters(); renderGrid(); if(gr.key==='track') renderGantt(); };
+      row.append(c);
+    });
+    box.append(row);
+  });
+  const n=visible().length;
+  const foot=el('div','frow');
+  foot.append(el('span','fmeta', n+' / '+DATA.items.length+' 個作品'));
+  if(sel.role.size||sel.track.size||sel.era.size){
+    const b=el('button','fclear','清除篩選'); b.type='button';
+    b.onclick=()=>{ sel.role.clear(); sel.track.clear(); sel.era.clear(); openId=null; renderFilters(); renderGrid(); renderGantt(); };
+    foot.append(b);
+  }
+  box.append(foot);
+}
+
+function visible(){
+  return DATA.items.filter(it=>
+    (!sel.role.size || sel.role.has(it.role)) &&
+    (!sel.era.size  || sel.era.has(it.eraKey)) &&
+    (!sel.track.size|| it.tracks.some(t=>sel.track.has(t)))
+  );
+}
+
+function renderGrid(){
+  const grid=$('#grid'); grid.innerHTML='';
+  const items=visible();
+  if(!items.length){ grid.append(el('p','',  '<span style="color:var(--muted)">沒有符合的作品，換個條件試試。</span>')); return; }
+  items.forEach(it=>{
+    const card=el('div','card'+(openId===it.id?' open':''));
+    const head=el('button','chead'); head.type='button';
+    head.setAttribute('aria-expanded', openId===it.id?'true':'false');
+    const top=el('div','ctop');
+    top.append(el('h3','',esc(itemName(it))), el('span','cera',esc(it.era)));
+    head.append(top);
+    head.append(el('span','crole '+(it.role==='built'?'built':it.role==='arch'?'arch':it.role==='own'?'own':'led'), esc(DATA.roles[it.role])+' · '+esc(it.roleNote)));
+    head.append(el('p','ctag',esc(it.tagline)));
+    if(it.stats && it.stats.length){
+      const st=el('div','cstats');
+      it.stats.forEach(s=>st.append(el('div','','<b>'+esc(s.b)+'</b>'+esc(s.l))));
+      head.append(st);
+    }
+    const tc=el('div','ctech');
+    it.tech.forEach(t=>tc.append(el('span','',esc(t))));
+    head.append(tc);
+    head.append(el('div','cmore', openId===it.id?'▾ 收合':'▸ 展開細節與連結'));
+    head.onclick=()=>{ openId = openId===it.id ? null : it.id; renderGrid(); };
+    card.append(head);
+
+    if(openId===it.id){
+      const body=el('div','cbody');
+      if(it.fig && FIGS[it.fig]){
+        const f=el('div','cfig', FIGS[it.fig]());
+        body.append(f);
+      }
+      it.detail.forEach(d=>{
+        const b=el('div','dec');
+        b.append(el('h4','',esc(d.h)), el('p','',esc(d.p)));
+        body.append(b);
+      });
+      if(it.flaw){
+        const f=el('div','dec flawmark');
+        f.append(el('h4','','我做壞的地方'), el('p','',esc(it.flaw)));
+        body.append(f);
+      }
+      
+      const links=[];
+      (it.links||[]).forEach(l=>links.push(l.soon
+        ? '<span class="lnk soon"><span class="ico">○</span>'+esc(l.l)+'</span>'
+        : '<a class="lnk" href="'+esc(l.h)+'" target="_blank" rel="noopener"><span class="ico">↗</span>'+esc(l.l)+'</a>'));
+      
+      if(links.length){
+        const lw=el('div','');
+        lw.append(el('h4','','連結'));
+        lw.append(el('div','links',links.join('')));
+        body.append(lw);
+      }
+      card.append(body);
+    }
+    grid.append(card);
+  });
+}
+
+function renderPats(){
+  const box=$('#pats'); box.innerHTML='';
+  DATA.patterns.forEach((p,i)=>{
+    const f=el('div','fig');
+    f.append(el('div','eyebrow','模式 '+String.fromCharCode(65+i)));
+    f.append(el('h3','',esc(p.t)));
+    f.append(el('p','cap',esc(p.c)));
+    f.insertAdjacentHTML('beforeend', p.svg);
+    const t=el('div','tro');
+    p.tro.forEach(([h,b])=>t.append(el('div','','<b>'+esc(h)+'</b>'+esc(b))));
+    f.append(t);
+    box.append(f);
+  });
+}
+
+let openTool = null;
+function renderTools(){
+  const full = false;
+  const tb=$('#tooltiles'); tb.innerHTML='';
+  DATA.toolTiles.forEach(t=>{
+    const d=el('div','tile');
+    d.append(el('div','n',esc(t.n)), el('div','l',esc(t.l)), el('div','s',esc(t.s)));
+    tb.append(d);
+  });
+  
+
+  const box=$('#pareto'); box.innerHTML='';
+  const max = DATA.tools[0].share;
+  DATA.tools.forEach((t,i)=>{
+    const v = t.share;
+    const name = t.f;
+    const genTag = t.gen ? '<span class="pgen">同一條產品線</span>' : '';
+    const b=el('button','pbtn',genTag+esc(name)); b.type='button';
+    b.setAttribute('aria-expanded', openTool===t.id?'true':'false');
+    b.onclick=()=>{ openTool = openTool===t.id?null:t.id; renderTools(); };
+    box.append(b);
+    const tr=el('div','ptrack');
+    const fl=el('div','pfill '+(t.dept==='out'?'out':t.dept==='both'?'both':'in'));
+    fl.style.width=Math.max(1.5,(v/max)*100)+'%';
+    tr.append(fl); box.append(tr);
+    box.append(el('div','pval', t.share.toFixed(1)+'%'));
+
+    if(openTool===t.id){
+      const d=el('div','pdet');
+      d.append(el('div','','<b>服務對象</b>'+(t.dept==='out'?'其他部門':t.dept==='both'?'本部門起家，後來推廣到其他單位':'本部門')));
+      d.append(el('div','','<b>作業時間改善</b>'+t.imp+'%'+(t.q?('　·　開發 '+t.q+' 個季度'):'')));
+      d.append(el('div','','<b>佔總效益</b>'+t.share.toFixed(1)+'%'));
+      
+      box.append(d);
+      if(t.note){
+        box.append(el('div','pnote','<b>'+esc(t.noteH||'補充')+'</b>'+esc(t.note)));
+      }
+    }
+    if(i===9){
+      const c=el('div','pcut','<span>前 10 個 · 87%　｜　以下 14 個合計 13%</span>');
+      box.append(c);
+    }
+  });
+  $('#punit').textContent = '長條長度＝佔總效益比例';
+
+  const ls=$('#lessons'); ls.innerHTML='';
+  DATA.toolLessons.forEach(l=>{
+    const d=el('div','lesson');
+    d.append(el('h4','',esc(l.h)), el('p','',esc(l.p)));
+    ls.append(d);
+  });
+  
+}
+
+// 以「一個 CJK 字＝1，一個 ASCII 詞不可切斷」的規則斷行
+function wrapCJK(str, budget){
+  const toks=str.match(/[A-Za-z0-9_.+×-]+|\s+|[^\s]/g)||[str];
+  const lines=[]; let cur='', w=0;
+  const width=t=>/^[A-Za-z0-9_.+×-]+$/.test(t)?t.length*0.62:(/^\s+$/.test(t)?0.5:1);
+  toks.forEach(t=>{
+    const tw=width(t);
+    if(w+tw>budget && cur.trim()){ lines.push(cur); cur=/^\s+$/.test(t)?'':t; w=/^\s+$/.test(t)?0:tw; }
+    else { cur+=t; w+=tw; }
+  });
+  if(cur.trim()) lines.push(cur);
+  return lines.length?lines:[str];
+}
+
+/* ── 卡片內嵌示意圖 ────────────────────────────────── */
+const FIGS = {
+  smt(){
+    const W=820, H=294;
+    const box=(x,y,w,h,kind)=>{
+      const f = kind==='us' ? 'var(--work)' : kind==='ext' ? 'var(--surface-3)' : 'var(--surface-2)';
+      const s = kind==='us' ? 'var(--work)' : kind==='ext' ? 'var(--rule)' : 'var(--own)';
+      const d = kind==='ext' ? ' stroke-dasharray="4 3"' : '';
+      return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="4" fill="${f}" stroke="${s}" stroke-width="1.4"${d}/>`;
+    };
+    const lab=(x,y,t,kind,sz)=>{
+      const c = kind==='us' ? 'var(--on-work)' : kind==='ext' ? 'var(--ink-2)' : 'var(--ink)';
+      return `<text x="${x}" y="${y}" text-anchor="middle" fill="${c}" font-size="${sz||12}" font-family="Archivo, PingFang TC, Noto Sans TC, sans-serif">${t}</text>`;
+    };
+    const sub=(x,y,t)=>`<text x="${x}" y="${y}" text-anchor="middle" fill="var(--muted)" font-size="10" font-family="IBM Plex Mono, PingFang TC, monospace">${t}</text>`;
+    const arrow=(x1,y1,x2,y2,txt,ty)=>{
+      let s=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="var(--rule)" stroke-width="1.4" marker-end="url(#fa)"/>`;
+      if(txt) s+=`<text x="${(x1+x2)/2}" y="${ty!==undefined?ty:y1-7}" text-anchor="middle" fill="var(--muted)" font-size="9.5" font-family="IBM Plex Mono, PingFang TC, monospace">${txt}</text>`;
+      return s;
+    };
+    let g='';
+    g+=`<defs><marker id="fa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--rule)"/></marker></defs>`;
+
+    // 上排：四層
+    const ys=30, bh=56;
+    g+=box(8,ys,150,bh,'ext')     + lab(83,ys+24,'產線可程式化控制器','ext') + sub(83,ys+40,'整線節拍來源');
+    g+=box(228,ys,150,bh,'us')    + lab(303,ys+24,'主控台','us')             + `<text x="303" y="${ys+40}" text-anchor="middle" fill="var(--on-work)" font-size="10" font-family="IBM Plex Mono, PingFang TC, monospace" opacity=".85">命令翻譯 · 心跳監看</text>`;
+    g+=box(448,ys,150,bh,'us')    + lab(523,ys+24,'站台代理 ×N','us')        + `<text x="523" y="${ys+40}" text-anchor="middle" fill="var(--on-work)" font-size="10" font-family="IBM Plex Mono, PingFang TC, monospace" opacity=".85">執行 · 回報</text>`;
+    g+=box(668,ys,144,26,'ours')  + lab(740,ys+18,'治具插件','ours',11.5);
+    g+=box(668,ys+32,144,24,'ext')+ lab(740,ys+48,'搬運機器手臂','ext',11.5);
+
+    g+=arrow(160,ys+28,226,ys+28,'文字命令',ys-8);
+    g+=arrow(380,ys+28,446,ys+28,'socket + 心跳',ys-8);
+    g+=arrow(600,ys+28,666,ys+28,'序列埠 · 微控制器',ys-8);
+
+    // 回報箭頭
+    g+=`<path d="M523,${ys+bh} L523,${ys+bh+16} L303,${ys+bh+16} L303,${ys+bh}" fill="none" stroke="var(--own)" stroke-width="1.3" stroke-dasharray="3 3" marker-end="url(#fa)"/>`;
+    g+=`<text x="413" y="${ys+bh+29}" text-anchor="middle" fill="var(--own)" font-size="9.5" font-family="IBM Plex Mono, PingFang TC, monospace">狀態回報 · 例外上報</text>`;
+
+    // 分隔
+    g+=`<line x1="8" y1="150" x2="812" y2="150" stroke="var(--rule-soft)" stroke-width="1"/>`;
+    g+=`<text x="8" y="171" fill="var(--muted)" font-size="10" font-family="IBM Plex Mono, PingFang TC, monospace" letter-spacing=".06em">每一個命令都是一張狀態機，不是一次呼叫</text>`;
+
+    // 下排：狀態機
+    const y2=188, sw=132, sh=42, gap=44;
+    const names=['命令進來','待處理','進行中','完成'];
+    const subs=['控制器下令','主控台判定','站台代理執行','回報控制器'];
+    names.forEach((n,i)=>{
+      const x=20+i*(sw+gap);
+      g+=box(x,y2,sw,sh,i===0?'ext':'ours') + lab(x+sw/2,y2+20,n,i===0?'ext':'ours',12) + sub(x+sw/2,y2+34,subs[i]);
+      if(i<3) g+=arrow(x+sw,y2+21,x+sw+gap-4,y2+21);
+    });
+    // 例外分支
+    [1,2,3].forEach(i=>{
+      const x=20+i*(sw+gap)+sw/2;
+      g+=`<line x1="${x}" y1="${y2+sh}" x2="${x}" y2="${y2+sh+22}" stroke="var(--danger)" stroke-width="1.2" stroke-dasharray="3 3" marker-end="url(#fa)"/>`;
+    });
+    g+=box(232,y2+sh+22,352,26,'ours').replace('var(--own)','var(--danger)');
+    g+=`<text x="408" y="${y2+sh+39}" text-anchor="middle" fill="var(--danger)" font-size="11" font-family="Archivo, PingFang TC, Noto Sans TC, sans-serif">例外訊息 —— 一律往上報，不原地重試</text>`;
+    g+=`<text x="648" y="${y2+sh+16}" fill="var(--muted)" font-size="9.5" font-family="IBM Plex Mono, PingFang TC, monospace">任一段判定失敗</text>`;
+
+    return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="SMT 線自動化架構：控制器、主控台、站台代理、治具與機器手臂四層，以及命令狀態機">${g}</svg>`
+      + `<div class="fcap">實作了五組這樣的命令：重設 · 開 · 關 · 開始測試 · 清除結果</div>`;
+  }
+};
+
+function renderStacks(){
+  const COL=228, GAP=20, X0=8, LH=38, LG=5, HEADH=46;
+  const maxN=Math.max(...DATA.stacks.map(s=>s.layers.length));
+  const W=X0*2+COL*4+GAP*3, H=HEADH+maxN*(LH+LG)+8;
+  const fill={us:'var(--work)',cust:'var(--own-wash)',both:'var(--own)',os:'var(--surface-3)'};
+  const stroke={us:'var(--work)',cust:'var(--own)',both:'var(--own)',os:'var(--rule)'};
+  const txt={us:'var(--on-work)',cust:'var(--own)',both:'var(--on-work)',os:'var(--ink-2)'};
+  let o='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="四個世代的軟體堆疊並排，深色是我們寫的層，淺色是客戶平台的層；我們負責的層數一代比一代少">';
+  o+='<g font-family="IBM Plex Mono, monospace">';
+  DATA.stacks.forEach((st,i)=>{
+    const x=X0+i*(COL+GAP);
+    o+='<text x="'+x+'" y="14" font-size="10" fill="var(--muted)">世代 '+st.g+'　'+st.yrs+'</text>';
+    o+='<text x="'+x+'" y="31" font-size="12.5" font-weight="600" fill="var(--ink)">'+st.name+'</text>';
+    st.layers.forEach((L,j)=>{
+      const y=HEADH+j*(LH+LG);
+      const op = L.own==='both' ? ' stroke-dasharray="5 3" stroke-width="1.5"' : '';
+      o+='<rect x="'+x+'" y="'+y+'" width="'+COL+'" height="'+LH+'" rx="3" fill="'+fill[L.own]+'" stroke="'+stroke[L.own]+'" stroke-width="1"'+op+'/>';
+      const lines=wrapCJK(L.t, 19);
+      if(lines.length>1){
+        o+='<text x="'+(x+9)+'" y="'+(y+16)+'" font-size="10.5" fill="'+txt[L.own]+'">'+esc(lines[0])+'</text>';
+        o+='<text x="'+(x+9)+'" y="'+(y+29)+'" font-size="10.5" fill="'+txt[L.own]+'">'+esc(lines.slice(1).join(''))+'</text>';
+      } else {
+        o+='<text x="'+(x+9)+'" y="'+(y+23)+'" font-size="10.5" fill="'+txt[L.own]+'">'+esc(lines[0])+'</text>';
+      }
+    });
+  });
+  o+='</g></svg>';
+  $('#stack4').innerHTML=o;
+
+  const n=$('#stacknote'); n.innerHTML='';
+  DATA.stackNotes.forEach(([h,b])=>n.append(el('div','','<b>'+esc(h)+'</b>'+esc(b))));
+  
+
+  // dependency ladder
+  const DW=560, RH=46, RG=10, PAD=10;
+  const dh=PAD*2+DATA.dep.length*(RH+RG)-RG;
+  let d2='<svg viewBox="0 0 '+DW+' '+dh+'" role="img" aria-label="依賴鏈：機種 overlay 依賴家族共用件，家族依賴技術別共用件，技術別依賴共用程式碼，共用程式碼接到轉接層與外掛">';
+  d2+='<defs><marker id="arD" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="var(--rule)"/></marker></defs>';
+  d2+='<g font-family="IBM Plex Mono, monospace">';
+  DATA.dep.forEach((r,i)=>{
+    const y=PAD+i*(RH+RG);
+    const inset=i*16, w=DW-40-inset*2, x=20+inset;
+    const last=i===DATA.dep.length-1;
+    d2+='<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+RH+'" rx="3" fill="'+(last?'var(--own-wash)':'var(--work-wash)')+'" stroke="'+(last?'var(--own)':'var(--work)')+'"/>';
+    d2+='<text x="'+(x+12)+'" y="'+(y+19)+'" font-size="11.5" fill="'+(last?'var(--own)':'var(--work)')+'" font-weight="600">'+esc(r.t)+'</text>';
+    d2+='<text x="'+(x+12)+'" y="'+(y+34)+'" font-size="9.5" fill="var(--muted)">'+esc(r.s)+'</text>';
+    if(r.n) d2+='<text x="'+(x+w-12)+'" y="'+(y+19)+'" font-size="10" text-anchor="end" fill="var(--ink-2)">'+esc(r.n)+'</text>';
+    if(!last){
+      const cx=DW/2, y1=y+RH, y2=y+RH+RG;
+      d2+='<path d="M'+cx+','+y1+' L'+cx+','+y2+'" stroke="var(--rule)" stroke-width="1.5" marker-end="url(#arD)"/>';
+      d2+='<text x="'+(cx+10)+'" y="'+(y1+9)+'" font-size="8.5" fill="var(--muted)">依賴</text>';
+    }
+  });
+  d2+='</g></svg>';
+  $('#stackdep').innerHTML=d2;
+  const dn=$('#depnote'); dn.innerHTML='';
+  DATA.depNotes.forEach(([h,b])=>dn.append(el('div','','<b>'+esc(h)+'</b>'+esc(b))));
+  
+}
+
+function renderStrata(){
+  const box=$('#strata'); box.innerHTML='';
+  DATA.strata.forEach(s=>{
+    const row=el('div','stratum');
+    const l=el('div','');
+    l.append(el('div','gn','世代 '+esc(s.no)), el('div','gname',esc(s.name)), el('div','gy',esc(s.yrs)));
+    row.append(l);
+    const bar=el('div','bar');
+    s.parts.forEach(p=>{
+      const sp=el('span',p.c,esc(p.t));
+      sp.style.flex=p.f+' 1 0';
+      bar.append(sp);
+    });
+    row.append(bar);
+    box.append(row);
+  });
+}
+
+function renderFooter(){
+  const links=PUBLIC_LINKS._site.map(l=>'<a class="lnk" href="'+esc(l.h)+'" target="_blank" rel="noopener"><span class="ico">↗</span>'+esc(l.l)+'</a>').join(' ');
+  $('#foot').innerHTML='<div class="links" style="margin-bottom:14px">'+links+'</div>'
+    + ('蔡政翰 ChengHan Tsai · 技術檔案 · 2026');
+}
+
+function renderAll(){ renderContact(); renderTiles(); renderGantt(); renderFilters(); renderGrid(); renderTools(); renderStacks(); renderPats(); renderStrata(); renderFooter(); }
+
+function setMode(m){
+  MODE=m;
+  $('#m-pub')?.setAttribute('aria-pressed', m==='pub'?'true':'false');
+  $('#m-full')?.setAttribute('aria-pressed', m==='full'?'true':'false');
+  try{ localStorage.setItem('hk-mode',m); }catch(e){}
+  renderAll();
+}
+
+  renderAll();
+
+</script>

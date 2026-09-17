@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+# 保密防線：任何一條命中就讓 commit 失敗。
+# 這道 hook 存在的理由是「人會忘記執行檢查，hook 不會」。
+# 安裝：git config core.hooksPath .githooks
+
+set -u
+RED=$'\033[31m'; YEL=$'\033[33m'; NC=$'\033[0m'
+fail=0
+
+# ── 1. 檔案層級：不該存在的檔案 ─────────────────────────
+staged=$(git diff --cached --name-only --diff-filter=ACM)
+while IFS= read -r f; do
+  [ -z "$f" ] && continue
+  case "$f" in
+    *_內部.html|*Internal*|*internal*|_source/*|build.py|portfolio_zh.html|portfolio_en.html|og_zh.html|og_en.html)
+      echo "${RED}[擋下] 這個檔案不該進公開 repo：${NC} $f"; fail=1 ;;
+  esac
+done <<< "$staged"
+
+# ── 2. 內容層級：禁用詞 ─────────────────────────────────
+# 客戶與平台代號、內部專案與工具真名、人名帳號、絕對數字、內部路徑與連結
+PATTERN='PRIVATE|HAS_PRIVATE|內部 ·|Internal ·|絕不出口|never leaves the building'
+PATTERN="$PATTERN"'|Matchbox|MatchBox|Schooner|Atlas|Rush|Hyperion|Frogger|Mink|Morocco|StreamLite'
+PATTERN="$PATTERN"'|QTestStudio|QTOverlay|QTAgent|QTPrin|QTApe|QTCam|QTTester|QTDepository'
+PATTERN="$PATTERN"'|WiPAS|OverWatch|iqcSnCheck|ReportEase|Report Ease|AutoRadar|LogPorter|LogSight|SMTLogViewer'
+PATTERN="$PATTERN"'|CommonModules|SkillRCAEngine|SkillDataGatherer|Q-Script|Atlas2Sequence|beryl|sapphire'
+PATTERN="$PATTERN"'|legacy-internal|work-apple|ATmega|ORSSerialPort|libmodbus|HWTE|CMSW|QBR'
+PATTERN="$PATTERN"'|110\.1|155\.6|18\.35|RMB|1,089|1,693|2,068|3,252|1,685'
+PATTERN="$PATTERN"'|ellenlin|hank_tsai|schumi|stevenxie|Quanta|廣達'
+PATTERN="$PATTERN"'|rdar://|adir://|/AppleInternal/|quantatw'
+PATTERN="$PATTERN"'|\bJ[0-9]{3}\b|MainTable|luacheckrc|CODEOWNERS'
+
+while IFS= read -r f; do
+  [ -z "$f" ] && continue
+  [ -f "$f" ] || continue
+  # 這道 hook 自己跟 .gitignore 一定含禁用詞（那是它們的工作），跳過內容掃描。
+  # 它們仍受上面的檔案層級檢查管轄，而且不是會被發布出去的內容。
+  case "$f" in .githooks/*|.gitignore) continue ;; esac
+  # 只掃文字檔
+  file "$f" | grep -qiE 'text|ASCII|UTF-8|HTML' || continue
+  # -apple-system 與刻意公開的聯絡方式先扣掉，否則會誤判自己
+  hits=$(git show ":$f" 2>/dev/null \
+         | sed -e 's/-apple-system//g' -e 's/tsai\.schumi@gmail\.com//g' -e 's/chenghan-tsai//g' \
+         | grep -nEo "$PATTERN" | sort -u)
+  if [ -n "$hits" ]; then
+    echo "${RED}[擋下] $f 含禁用詞：${NC}"
+    echo "$hits" | sed 's/^/        /'
+    fail=1
+  fi
+done <<< "$staged"
+
+if [ "$fail" -ne 0 ]; then
+  cat <<'MSG'
+
+──────────────────────────────────────────────────────────
+commit 已中止。
+
+這是公開 repo —— 東西一旦進了 git 歷史就刪不掉，
+之後刪檔案也救不回來（GitHub 會保留、爬蟲會存檔）。
+
+正確做法：把那個檔案拿出去，不要改 hook。
+真的誤判時才用 git commit --no-verify，而且要先看懂命中的是哪一條。
+──────────────────────────────────────────────────────────
+MSG
+  exit 1
+fi
+
+echo "${YEL}保密檢查通過${NC}（$(echo "$staged" | grep -c . ) 個檔案）"
+exit 0

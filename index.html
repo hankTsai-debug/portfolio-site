@@ -1,0 +1,1287 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Grew a manufacturing test software team from 4 to 80 while still writing Swift and on-device LLM code myself. Eleven years, six product lines, 100+ test stations.">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="ChengHan Tsai">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="ChengHan Tsai — Technical Portfolio">
+<meta property="og:description" content="Grew a manufacturing test software team from 4 to 80 while still writing Swift and on-device LLM code myself. Eleven years, six product lines, 100+ test stations.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ChengHan Tsai — Technical Portfolio">
+<meta name="twitter:description" content="Grew a manufacturing test software team from 4 to 80 while still writing Swift and on-device LLM code myself. Eleven years, six product lines, 100+ test stations.">
+<title>ChengHan Tsai — Technical Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --ground:#EDF0F1; --surface:#FFFFFF; --surface-2:#F5F7F8; --surface-3:#E9EEF0;
+    --ink:#131A1F; --ink-2:#3B4A54; --muted:#66787F;
+    --rule:#C8D2D6; --rule-soft:#DEE5E8;
+    --work:#0F6693; --work-wash:rgba(15,102,147,.11);
+    --own:#A5651A;  --own-wash:rgba(165,101,26,.13);
+    --danger:#A5372B; --danger-wash:rgba(165,55,43,.09);
+    --on-work:#FFFFFF;
+    --shadow:0 1px 2px rgba(19,26,31,.06),0 8px 24px -14px rgba(19,26,31,.22);
+    --sans:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --maxw:78rem;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --ground:#101619; --surface:#182025; --surface-2:#1E282E; --surface-3:#243037;
+      --ink:#E4EAEC; --ink-2:#B4C2C8; --muted:#8A9AA3;
+      --rule:#2C373D; --rule-soft:#232E34;
+      --work:#3F94BC; --work-wash:rgba(63,148,188,.16);
+      --own:#B8802E;  --own-wash:rgba(184,128,46,.18);
+      --danger:#E0796B; --danger-wash:rgba(224,121,107,.12);
+      --on-work:#0B1216;
+      --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px -16px rgba(0,0,0,.75);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#101619; --surface:#182025; --surface-2:#1E282E; --surface-3:#243037;
+    --ink:#E4EAEC; --ink-2:#B4C2C8; --muted:#8A9AA3;
+    --rule:#2C373D; --rule-soft:#232E34;
+    --work:#3F94BC; --work-wash:rgba(63,148,188,.16);
+    --own:#B8802E;  --own-wash:rgba(184,128,46,.18);
+    --danger:#E0796B; --danger-wash:rgba(224,121,107,.12);
+    --on-work:#0B1216;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px -16px rgba(0,0,0,.75);
+  }
+
+  *{box-sizing:border-box}
+  body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,h4{margin:0;line-height:1.25;text-wrap:balance}
+  p{margin:0}
+  button{font-family:inherit}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding-inline:20px}
+  .eyebrow{font-family:var(--mono);font-size:.7rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+
+  /* header */
+  header.top{background:var(--surface);border-bottom:1px solid var(--rule)}
+  .top-in{max-width:var(--maxw);margin:0 auto;padding:30px 20px 24px;display:flex;flex-wrap:wrap;gap:24px;align-items:flex-end;justify-content:space-between}
+  h1{font-size:clamp(1.7rem,4vw,2.4rem);font-weight:700;letter-spacing:-.015em}
+  .tagline{color:var(--ink-2);max-width:46ch;margin-top:10px;font-size:.96rem}
+  .modeswitch{display:inline-flex;border:1px solid var(--rule);border-radius:999px;overflow:hidden;background:var(--surface-2)}
+  .modeswitch button{appearance:none;background:none;border:0;cursor:pointer;font-family:var(--mono);font-size:.74rem;letter-spacing:.05em;color:var(--muted);padding:7px 15px}
+  .modeswitch button[aria-pressed="true"]{background:var(--work);color:var(--on-work)}
+  .modeswitch button:focus-visible{outline:2px solid var(--work);outline-offset:-2px}
+
+  .privbar{background:var(--danger-wash);border-bottom:1px solid var(--rule);font-size:.84rem;color:var(--ink-2)}
+  .privbar .wrap{padding-block:10px;display:flex;gap:10px;align-items:baseline}
+  .privbar b{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--danger)}
+
+  section{padding-block:56px;border-bottom:1px solid var(--rule-soft)}
+  section:last-of-type{border-bottom:0}
+  .sec-head{max-width:62ch;margin-bottom:28px}
+  .sec-head h2{font-size:clamp(1.25rem,2.6vw,1.6rem);font-weight:600;margin-top:8px;letter-spacing:-.01em}
+  .sec-head p{color:var(--ink-2);margin-top:10px;font-size:.93rem}
+
+  /* stat tiles */
+  .statusbar{border-bottom:1px solid var(--rule-soft);background:var(--surface-2)}
+  .statusbar .wrap{padding-top:16px;padding-bottom:16px;display:grid;gap:14px}
+  .st-rows{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:10px 26px}
+  .st-item{font-size:.86rem;color:var(--ink-2);line-height:1.55}
+  .st-item b{display:block;font-family:var(--mono);font-size:.66rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:2px;font-weight:600}
+  .st-cta{display:flex;flex-wrap:wrap;gap:8px}
+  .cta{display:inline-flex;align-items:center;gap:6px;text-decoration:none;font-size:.84rem;
+       padding:7px 13px;border-radius:999px;border:1px solid var(--rule);background:var(--surface);color:var(--ink);transition:border-color .12s,color .12s}
+  .cta:hover{border-color:var(--work);color:var(--work)}
+  .cta:focus-visible{outline:2px solid var(--work);outline-offset:2px}
+  .cta.primary{background:var(--work);border-color:var(--work);color:var(--on-work)}
+  .cta.primary:hover{opacity:.9;color:var(--on-work)}
+  .cta .ico{font-family:var(--mono);font-size:.8rem;opacity:.8}
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));gap:1px;background:var(--rule-soft);border:1px solid var(--rule-soft);border-radius:4px;overflow:hidden}
+  #tiles{grid-template-columns:repeat(4,1fr)}
+  #tiles .tile{display:flex;flex-direction:column}
+  #tiles .tile .l{flex:1}
+  .tile{background:var(--surface);padding:18px 16px}
+  .tile .n{font-family:var(--mono);font-size:1.5rem;font-weight:600;color:var(--work);font-variant-numeric:tabular-nums;line-height:1.2}
+  .tile .l{font-size:.85rem;color:var(--ink-2);margin-top:5px}
+  .tile .s{font-size:.74rem;color:var(--muted);margin-top:3px;font-family:var(--mono)}
+
+  /* gantt */
+  .chartbox{background:var(--surface);border:1px solid var(--rule-soft);border-radius:4px;padding:20px 20px 16px;box-shadow:var(--shadow)}
+  .gscroll{overflow-x:auto}
+  .gantt{min-width:44rem;display:grid;grid-template-columns:11.5rem 1fr;gap:0 16px;align-items:center}
+  .gyears{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;font-family:var(--mono);font-size:.68rem;color:var(--muted);border-bottom:1px solid var(--rule-soft);padding-bottom:5px;margin-bottom:8px}
+  .gyears span{text-align:center}
+  .grow-l{font-size:.86rem;font-weight:600;padding:8px 0;align-self:center;cursor:pointer;background:none;border:0;text-align:left;color:var(--ink);width:100%}
+  .grow-l:hover{color:var(--work)}
+  .grow-l[aria-pressed="true"]{color:var(--work)}
+  .grow-l small{display:block;font-family:var(--mono);font-size:.68rem;font-weight:400;color:var(--muted);letter-spacing:.02em}
+  .grow-l:focus-visible{outline:2px solid var(--work);outline-offset:2px;border-radius:3px}
+  .gtrack{position:relative;margin:8px 0;background:linear-gradient(to right,var(--rule-soft) 1px,transparent 1px);background-size:calc(100%/12) 100%}
+  .gbar{position:absolute;border-radius:3px;box-shadow:0 0 0 1.5px var(--surface);display:flex;align-items:center;padding-inline:6px;font-family:var(--mono);font-size:.63rem;white-space:nowrap;overflow:hidden;cursor:default}
+  .gbar.work{background:var(--work);color:var(--on-work)}
+  .gbar.own{background:var(--own);color:var(--on-work)}
+  .gbar.faint{opacity:.42}
+  .glegend{display:flex;flex-wrap:wrap;gap:16px;margin-top:14px;padding-top:12px;border-top:1px solid var(--rule-soft);font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+  .glegend i{display:inline-block;width:14px;height:11px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+  .ghint{margin-top:10px;font-size:.8rem;color:var(--muted)}
+
+  /* filters */
+  .filters{display:flex;flex-direction:column;gap:12px;margin-bottom:24px}
+  .frow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .flabel{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);width:4.2rem;flex:none}
+  .chip{appearance:none;border:1px solid var(--rule);background:var(--surface);color:var(--ink-2);border-radius:999px;padding:5px 13px;font-size:.82rem;cursor:pointer}
+  .chip:hover{border-color:var(--work);color:var(--work)}
+  .chip[aria-pressed="true"]{background:var(--work);border-color:var(--work);color:var(--on-work)}
+  .chip:focus-visible{outline:2px solid var(--work);outline-offset:2px}
+  .fmeta{font-family:var(--mono);font-size:.76rem;color:var(--muted);margin-left:auto}
+  .fclear{appearance:none;background:none;border:0;color:var(--work);font-size:.8rem;cursor:pointer;text-decoration:underline;padding:0}
+
+  /* cards */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(20rem,1fr));gap:16px;align-items:start}
+  .card{background:var(--surface);border:1px solid var(--rule-soft);border-radius:4px;overflow:hidden;box-shadow:var(--shadow)}
+  .card.open{border-color:var(--work);grid-column:1/-1}
+  .chead{width:100%;text-align:left;background:none;border:0;cursor:pointer;padding:18px 18px 16px;display:block;color:inherit}
+  .chead:focus-visible{outline:2px solid var(--work);outline-offset:-2px}
+  .ctop{display:flex;gap:10px;align-items:baseline;justify-content:space-between}
+  .card h3{font-size:1rem;font-weight:600}
+  .cera{font-family:var(--mono);font-size:.72rem;color:var(--muted);white-space:nowrap}
+  .crole{display:inline-block;font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;padding:2px 8px;border-radius:3px;margin-top:9px}
+  .crole.built{background:var(--work);color:var(--on-work)}
+  .crole.arch{background:var(--work-wash);color:var(--work);box-shadow:inset 0 0 0 1px var(--work)}
+  .crole.led{background:var(--surface-3);color:var(--ink-2);box-shadow:inset 0 0 0 1px var(--rule)}
+  .crole.own{background:var(--own);color:var(--on-work)}
+  .ctag{font-size:.88rem;color:var(--ink-2);margin-top:10px}
+  .cstats{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px}
+  .cstats div{font-family:var(--mono);font-size:.74rem;color:var(--muted)}
+  .cstats b{display:block;font-size:1.02rem;color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+  .ctech{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px}
+  .ctech span{font-family:var(--mono);font-size:.68rem;color:var(--muted);border:1px solid var(--rule-soft);border-radius:3px;padding:1px 6px}
+  .cmore{font-family:var(--mono);font-size:.7rem;color:var(--work);margin-top:12px}
+
+  .cbody{border-top:1px solid var(--rule-soft);padding:18px;display:grid;gap:14px;background:var(--surface-2)}
+  .cbody h4{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .cbody p{font-size:.9rem;color:var(--ink-2)}
+  .dec{border-left:3px solid var(--work);padding:2px 0 2px 12px}
+  .dec p{margin-top:3px}
+  .dec.flawmark{border-left-color:var(--danger)}
+  .links{display:flex;flex-wrap:wrap;gap:8px}
+  .lnk{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;text-decoration:none;color:var(--work);border:1px solid var(--work);border-radius:999px;padding:4px 12px}
+  .lnk:hover{background:var(--work-wash)}
+  .lnk.soon{color:var(--muted);border-color:var(--rule);border-style:dashed;cursor:default}
+  .lnk.priv{color:var(--danger);border-color:var(--danger)}
+  .lnk .ico{font-family:var(--mono);font-size:.66rem;opacity:.75}
+
+  /* coverage matrix */
+  .covwrap{overflow-x:auto;border:1px solid var(--rule-soft);border-radius:4px;background:var(--surface);box-shadow:var(--shadow)}
+  table.cov{border-collapse:collapse;width:100%;min-width:40rem;font-size:.86rem}
+  table.cov th,table.cov td{padding:8px 12px;border-bottom:1px solid var(--rule-soft);text-align:left}
+  table.cov thead th{position:sticky;top:0;background:var(--surface-2);font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;color:var(--muted);font-weight:600;vertical-align:bottom;z-index:1}
+  table.cov thead th.st{text-align:center;color:var(--ink);font-size:.82rem;letter-spacing:0}
+  table.cov thead th.st small{display:block;font-family:var(--mono);font-size:.66rem;color:var(--muted);font-weight:400;margin-top:3px}
+  table.cov td.c{text-align:center;font-size:1rem;line-height:1}
+  table.cov td.c .y{color:var(--work);font-weight:700}
+  table.cov td.c .p{color:var(--own);font-weight:700;font-size:.74rem;font-family:var(--mono)}
+  table.cov td.c .n{color:var(--rule)}
+  table.cov tbody tr:hover{background:var(--surface-2)}
+  table.cov tr.grp td{background:var(--surface-3);font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;color:var(--muted);padding:6px 12px;border-bottom:1px solid var(--rule)}
+  table.cov tr.sum td{font-weight:600;background:var(--surface-2)}
+  table.cov tr.sum td.c{font-family:var(--mono);font-size:.82rem;color:var(--ink)}
+
+  /* stacks */
+  .stackbox{background:var(--surface);border:1px solid var(--rule-soft);border-radius:4px;padding:20px;box-shadow:var(--shadow)}
+  .stackbox + .stackbox{margin-top:18px}
+  .stackbox h3{font-size:1rem;font-weight:600}
+  .stackbox .cap{font-size:.88rem;color:var(--ink-2);margin-top:9px;max-width:66ch}
+  .stackbox svg{display:block;width:100%;height:auto;max-width:100%;margin-top:18px}
+  .sscroll{overflow-x:auto}
+  .sscroll svg{min-width:52rem}
+  .note{margin-top:16px;border-top:1px solid var(--rule-soft);padding-top:14px;display:grid;gap:10px}
+  .note div{font-size:.86rem;color:var(--ink-2)}
+  .note b{display:block;font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px;font-weight:600}
+
+  /* tools pareto */
+  .pareto{display:grid;grid-template-columns:minmax(0,15rem) minmax(0,1fr) 4.2rem;gap:0 12px;align-items:center}
+  .pbtn{appearance:none;background:none;border:0;padding:5px 0;text-align:left;font-family:inherit;font-size:.83rem;color:var(--ink);cursor:pointer;width:100%;line-height:1.4}
+  .pbtn:hover{color:var(--work)}
+  .pbtn[aria-expanded="true"]{color:var(--work);font-weight:600}
+  .pbtn:focus-visible{outline:2px solid var(--work);outline-offset:2px;border-radius:3px}
+  .ptrack{height:15px;background:var(--surface-2);border-radius:2px;overflow:hidden}
+  .pfill{height:100%;border-radius:2px}
+  .pfill.in{background:var(--work)}
+  .pfill.out{background:var(--own)}
+  .pfill.both{background:linear-gradient(90deg,var(--work) 0%,var(--work) 45%,var(--own) 55%,var(--own) 100%)}
+  .pval{font-family:var(--mono);font-size:.76rem;color:var(--ink-2);text-align:right;font-variant-numeric:tabular-nums}
+  .pcut{grid-column:1/-1;border-top:1px dashed var(--own);margin:9px 0 4px;position:relative;height:0}
+  .pcut span{position:absolute;right:0;top:-9px;background:var(--surface);padding-left:8px;font-family:var(--mono);font-size:.68rem;color:var(--own)}
+  .pdet{grid-column:1/-1;background:var(--surface-2);border-left:3px solid var(--work);border-radius:0 3px 3px 0;padding:11px 14px;margin:4px 0 8px;font-size:.84rem;color:var(--ink-2);display:grid;gap:6px}
+  .pdet b{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .cfig{overflow-x:auto;margin:0 0 16px;padding:12px 0;border-top:1px solid var(--rule-soft);border-bottom:1px solid var(--rule-soft)}
+  .cfig svg{display:block;min-width:600px;max-width:100%;height:auto;margin:0 auto}
+  .cfig .fcap{font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;color:var(--muted);text-align:center;margin-top:8px}
+  .pgen{display:inline-block;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;color:var(--own);border:1px solid var(--own);border-radius:2px;padding:0 4px;margin-right:6px;vertical-align:1px}
+  .pnote{grid-column:1/-1;background:var(--surface-2);border-left:3px solid var(--own);border-radius:0 3px 3px 0;padding:10px 14px;margin:4px 0 8px;font-size:.83rem;line-height:1.65;color:var(--ink-2)}
+  .pnote b{display:block;font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--own);margin-bottom:4px}
+  .lessons{display:grid;grid-template-columns:repeat(auto-fit,minmax(18rem,1fr));gap:16px;margin-top:26px}
+  .lesson{background:var(--surface);border:1px solid var(--rule-soft);border-left:3px solid var(--own);border-radius:0 4px 4px 0;padding:16px 17px}
+  .lesson h4{font-size:.92rem;font-weight:600}
+  .lesson p{font-size:.86rem;color:var(--ink-2);margin-top:7px}
+
+  /* strata */
+  .strata{display:flex;flex-direction:column;gap:2px}
+  .stratum{display:grid;grid-template-columns:minmax(0,14rem) minmax(0,1fr);gap:0 20px;align-items:center;background:var(--surface);border:1px solid var(--rule-soft);padding:14px 16px}
+  .stratum:first-child{border-radius:4px 4px 0 0}
+  .stratum:last-child{border-radius:0 0 4px 4px}
+  .stratum .gn{font-family:var(--mono);font-size:.68rem;color:var(--muted);letter-spacing:.1em}
+  .stratum .gname{font-weight:600;font-size:.94rem}
+  .stratum .gy{font-family:var(--mono);font-size:.74rem;color:var(--muted)}
+  .bar{display:flex;height:30px;border-radius:2px;overflow:hidden;border:1px solid var(--rule-soft)}
+  .bar span{display:flex;align-items:center;padding-inline:9px;font-family:var(--mono);font-size:.68rem;white-space:nowrap;overflow:hidden}
+  .bar .mine{background:var(--work);color:var(--on-work)}
+  .bar .theirs{background:var(--own-wash);color:var(--own);border-left:1px solid var(--rule-soft)}
+  .pull{margin-top:26px;border-left:3px solid var(--work);padding:4px 0 4px 18px;font-size:1.02rem;max-width:56ch;font-weight:500}
+  .pull small{display:block;font-size:.8rem;color:var(--muted);font-weight:400;margin-top:7px;font-family:var(--mono)}
+
+  /* patterns */
+  .pats{display:grid;grid-template-columns:repeat(auto-fit,minmax(21rem,1fr));gap:18px}
+  .fig{background:var(--surface);border:1px solid var(--rule-soft);border-radius:4px;padding:20px;box-shadow:var(--shadow)}
+  .fig h3{font-size:1rem;font-weight:600}
+  .fig .cap{font-size:.87rem;color:var(--ink-2);margin-top:9px}
+  .fig svg{display:block;width:100%;height:auto;max-width:100%;margin-top:16px}
+  .tro{margin-top:16px;border-top:1px solid var(--rule-soft);padding-top:14px;display:grid;gap:11px}
+  .tro div{font-size:.86rem;color:var(--ink-2)}
+  .tro b{display:block;font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px;font-weight:600}
+
+  /* qa */
+  .qa{display:flex;flex-direction:column;gap:9px}
+  details.q{background:var(--surface);border:1px solid var(--rule-soft);border-radius:4px;overflow:hidden}
+  details.q[open]{border-color:var(--rule)}
+  details.q summary{cursor:pointer;list-style:none;padding:14px 17px;display:flex;gap:12px;align-items:flex-start;font-weight:600;font-size:.94rem}
+  details.q summary::-webkit-details-marker{display:none}
+  details.q summary:focus-visible{outline:2px solid var(--work);outline-offset:-2px}
+  .qn{font-family:var(--mono);font-size:.7rem;color:var(--muted);padding-top:4px;flex:none}
+  .chev{margin-left:auto;color:var(--muted);transition:transform .18s}
+  details.q[open] .chev{transform:rotate(90deg)}
+  .qbody{padding:15px 17px 18px 45px;border-top:1px solid var(--rule-soft);background:var(--surface-2)}
+  .spoken{background:var(--work-wash);border-radius:3px;padding:13px 15px;font-size:.93rem;line-height:1.8}
+  .spoken .lbl{font-family:var(--mono);font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--work);display:block;margin-bottom:5px;font-weight:600}
+  .full{margin-top:14px;font-size:.89rem;color:var(--ink-2);display:grid;gap:9px}
+
+  .tablewrap{overflow-x:auto;border:1px solid var(--rule-soft);border-radius:4px;background:var(--surface)}
+  table{border-collapse:collapse;width:100%;min-width:32rem;font-size:.87rem}
+  th,td{text-align:left;padding:11px 15px;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+  th{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--surface-2)}
+  tr:last-child td{border-bottom:0}
+  td.no{color:var(--danger)}
+
+  footer{padding-block:36px 52px;color:var(--muted);font-size:.8rem;font-family:var(--mono);line-height:1.9}
+  [hidden]{display:none!important}
+  @media (max-width:980px){ #tiles{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:720px){
+    .stratum{grid-template-columns:1fr;gap:9px}
+    .qbody{padding-left:17px}
+    .flabel{width:100%}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<header class="top">
+  <div class="top-in">
+    <div>
+      <div class="eyebrow" id="kicker">Technical Portfolio · Public</div>
+      <h1>ChengHan Tsai</h1>
+      <p class="tagline">Grew a manufacturing test software team from 4 to 80 while still writing Swift and on-device LLM code myself. Eleven years, six product lines, 100+ test stations.</p>
+    </div>
+
+  </div>
+</header>
+
+<div class="statusbar">
+  <div class="wrap">
+    <div class="st-rows" id="st-rows"></div>
+    <div class="st-cta" id="st-cta"></div>
+  </div>
+</div>
+
+</div>
+
+<div class="wrap">
+
+  <section>
+    <div class="sec-head">
+      <div class="eyebrow">Overview</div>
+      <h2>The short version</h2>
+      <p>Every number below is traceable to a source. Open any project card for the detail behind it.</p>
+    </div>
+    <div class="tiles" id="tiles"></div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <div class="eyebrow">Capability timeline</div>
+      <h2>What I was doing, year by year</h2>
+      <p>Every bar maps to a specific project and its commit history &mdash; none of this is self-assessment. <strong>Click a capability name on the left</strong> to filter the project list below down to the evidence for it.</p>
+    </div>
+    <div class="chartbox">
+      <div class="gscroll"><div class="gantt" id="gantt"></div></div>
+      <div class="glegend">
+        <span><i style="background:var(--work)"></i>Day job &middot; primary focus</span>
+        <span><i style="background:var(--work);opacity:.42"></i>Day job &middot; occasional</span>
+        <span><i style="background:var(--own)"></i>Personal &middot; after hours</span>
+        <span>Labels name the representative work of that period</span>
+      </div>
+      <p class="ghint" id="ghint"></p>
+      <p class="ghint" style="border-top:1px solid var(--rule-soft);padding-top:12px;margin-top:12px">
+        <strong style="color:var(--ink)">The last row is not a technical skill &mdash; it is &ldquo;radius of influence&rdquo;</strong>. Every segment in it has a counterpart outside my own department: our own senior executives, the customer's platform team, the customer's product design team, other departments inside the company, and <strong style="color:var(--ink)">the manufacturing (MP) organisation</strong>.
+        A contract manufacturer's software team normally only faces the customer's manufacturing and test engineering window. These segments show that my surface area was wider than that narrow window.
+        The two manufacturing segments are worth calling out separately: <strong style="color:var(--ink)">line equipment automation and automated optical inspection both served the MP organisation, not my own department</strong>. The users were the production lines, and the savings sit in the line-headcount ledger &mdash; a different book from the department-engineering-hours ledger used by the tooling group below.
+        The same pattern shows up in the tooling group below: 7 of the 24 internal tools have users outside my department, about 16% of total benefit &mdash; those are the ones I had no authority over and could only land by making the tool genuinely good.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <div class="eyebrow">Projects</div>
+      <h2>What I built</h2>
+      <p>Filter with the controls below; click a card to expand the detail and links. Role labels come in four kinds: <strong>wrote it myself</strong>, <strong>architecture call</strong>, <strong>led the delivery</strong>, <strong>personal work</strong> &mdash; I do not count code my team wrote as code I wrote.</p>
+    </div>
+    <div class="filters" id="filters"></div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section id="sec-tools">
+    <div class="sec-head">
+      <div class="eyebrow">Efficiency &amp; automation</div>
+      <h2>24 internal tools; the benefit concentrates in the top ten</h2>
+      <p>I set up a standing 4&ndash;5 person tooling group inside the test software team; over six and a half years it shipped 24 tools. Below is how the benefit distributes &mdash; <strong>click any bar</strong> to see what it did, who it served, and how much it improved.</p>
+    </div>
+    <div class="tiles" id="tooltiles" style="margin-bottom:26px"></div>
+    <div class="chartbox">
+      <div class="pareto" id="pareto"></div>
+      <div class="glegend">
+        <span><i style="background:var(--work)"></i>Serves my department</span>
+        <span><i style="background:var(--own)"></i>Serves other departments</span>
+        <span id="punit"></span>
+      </div>
+    </div>
+    <div class="lessons" id="lessons"></div>
+  </section>
+
+  <section id="sec-strata">
+    <div class="sec-head">
+      <div class="eyebrow">Context</div>
+      <h2>Design authority migrated to the customer, one generation at a time</h2>
+      <p>Who got to decide &ldquo;how a test runs&rdquo; across eleven years. This trajectory is also why I left.</p>
+    </div>
+    <div class="strata" id="strata"></div>
+    <div class="glegend">
+      <span><i style="background:var(--work)"></i>We decided</span>
+      <span><i style="background:var(--own-wash);box-shadow:inset 0 0 0 1px var(--own)"></i>Customer platform decided</span>
+    </div>
+    <p class="pull">
+      &ldquo;The model we built ourselves in the second generation &mdash; write the test plan as a table, let the program be nothing but an executor &mdash; became the customer&rsquo;s official standard two years later. That is both a validation of the design and exactly why I left: not because the work was hard, but because the part that required judgement had been taken away.&rdquo;
+      <small>Why I left and what I am proudest of are two halves of the same story.</small>
+    </p>
+  </section>
+
+  <section id="sec-stack">
+    <div class="sec-head">
+      <div class="eyebrow">Software stack</div>
+      <h2>Four generations of stack &mdash; the colours are the answer</h2>
+      <p>The same job &mdash; getting a unit through one full test run &mdash; is owned by different layers in each of the four generations. Deep blue is what we wrote; amber is the customer platform. <strong>You do not need to read the labels: the shifting ratio between the two colours is why I left.</strong></p>
+    </div>
+    <div class="stackbox">
+      <div class="sscroll" id="stack4"></div>
+      <div class="glegend">
+        <span><i style="background:var(--work)"></i>We wrote it</span>
+        <span><i style="background:var(--own-wash);box-shadow:inset 0 0 0 1px var(--own)"></i>Customer platform</span>
+        <span><i style="background:var(--own);border:1.5px dashed var(--own)"></i>Built jointly</span>
+        <span><i style="background:var(--surface-3);box-shadow:inset 0 0 0 1px var(--rule)"></i>Operating system</span>
+      </div>
+      <div class="note" id="stacknote"></div>
+    </div>
+
+    <div class="stackbox">
+      <h3>How the three files a new model needs sit on top of four layers</h3>
+      <p class="cap">The dependency chain in the last generation. A model project depends on the shared components for its model family; the family depends on the per-technology shared components; those depend on the common code every station uses. Each layer is a separately versioned, separately published package &mdash; this is not layering by convention, the chain is pinned in the build manifest.</p>
+      <div class="sscroll" id="stackdep"></div>
+      <div class="note" id="depnote"></div>
+    </div>
+  </section>
+
+  <section id="sec-pats">
+    <div class="sec-head">
+      <div class="eyebrow">Architecture patterns</div>
+      <h2>Three designs I can redraw on a whiteboard</h2>
+      <p>All three were proven in real mass production, and I can go as deep as you like on the trade-offs and what each one cost.</p>
+    </div>
+    <div class="pats" id="pats"></div>
+  </section>
+
+  <footer id="foot"></footer>
+</div>
+
+<script>
+/* ============================================================================
+   To add a project: append one object to DATA.items; the card renders itself.
+   To update a project: edit only that object's detail / stats / links.
+   To add a capability row: append to DATA.tracks; spans are [startYear, endYear, kind, label].
+   kind: 'work' day job | 'work-faint' day job, occasional | 'own' personal work.
+   ========================================================================== */
+
+const Y0 = 2015, Y1 = 2026;
+
+const DATA = {
+  // Contact and availability. The resume button is omitted while resume is null.
+  contact:{
+    rows:[
+      ['Status','Left my previous role in June 2026; looking for the next one'],
+      ['Looking for','Test automation and production systems \u00b7 applied AI \u00b7 engineering leadership'],
+      ['Based in','Taoyuan, Taiwan']
+    ],
+    email:'tsai.schumi@gmail.com',
+    emailLabel:'Email me',
+    linkedin:'https://www.linkedin.com/in/chenghan-tsai',
+    linkedinLabel:'LinkedIn',
+    resume:null,
+    resumeLabel:'Resume (PDF)'
+  },
+
+  tiles: [
+    {n:'4 \u2192 22 \u2192 80', l:'Team size: one of four founding members in 2015 \u00b7 22 by 2020 \u00b7 80 after merging with the other test software teams in 2022', s:'A 0\u21921 build, not inheriting a mature org'},
+    {n:'1 \u2192 6', l:'Product lines, from 1 in 2015 to 6 in 2020', s:'Stations 1 \u2192 100+ (2025)'},
+    {n:'11 years', l:'One company, from associate engineer to senior manager', s:'2015 \u2192 2026'},
+    {n:'~half', l:'My personal share of the 2,000+ commits in the recent log diagnostics tool', s:'Principal author, not sole author'},
+    {n:'4 gens', l:'Four generations of test platform between 2015 and 2026; we built the first two ourselves', s:'Gen 2 became the standard across six lines'},
+    {n:'8 years', l:'An engine I wrote in 2015 was still being used to build a brand-new station type in 2023\u201324', s:'No architectural concession needed'},
+    {n:'10 qtrs', l:'Longest development run: bridging test software to the line\u2019s material-handling robot and fixtures', s:'2019\u20132021, the longest of any project'},
+    {n:'24', l:'Internal tools; the top ten carry 87% of the benefit, and seven have users outside my department', s:'Roughly 6\u00d7 return on investment'}
+  ],
+
+  tracks: [
+    {id:'handson', name:'Hands-on coding', sub:'macOS \u00b7 Swift \u00b7 Obj-C \u00b7 Python', spans:[
+      [2015,2016,'work','In-house engine core'],
+      [2017,2019,'work-faint','Occasional'],
+      [2020,2021,'work','Barcode validation'],
+      [2022,2024,'work-faint','Occasional'],
+      [2025,2026,'work','Log diagnostics tool'],
+      [2025,2025,'own','Swift pkg']
+    ]},
+    {id:'arch', name:'Test system architecture', sub:'Engine \u00b7 test plan as a table \u00b7 common code', spans:[
+      [2015,2019,'work','In-house engine and scripting language'],
+      [2018,2020,'work','Test plan written as a table'],
+      [2020,2026,'work','Common code + adapter layers']
+    ]},
+    {id:'platform', name:'Platform migration', sub:'Two sequencer generations in parallel', spans:[
+      [2020,2023,'work','First-generation sequencer'],
+      [2023,2026,'work','Migration to the second']
+    ]},
+    {id:'ai', name:'Applied AI', sub:'On-device models \u00b7 methodology DSL', spans:[
+      [2025,2026,'work','Failure RCA'],
+      [2026,2026,'own','Agents']
+    ]},
+    {id:'auto', name:'Automation & internal tooling', sub:'24 tools \u00b7 build and signing', spans:[
+      [2019,2025,'work','Internal tooling group'],
+      [2020,2024,'work','Inspection automation'],
+      [2025,2025,'work','Signing']
+    ]},
+    {id:'hw', name:'Hardware & fixture integration', sub:'Serial \u00b7 torque \u00b7 vision \u00b7 industrial comms', spans:[
+      [2015,2019,'work','Serial \u00b7 remote shell \u00b7 force sensing'],
+      [2019,2021,'work','SMT line: robot arm \u00b7 MCU fixtures'],
+      [2022,2024,'work','Torque \u00b7 cameras \u00b7 comms \u00b7 displays']
+    ]},
+    {id:'lead', name:'Leading the team', sub:'Associate \u2192 assistant manager \u2192 manager \u2192 senior manager', spans:[
+      [2015,2015,'work','Associate'],
+      [2016,2018,'work','Assistant manager'],
+      [2019,2021,'work','Manager'],
+      [2022,2026,'work','Senior manager']
+    ]},
+    {id:'collab', name:'Radius of influence', sub:'Counterparts outside my own department', spans:[
+      [2019,2019,'work','Execs'],
+      [2019,2020,'work','Customer platform team'],
+      [2019,2021,'work','MP: line equipment automation'],
+      [2020,2021,'work','MP: optical inspection'],
+      [2020,2024,'work','Other depts: incoming inspection'],
+      [2023,2024,'work','Customer design team']
+    ]}
+  ],
+
+  // 24 internal tools. Public fields: function, share of benefit, audience (own dept / cross-dept),
+  // development quarters, and cycle-time improvement. Real names, absolute person-years and user
+  toolTotalNote:'Total across the 24 department-engineering-hours projects',
+  tools:[
+    {id:'t1', f:'Automated test report generation (gen 1)', share:21.3, dept:'in', q:8, imp:75, gen:'rep', noteH:'Generational link',
+     note:'The first generation of this product line. It automated the entire test report that had been assembled by hand, took 8 quarters to build, and is the single largest benefit of the 24. Four years later I came back and built the second generation (item 6) to cut the remaining manual steps again.'},
+    {id:'t2', f:'Automated line log transfer and archiving', share:15.7, dept:'in', q:2, imp:50},
+    {id:'t3', f:'Automated run-in failure verification', share:10.3, dept:'in', q:3, imp:60},
+    {id:'t4', f:'Test log analysis tool', share:9.5, dept:'in', q:5, imp:50},
+    {id:'t5', f:'Graphical test script editor', share:6.1, dept:'in', q:5, imp:50},
+    {id:'t6', f:'Test report workflow, simplified again (gen 2 \u00b7 61 steps \u2192 1)', share:5.9, dept:'in', q:1, imp:97, gen:'rep', noteH:'Generational link',
+     note:'The second generation of the same product line, not a new project. Four years after gen 1 went live, the real workflow still had 61 manual steps clinging to both ends of it \u2014 gen 1 automated \u201cproducing the report\u201d and never touched how the data was fetched or how the result was distributed. Gen 2 collapsed the whole thing to a single step in just 1 quarter, a 97% cycle-time improvement and the best return per unit of effort in the entire list. The reason is that gen 1 had already settled the data model and the format; gen 2 stood on top of it.'},
+    {id:'t7', f:'Process-engineering station cycle-time optimisation', share:5.4, dept:'out', q:5, imp:40},
+    {id:'t8', f:'Incoming-inspection barcode validation', share:4.8, dept:'out', q:1, imp:70},
+    {id:'t9', f:'Display failure analysis tool', share:4.0, dept:'in', q:null, imp:80},
+    {id:'t10',f:'Run-in report automation', share:3.8, dept:'in', q:3, imp:24},
+    {id:'t11',f:'Scheduling and booking system for the design side', share:2.0, dept:'out', q:null, imp:50},
+    {id:'t12',f:'Self-service reporting for managers', share:1.5, dept:'in', q:3, imp:80},
+    {id:'t13',f:'Lab asset management system', share:1.4, dept:'in', q:3, imp:51},
+    {id:'t14',f:'Department knowledge base (later adopted by other units)', share:1.3, dept:'both', q:5, imp:55, noteH:'How far it spread',
+     note:'It started as something only my own department used; once it worked, other units picked it up. A tool like this does not spread through promotion \u2014 it spreads once the content reaches a certain density and people come to it on their own. That is why I kept the focus on whether anyone would keep writing in it, rather than on the interface.'},
+    {id:'t15',f:'R&D asset system integration', share:1.0, dept:'out', q:2, imp:36},
+    {id:'t16',f:'Online assessment system', share:1.0, dept:'in', q:null, imp:30},
+    {id:'t17',f:'Design-side operations monitor', share:0.9, dept:'out', q:4, imp:23},
+    {id:'t18',f:'Cloud tooling for team management', share:0.8, dept:'in', q:7, imp:90},
+    {id:'t19',f:'Station status monitoring site', share:0.8, dept:'in', q:null, imp:35},
+    {id:'t20',f:'Test coverage data aggregation', share:0.8, dept:'in', q:null, imp:87},
+    {id:'t21',f:'Reliability cycling test tool', share:0.7, dept:'out', q:3, imp:30},
+    {id:'t22',f:'NPI issue lookup site', share:0.3, dept:'in', q:1, imp:70},
+    {id:'t24',f:'Application version checker', share:0.2, dept:'in', q:null, imp:90},
+    {id:'t25',f:'Training system', share:0.2, dept:'in', q:1, imp:45}
+  ],
+  toolTiles:[
+    {n:'~6\u00d7', l:'Return on investment for the tooling group: one standing 4\u20135 person team producing engineering-hour savings that recur every year', s:'The benefit repeats annually; it is not one-off'},
+    {n:'87%', l:'Benefit concentrates in the top 10 tools; the bottom 10 together account for only 7%', s:'A textbook Pareto shape'},
+    {n:'7 / 24', l:'Users are not only in my department \u2014 process engineering, supply-chain incoming inspection, product design, R&D, reliability, plus the knowledge base that later spread outward', s:'About 16% of total benefit'}
+  ],
+  toolLessons:[
+    {h:'My own importance ratings were useless in the middle band', p:'Every tool got a self-assessed importance score of 1\u20135 at closure. Checking those against actual benefit: the 5s really were at the top and the 1s really were at the bottom, but the eleven tools rated 3 scatter from 0.18 all the way to 11.39 \u2014 the middle band separates nothing at all. And the single highest-benefit tool in the whole list was never scored.'},
+    {h:'The hours saved did not become headcount cuts', p:'This is capacity released, not layoffs. The freed time went into other projects. I say this outright \u2014 internal tooling benefit is mostly of this kind, and dodging the question is what makes the numbers look suspect.'},
+    {h:'The function evolved three times on its own', p:'Line automation (removing heavy manual work) \u2192 efficiency improvement (process, communication, handover) \u2192 data visualisation (numbers and dashboards for decisions). From supporting the production line to supporting management decisions.'}
+  ],
+
+  stacks:[
+    {g:'01', name:'In-house engine', yrs:'2015 \u2013 2019', layers:[
+      {t:'Test scripts (one per station)', own:'us'},
+      {t:'In-house scripting language and editor', own:'us'},
+      {t:'Test execution engine', own:'us'},
+      {t:'Instrument abstraction layer', own:'us'},
+      {t:'Hardware I/O: serial \u00b7 force sensing', own:'us'},
+      {t:'macOS', own:'os'}
+    ]},
+    {g:'02', name:'Platform toolbox, sequencing still ours', yrs:'2018 \u2013 2020', layers:[
+      {t:'Test plan (CSV)', own:'us'},
+      {t:'In-house executor: read the table \u00b7 filter \u00b7 run item by item', own:'us'},
+      {t:'Platform sequence language', own:'cust'},
+      {t:'Platform plug-in system', own:'cust'},
+      {t:'Platform runtime + line operator GUI', own:'cust'},
+      {t:'macOS', own:'os'}
+    ]},
+    {g:'03', name:'Official sequencer, first generation', yrs:'2020 trial \u00b7 2021 production \u2013 2023', layers:[
+      {t:'Model overlay (three content files)', own:'us'},
+      {t:'Model-family overlay', own:'us'},
+      {t:'Per-technology shared components', own:'us'},
+      {t:'Common code (exactly one copy)', own:'us'},
+      {t:'Adapter layer', own:'both'},
+      {t:'Plug-ins and wrappers', own:'cust'},
+      {t:'Official sequencer \u00b7 v1 co-developed', own:'both'},
+      {t:'Platform core (execution, UI, data reporting)', own:'cust'},
+      {t:'macOS', own:'os'}
+    ]},
+    {g:'04', name:'Sequencer replaced again', yrs:'2023 \u2013 2026', layers:[
+      {t:'Model overlay (three content files)', own:'us'},
+      {t:'Model-family overlay', own:'us'},
+      {t:'Per-technology shared components', own:'us'},
+      {t:'Common code (exactly one copy)', own:'us'},
+      {t:'Two adapter layers (both live for ~18 months)', own:'both'},
+      {t:'Plug-ins and wrappers', own:'cust'},
+      {t:'Official sequencer, second generation', own:'cust'},
+      {t:'Platform core (now with a compiler and a three-tier test plan)', own:'cust'},
+      {t:'macOS', own:'os'}
+    ]}
+  ],
+  stackNotes:[
+    ['How to read this','In generation 1 we wrote the entire stack except the operating system. By generation 4 we are down to the top four layers \u2014 and for a new model, the topmost of those is three files. What got taken away in the middle is not lines of code; it is the decision about how a test runs.'],
+    ['Generation 2 is the one people skip over','The customer gave us a language, a plug-in system and a line GUI, but no official executor \u2014 so the layer that says \u201cwrite the test plan as a table and let the program follow it\u201d is the one we filled in ourselves. Two years later the customer\u2019s official version worked the same way.'],
+    ['Only two cells differ between generations 3 and 4','The sequencer changed generation and the platform core gained a compiler; our four layers did not move a single cell. That is where the common code actually paid out.']
+  ],
+  dep:[
+    {t:'Model overlay', s:'Station config \u00b7 project logic \u00b7 coverage data', n:'3 content files'},
+    {t:'Model-family overlay', s:'Items and parameters shared across one model family', n:''},
+    {t:'Per-technology shared components', s:'Layered by test domain', n:''},
+    {t:'Common code', s:'Unit \u00b7 fixture \u00b7 flow \u00b7 measurement \u00b7 record format', n:'Exactly one copy'},
+    {t:'Adapter layer + plug-ins', s:'Binds to whichever sequencer is current', n:''}
+  ],
+  depNotes:[
+    ['Layering by contract, not by convention','Every layer is a separately versioned, separately published package, and the dependencies are declared in the build manifest. The first line of a model project\u2019s manifest is the family component it depends on.'],
+    ['Every version is pinned','Platform version, OS version and a dozen or more plug-ins are each pinned to an explicit version. A test station cannot afford \u201cworks on my machine\u201d \u2014 the whole image has to be reproducible.']
+  ],
+
+  roles: {built:'Wrote it myself', arch:'Architecture call', led:'Led the delivery', own:'Personal work'},
+  eras: {e1:'2015\u20132019', e2:'2020\u20132022', e3:'2023\u20132026'},
+
+  items: [
+    {
+      id:'logsight', name:'Production log diagnostics tool', era:'2025 – 2026', eraKey:'e3', role:'built',
+      roleNote:'Principal author, roughly half the commits',
+      tracks:['handson','ai','arch'],
+      tech:['Swift','SwiftUI','On-device LLM','SPM','GRDB','GitHub Actions'],
+      tagline:'Externalising eight years of failure-analysis judgement into methodology documents a model can execute — the program does the deciding; the model only does the reading.',
+      stats:[{b:'126',l:'Swift files in the app'},{b:'245',l:'test files'},{b:'117',l:'design documents'}],
+      detail:[
+        {h:'Why build it', p:'Once the customer platform standardised everything that required judgement, failure analysis was the last problem on the line that had not been standardised. Eight years of judgement lived in the heads of a few senior engineers, and a new hire took three years to get accurate.'},
+        {h:'The core design', p:'A methodology document describes each failure type in six tagged sections, and each section maps to a stage of the execution pipeline: load → match → gather → produce. One field marks whether that failure class needs a model at all — a value out of spec is decided by a single comparison and never touches the model; only a command response whose format does not parse needs a model to read the content.'},
+        {h:'The hard part was the authoring flow, not the technology', p:'A senior failure-analysis engineer writes the first draft the way he already likes to write, and an AI tool converts it into the six-section structure. I did not ask the expert to learn my format — if I had, he would have written one document and never a second, and the whole thing would have stalled at version one. The tool absorbs the friction instead.'},
+        {h:'Data never leaves the machine', p:'Test logs are customer property, so all inference runs on device. The model being limited turned out to help: it forced me to solve with code everything that code could solve.'},
+        {h:'How quality is enforced', p:'I wrote a twelve-rule engineering contract in the project root covering simplicity first, surgical changes, only letting the model make judgement calls, tests that verify intent rather than behaviour, and failing loudly. After a rule got violated once, I wrote a script that makes it impossible to violate again — the script’s header comment names the specific pull request whose mistake caused it to exist. Every pull request also gets an automatic AI review.'},
+        {h:'Performance is a number, not a feeling', p:'Measured on every commit and stored as a comparable record. The target is written into the contract: a 100 MB file processed within 30 seconds, because a production engineer cannot wait longer than that.'},
+        {h:'Collaboration', p:'I own the architecture, the methodology execution engine and the model layer; another engineer led UI and user-experience design and built some of the features. Of the 2,000-plus commits I wrote roughly half; the rest was written by the engineer I led.', flaw:false}
+      ],
+      flaw:'The custom methodology format has no schema validation, so a misspelled field name only surfaces at runtime — the same pit I fell into with my own scripting language ten years earlier, and this time I did not fix it. The data-gathering module is also over nine hundred lines; once the number of sources grows it should be split.'
+    },
+    {
+      id:'engine', name:'In-house test station engine', era:'2015 – 2019', eraKey:'e1', role:'built',
+      roleNote:'I wrote 18 of the 52 implementation files, including the core ones',
+      tracks:['handson','arch','hw'],
+      tech:['Objective-C','Cocoa','Serial port','Layered remote shell','Force sensing'],
+      tagline:'In the era before the customer had a unified platform, every layer of test station software had to be grown in house: execution engine, scripting language, instrument abstraction, line operator UI, plus documentation and training.',
+      stats:[{b:'23,000',l:'lines of Obj-C'},{b:'18 / 52',l:'implementation files I wrote'},{b:'9',l:'verdict strategies'}],
+      detail:[
+        {h:'The layering', p:'Execution engine (background-thread test loop, retry and skip semantics, per-item state machine) / script layer (in-house JSON scripting language, editor and training material) / instrument abstraction (one protocol plus a registry: serial, a three-level-deep remote shell, file transfer, local commands) / hardware I/O (serial, force sensing) / station UI (item table, result display, operator prompts).'},
+        {h:'Why write a scripting language at all', p:'Production engineers are not app engineers; making them edit the project would turn every small test-item tweak into a software release. And the expressiveness actually needed is narrow — send a command, match the response, check limits, retry, skip. If the requirement had been any wider — loops, conditionals, parallelism — I would have embedded an existing scripting language instead.'},
+        {h:'Verdicts are data-driven', p:'Nine verdict types written as pure functions of the same signature (string match, format, upper/lower limit band, custom function, structured state, and so on). The script says which one to use; the engine does not need to know how many exist.'},
+        {h:'The hardest part', p:'The test loop runs on a background thread, but both the operator and the hardware are asynchronous event sources it cannot control — when the operator presses confirm, when an instrument returns a measurement. I used locks so the test script could stay linear and readable: a test engineer understands "send command → wait for result → decide", and does not understand continuations. Six years before structured concurrency.'},
+        {h:'A whole new layer grew on it seven years later', p:'In late 2022 the customer’s product design team specified a brand-new station type needing electric-driver torque, cameras, an industrial-comms fixture and a large guidance display — none of which existed in the 2015 version. The team added an entire new layer of hardware I/O and operator interaction on top of this engine (39 new implementation files at once) without changing the engine’s own layering. A seven-year-old design absorbing hardware nobody had imagined at the time is more convincing than any compliment about it.'}
+      ],
+      flaw:'The test-item data model inherited directly from the UI table-row component. The reasoning at the time was that each item is literally one row on screen, so binding them meant setting a value redrew it; the cost was that the model could not be tested without the UI and could not be accessed safely across threads — some of those locks were patching this hole. Ten years later I use MVVM and put a CI script in place to block exactly this.'
+    },
+    {
+      id:'dsl', name:'In-house test scripting language and editor', era:'2016 – 2019', eraKey:'e1', role:'built',
+      roleNote:'Language, editor, documentation and training all produced in house',
+      tracks:['handson','arch'],
+      tech:['JSON DSL','Dynamic dispatch','Obj-C'],
+      tagline:'Decoupling "change a test" from "change the program" — the precondition for later scaling to more than a hundred stations.',
+      stats:[{b:'1',l:'in-house language'},{b:'4',l:'training and SOP documents'}],
+      detail:[
+        {h:'How it binds', p:'A script command name resolves to a program method by dynamic lookup, so adding a command requires no change to the dispatch logic.'},
+        {h:'What came with it', p:'Beyond the language itself: a graphical script editor, a user manual, internal function reference, and a training course. A language without those is one where only the author is still using it three months later.'},
+        {h:'The cost', p:'Your own language is yours to feed. A typo only blows up at run time; there is no compile-time check. What I would change now: add a schema validation pass at load time, moving runtime errors to load time.'}
+      ]
+    },
+    {
+      id:'rushseq', name:'In-house sequencer on the platform’s own language', era:'2018 – 2020', eraKey:'e1', role:'arch',
+      roleNote:'I led it; by 2020 it was the standard across six product lines',
+      tracks:['arch','platform'],
+      tech:['Customer platform sequence language','CSV','Automated build and signing'],
+      tagline:'The customer gave us a toolbox and a sequence language but no official sequencer — so how the test plan is written and how the program follows it were ours to define. Two years later the customer’s official version worked the same way.',
+      stats:[{b:'22',l:'people on the team then'},{b:'6',l:'product lines adopted it'}],
+      detail:[
+        {h:'What it did', p:'Derive the location of the test plan and limit files from the station name rather than hard-coding them; put test coverage in CSV loaded by the program — the spec is data, not code; filter items by test mode (production, engineering, gauge R&R, reliability); execute item by item, collect failing sub-items, rename logs consistently; and an automated build and signing pipeline.'},
+        {h:'Why this generation matters most', p:'It is the most direct evidence of architecture ability: with no official model to follow, we defined the separation ourselves — CSV carries the test coverage, the program only executes.'},
+        {h:'What else happened that year', p:'In early 2019 I presented to our own senior-vice-president level on what this new platform was and how it would change the way we worked. I had just been promoted to manager. It is also why, a year later, I moved first to add an isolation layer — because I had understood what was coming.'}
+      ]
+    },
+    {
+      id:'common', name:'One shared codebase plus adapter layers', era:'2020 – 2026', eraKey:'e2', role:'arch',
+      roleNote:'The common code was my call; the adapters were a customer requirement, built jointly',
+      tracks:['arch','platform'],
+      tech:['Lua','CSV / YAML','Dependency management','CI'],
+      tagline:'Instead of a hundred-plus projects each reimplementing the same logic, all of them share one codebase. When the customer later replaced the sequencer, that shared code made "run both in parallel" a matter of two thin adapters rather than a hundred separate migrations.',
+      stats:[{b:'1',l:'shared codebase (20 modules)'},{b:'2',l:'adapter layers (old and new)'},{b:'100+',l:'stations benefiting'}],
+      detail:[
+        {h:'What the common code is', p:'Talking to the unit under test, fixture control, flow transitions, measurement, error codes, record format, hardware configuration parsing — everything every station needs, written once as shared modules that all projects inherit. A project keeps only three files of its own: configuration, project-specific logic, and coverage data.'},
+        {h:'Who decided the dual-track (I make this explicit)', p:'The customer knew replacing the sequencer would hurt, so they required the old and new to run in parallel through the migration so the line could switch in batches. That dual-track was defined by the customer and built by both sides together. I do not present it as my architecture call.'},
+        {h:'My part was making the dual-track feasible', p:'The adapters are thin: fetch the plug-in, call the shared module, produce one record. Because the logic exists exactly once, dual-track means wrapping one interface twice. Without the shared codebase, the dual-track the customer wanted would have meant doing the same work inside a hundred-plus projects — which simply would not have been possible.'},
+        {h:'Taken down once it was done', p:'The two ran in parallel for about eighteen months. After the migration completed, the team removed the old one from every project repo; only the common-code repo still carries both. An isolation layer is not decoration — you take it down when you are finished with it.'},
+        {h:'The error-handling skeleton', p:'Every adapter function has the same shape: wrap the real logic → log → produce a record → return. A single script error never takes down the whole station; a failure becomes a failure record. That is also the precondition for the later automated root-cause analysis — eight years of failures are all structured records.'}
+      ]
+    },
+    {
+      id:'overlay', name:'Coverage delivery and engineering discipline', era:'2020 – 2026', eraKey:'e2', role:'led',
+      roleNote:'I set the standard and enforced it; the team did the implementation',
+      tracks:['platform','auto'],
+      tech:['Lua','CSV / YAML','Static analysis','CI','Required reviewers'],
+      tagline:'Translating the customer’s test coverage spec into executable station code across six product lines and a hundred-plus stations — with new projects landing through inheritance and configuration, not copy-paste.',
+      stats:[{b:'3',l:'content files (leanest new project)'},{b:'26 / 27',l:'repos with static analysis and CI'},{b:'23 / 27',l:'repos with required reviewers'}],
+      detail:[
+        {h:'What a new project has to write', p:'Station configuration, project logic, coverage data — three files; everything else is inherited from the shared layer. This is the actual mechanism behind station count growing roughly a hundredfold without headcount growing proportionally.'},
+        {h:'The honest caveat', p:'Not every project is that small. Some models have over a hundred coverage files on their own — that is the spec itself being large, not copy-paste. When pressed on this, I make sure to separate the two cases.'},
+        {h:'How the discipline held', p:'Required reviewers meant every change to the shared layer went through my team; static analysis and CI kept non-conforming commits out. But what actually worked was making the shared layer genuinely easier to use — if inheriting is more trouble than copying, no policy will stop anyone. This took me a long time to push through, because it does nothing for the current week’s deadline and pays out in year three.'},
+        {h:'Acceptance', p:'The customer provides the coverage spec, we implement it, and going live requires customer sign-off plus a trial run on real production hardware. It is a formal first-tier customer audit, not our own say-so.'}
+      ]
+    },
+    {
+      id:'station', name:'Operator guidance and state-recording station', era:'2023 – 2024', eraKey:'e3', role:'led',
+      roleNote:'The engine is mine; I made 0 commits in this round',
+      tracks:['hw','collab'],
+      tech:['Objective-C','Cameras','Projection','Controllable test sequence'],
+      tagline:'A new station type specified by the customer’s product design team, implemented 100% by us — and we chose to build it on the engine we had written eight years earlier.',
+      stats:[{b:'202',l:'commits'},{b:'8 years',l:'age of the engine at the time'}],
+      detail:[
+        {h:'What it does', p:'Records the test state of every operation step while showing the operator instructions and work guidance. The test sequence is controllable: previous / next / skip / restart / abort / jump to a specific item — an ordinary test station only has "run" and "stop", but this one lets the operator move back and forth through the flow, because its purpose is guidance.'},
+        {h:'Where the strength is', p:'The requirement came from the customer’s design side (a contract-manufacturer software team normally only faces manufacturing and test engineering); the entire station was delivered by us; and an eight-year-old engine met a use case nobody had imagined without a single architectural concession. That last point is the most honest test of design quality there is.'},
+        {h:'The layering is still alive', p:'One commit in that round removed a jump button from the UI, on the grounds that "that belongs at the script command level". The team was arguing about which layer a feature belongs in — arguing about the layers I defined in 2015.'}
+      ]
+    },
+    {
+      id:'iqc', name:'Incoming-inspection barcode validation', era:'2020 – 2024', eraKey:'e2', role:'built',
+      roleNote:'112 of 277 commits are mine (about 40%)',
+      tracks:['handson','auto','collab'],
+      tech:['Python','macOS app','Excel rule files','Web API'],
+      tagline:'Built for the supply-chain department, not my own team. Four encoding rule sets live in an Excel file — the spec as data, two years before the overlay work.',
+      stats:[{b:'112 / 277',l:'commits are mine'},{b:'3.5 years',l:'continuously maintained'},{b:'4',l:'encoding rule sets'}],
+      detail:[
+        {h:'What I personally fixed', p:'Week-number rollover across the year boundary (part date codes are encoded by week; the boundary from week 52 to week 1 of the next year belongs to different years under different calendar conventions — that is a bug which only detonates in the first January after go-live, and it took me three revisions to close the edge cleanly), check-digit return types, barcode prefix handling, special-character encoding in the API, and scans that read the code but never uploaded the result.'},
+        {h:'Why a manager was fixing details like these', p:'The team’s capacity was on the customer’s test stations at the time, and a tool for the supply chain could not win priority. I did not want it stuck, so I picked it up. A manager doing hands-on work is fine as long as it does not crowd out the team’s real work — this project qualified.'},
+        {h:'Tool choice follows the user', p:'The rule logic was fastest to write in Python and the Excel rule file is straightforward to read; but the users are on Macs on the production floor, so it was wrapped in a macOS app shell with auto-update so the line never has to install a version by hand.'},
+        {h:'It did not die', p:'The last rule change was in 2024 — three and a half years old and still being maintained.'}
+      ]
+    },
+    {
+      id:'utility', name:'Internal tooling group', era:'2019 – 2025', eraKey:'e2', role:'led',
+      roleNote:'I created this standing group and led it',
+      tracks:['auto','lead'],
+      tech:['Report automation','Data visualisation','Web services'],
+      tagline:'A standing 4–5 person internal tooling group inside the test software team, whose remit evolved from line automation to efficiency improvement and then to data visualisation.',
+      stats:[{b:'24',l:'tools'},{b:'~6×',l:'return on investment'},{b:'87% / 7%',l:'benefit share, top ten / bottom ten'}],
+      detail:[
+        {h:'Why a standing headcount', p:'If tooling is forever a "when we have time" activity, it never gets finished and nobody maintains it. A fixed headcount is what makes someone accountable for these tools across their life cycle.'},
+        {h:'The benefit distribution is very uneven', p:'The top ten carry 87% of the benefit; the bottom ten account for seven per cent. That distribution is itself a management lesson: the real leverage concentrates in a handful, and you cannot tell which ones in advance — so you need to be able to build fast and also to stop honestly.'},
+        {h:'Spilling over into other departments', p:'Seven of the 24 have users outside my department — process engineering, supply-chain incoming inspection, product design, R&D, reliability, plus the department knowledge base that started internal and was later adopted by other units — together about 16% of total benefit. Cross-department benefit is harder to land than internal benefit because you have no authority; the tool simply has to be good. The knowledge base is the extreme case: those users came to us.'},
+        {h:'There is a second line of production automation, but I do not report its numbers', p:'Automated optical inspection and the station agent work saved production line operator headcount, not department engineering hours. I will not quote that number — I am not part of the manufacturing organisation, I cannot get a correct baseline for headcount saved, and quoting a figure I cannot verify myself is meaningless. Every one of those 24 I can derive, so those are the ones I talk about.'},
+        {h:'The full distribution is in the next section', p:'Per-tool benefit share, audience, improvement and development quarters for all 24 tools can be opened one by one in the "Efficiency & automation" section.'}
+      ]
+    },
+    {
+      id:'aoi', name:'Automated optical inspection (deployed, then obsoleted years later)', era:'2020 – 2024', eraKey:'e2', role:'led',
+      roleNote:'I brokered the cross-team work and got it deployed; it retired in the last two years after a product revision',
+      tracks:['hw','collab','auto'],
+      tech:['Machine vision','Cross-team collaboration','Line automation'],
+      tagline:'Deployed successfully and ran on the line for years, then was defeated by the product’s own revision — a new display panel generation changed what the model was looking at, and detection capability no longer met the requirement.',
+      stats:[{b:'years',l:'actually running on the line'},{b:'2 people, 3 months',l:'my side of the build'}],
+      detail:[
+        {h:'What we did', p:'At the cleanroom display cosmetic inspection station, I established the working channel and the data interface between the test software team and the vision inspection team, replacing manual visual inspection with automated optical inspection. It was deployed, it went live, and it ran on the production line for several years.'},
+        {h:'The counterpart here was not in my department', p:'The users were the manufacturing organisation, not my own team, and the other side was the vision inspection team. Neither reported to me, so what made it move was defining the problem clearly and getting the data interface right — not assigning work. Like the line equipment automation below, this belongs in the "radius of influence" row, and its benefit sits in the line-headcount ledger, separate from the department-engineering-hours book.'},
+        {h:'Why it later retired', p:'In the last two years, after a new display panel generation, defects present differently in the image and the original detection capability stopped meeting the requirement — not a sample-size problem, but the range of defect types the machine and model could recognise failing to keep up with the new panel. The line therefore reverted to manual visual inspection.'},
+        {h:'What I took from it', p:'Vision inspection capability is bound to what the inspected thing looks like. Revise the product and the model expires. At deployment we never wrote "a panel revision requires retraining and revalidation" into the maintenance plan, and that is what I would do differently looking back — going live is not the finish line; you design the conditions for redoing it up front.'},
+        {h:'Why I bring this up unprompted', p:'An AI-written résumé never admits that things retire. An eleven-year career always contains something that succeeded and was later overturned by time — being able to say so, and to say exactly which external condition changed, is worth more than one more bullet point.'}
+      ]
+    },
+    {
+      id:'smtline', name:'SMT line automation: bridging robot arm and test station', era:'2019 – 2021', eraKey:'e2', role:'arch',
+      roleNote:'My project; the platform layer and the communication protocol were my call',
+      fig:'smt',
+      tracks:['hw','arch','auto','collab'],
+      tech:['Objective-C','Persistent sockets','Heartbeat monitoring','State machines','Industrial controller','Serial port','Plug-in architecture'],
+      tagline:'Connecting test software to machines that physically move: a programmable controller directs the handling robot and the fixtures, and our side has to open and close fixtures, run the test and report results on the same beat.',
+      stats:[{b:'10 quarters',l:'longest development run of any project'},{b:'3 layers',l:'controller → master console → station agent'}],
+      detail:[
+        {h:'What the problem looks like', p:'The wireless test station on the SMT line originally ran on a person loading the board and a person pressing start. To make it unattended, the handling robot, the fixture opening and closing, and the test software all have to know what step the others are on. The robot cannot place a board while the fixture is still open, and the test software cannot start running before the board is located.'},
+        {h:'Architecture: three layers, each owning one thing', p:'At the top is the line’s programmable controller — the source of the whole line’s beat, issuing text commands. In the middle is a master console program that translates commands into actions a station understands and watches whether every station is still alive. At the bottom, one agent per station actually opens and closes the fixture, starts the test and sends the result back. The three layers speak over persistent sockets with a heartbeat.'},
+        {h:'Why every command is a state machine, not a call', p:'Machine motion takes physical time; a single "open the fixture" may take several seconds and can jam partway. So every command is split into pending → ongoing → done, each stage with explicit success and exception branches, and exceptions always escalate rather than retrying in place. Reset, open, close, start test, clear result — each one is a diagram of that shape. When something goes wrong on the line, what you see is "stuck at this stage", not "the program is not responding".'},
+        {h:'Why the heartbeat is necessary, not a nice-to-have', p:'On a socket, a dropped connection and a hung station look exactly the same. Without a heartbeat, the controller waits forever for a reply that will never come and the whole line stops without anyone knowing why. With one, the master console can declare a station unreachable within seconds, drop it out of the beat, and let the other stations keep running.'},
+        {h:'The fixture side', p:'Fixtures are our own hardware, talking over a microcontroller and a serial port, and the station agent mounts them as plug-ins — swap the fixture type, swap the plug-in, and the console and communication layers do not move. That split later let the same system attach to more than one kind of station.'},
+        {h:'My boundary', p:'The platform layer — communication protocol, heartbeat, command state machines, plug-in interface — was my call and I wrote part of it; the actual per-station motion and fixture drivers were implemented by the team. The mechanics and controller programs on the production side are not ours; we defined the interface with them.'},
+        {h:'The counterpart here was not in my department', p:'This system served the manufacturing organisation; the users are the production lines, not my own team, and there was a separate group on the line-equipment side. The whole project, start to finish, was spent agreeing interfaces, beats and exception handling with units that had no reporting relationship to me — for ten quarters. It is the longest single segment in the "radius of influence" row.'},
+        {h:'I do not report a number for the benefit', p:'What this saved is production line operator headcount, not department engineering hours. I am not part of the manufacturing organisation and cannot get a verifiable baseline, so I describe what was built and not how many people it saved.'}
+      ]
+    },
+    {
+      id:'team', name:'Team building: 4 → 22 → 80', era:'2015 – 2026', eraKey:'e2', role:'led',
+      roleNote:'One of four founding members, led it all the way to 80',
+      tracks:['lead'],
+      tech:['Org design','Multi-site management','Technical development'],
+      tagline:'A 0→1 build, not inheriting a mature organisation and keeping it running.',
+      stats:[{b:'4 → 22 → 80',l:'2015 / 2020 / 2022'},{b:'2',l:'sites (Taiwan, Shanghai)'}],
+      detail:[
+        {h:'Three phases', p:'In 2015, four people, one product line, one station, building test software implementation from zero. In 2020, 10 in Taiwan plus 12 in Shanghai for 22 total, across six product lines. In 2022, 80 after merging with the other test software teams.'},
+        {h:'Where ownership divides', p:'For the first five years I did the work myself; for the last five I reviewed what the team produced. That line overlaps with my promotion to manager and with the customer platform arriving — I do not describe code the later team wrote as code I wrote.'},
+        {h:'Authority I did not have', p:'I had no decision rights over budget, headcount or purchasing approval; I owned technology and delivery. I state this unprompted, because management interviews ask about it and being vague costs more than being clear.'}
+      ]
+    },
+    {
+      id:'quoteskit', name:'Swift package (personal work)', era:'2025', eraKey:'e3', role:'own',
+      roleNote:'Written after hours, 100% mine',
+      tracks:['handson'],
+      tech:['Swift','SPM binary target','WeatherKit','Thread safety'],
+      tagline:'A small but complete Swift package: tests, documentation, and source and binary published as two separate repos.',
+      stats:[{b:'2',l:'repos (source / binary)'},{b:'3',l:'content modes'}],
+      detail:[
+        {h:'What it does', p:'Serves content by manual category, by weather, or by season, integrating the system weather service to decide automatically; the content is obfuscated inside the binary so strings cannot simply be extracted; and access is safe across threads.'},
+        {h:'Why it is worth calling out on its own', p:'The point is not the feature set but the distribution strategy — compiling the implementation into a binary framework and exposing a second repo containing only the package manifest. That is a question about how you ship a library, not about how you write Swift.'},
+        {h:'Status', p:'Being prepared as a public release with a write-up to follow.'}
+      ],
+      links:[{l:'GitHub (in preparation)',soon:true}]
+    },
+    {
+      id:'agentops', name:'Personal agent workflow framework', era:'2026', eraKey:'e3', role:'own',
+      roleNote:'100% mine',
+      tracks:['ai','auto','handson'],
+      tech:['Shell','Scheduling','Event hooks','Messaging gateway'],
+      tagline:'The whole coding workflow — plan → execute → review → open a pull request → report back — written as deterministic scripts, driven by an agent and controlled remotely over messaging.',
+      stats:[{b:'10',l:'workflow scripts'},{b:'2',l:'custom skills'}],
+      detail:[
+        {h:'Same principle as the day job', p:'The scripts are deterministic and the agent only makes judgement calls — exactly what I did in the log diagnostics tool: if the program can answer it, the program answers it, and the model only does the judgement.'},
+        {h:'One detail worth mentioning', p:'I wrote a de-identification tool, because work scripts have to have paths and identifying information stripped before they can be shared. For someone carrying eleven years of experience into a job search, there is an engineering-grade way to handle that, not just a verbal promise.'}
+      ]
+    }
+  ],
+
+  patterns:[
+    {
+      t:'One shared codebase plus a thin adapter layer',
+      c:'A hundred-plus projects share one codebase; which sequencer generation it binds to is decided by a thin adapter above it. The customer required old and new to run in parallel through the migration, and because the logic exists exactly once, that meant wrapping one interface twice instead of doing the same migration inside a hundred-plus projects.',
+      svg:`<svg viewBox="0 0 440 268" role="img" aria-label="Two sequencer generations each bound by a thin adapter, over one shared codebase and a hundred-plus projects"><defs><marker id="arA" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"/></marker></defs><g font-family="IBM Plex Mono, monospace" font-size="11" color="var(--rule)"><rect x="14" y="12" width="180" height="40" rx="3" fill="var(--own-wash)" stroke="var(--own)"/><text x="104" y="31" text-anchor="middle" fill="var(--own)" font-size="11.5">Sequencer, gen 1</text><text x="104" y="45" text-anchor="middle" fill="var(--own)" font-size="9.5">Supplied by the customer</text><rect x="246" y="12" width="180" height="40" rx="3" fill="var(--own-wash)" stroke="var(--own)"/><text x="336" y="31" text-anchor="middle" fill="var(--own)" font-size="11.5">Sequencer, gen 2</text><text x="336" y="45" text-anchor="middle" fill="var(--own)" font-size="9.5">Replaced by the customer</text><path d="M104,52 L104,76" stroke="var(--rule)" stroke-width="1.5" fill="none" marker-end="url(#arA)"/><path d="M336,52 L336,76" stroke="var(--rule)" stroke-width="1.5" fill="none" marker-end="url(#arA)"/><rect x="14" y="80" width="180" height="38" rx="3" fill="var(--work-wash)" stroke="var(--work)"/><text x="104" y="104" text-anchor="middle" fill="var(--work)" font-size="11.5">Adapter (old)</text><rect x="246" y="80" width="180" height="38" rx="3" fill="var(--work-wash)" stroke="var(--work)"/><text x="336" y="104" text-anchor="middle" fill="var(--work)" font-size="11.5">Adapter (new)</text><g color="var(--work)"><path d="M104,118 L104,140 L220,140 L220,158" stroke="var(--work)" stroke-width="1.5" fill="none" marker-end="url(#arA)"/></g><path d="M336,118 L336,140 L220,140" stroke="var(--work)" stroke-width="1.5" fill="none"/><rect x="70" y="162" width="300" height="44" rx="3" fill="var(--surface-2)" stroke="var(--work)" stroke-width="1.5"/><text x="220" y="182" text-anchor="middle" fill="var(--ink)" font-size="11.5">Common code (exactly one copy)</text><text x="220" y="197" text-anchor="middle" fill="var(--muted)" font-size="9">Unit · fixture · flow · measurement · record format</text><path d="M220,206 L220,228" stroke="var(--rule)" stroke-width="1.5" fill="none" marker-end="url(#arA)"/><rect x="100" y="232" width="240" height="30" rx="3" fill="none" stroke="var(--rule)" stroke-dasharray="4 3"/><text x="220" y="252" text-anchor="middle" fill="var(--ink-2)" font-size="10.5">100+ projects (three files each)</text></g></svg>`,
+      tro:[
+        ['Whose idea the dual-track was','The customer’s. They knew replacing the sequencer would hurt, so they required old and new to run in parallel through the migration so the line could switch in batches; we built it together with them. I do not present it as my architecture call.'],
+        ['My part','The shared codebase. Because the logic exists exactly once, the dual-track only needed one interface wrapped twice. Without it, the dual-track the customer wanted would have meant doing it inside a hundred-plus projects — not achievable.'],
+        ['Taken down when done','The two ran in parallel for about eighteen months. After the migration the team removed the old one from every project; only the common-code repo still carries both. An isolation layer is not decoration.']
+      ]
+    },
+    {
+      t:'The spec is data, not code',
+      c:'The coverage spec — what gets tested and to what limits — is version-controlled separately as CSV/YAML; the test logic lives in a scripting language. A spec change touches no logic, and a new project lands through inheritance and configuration.',
+      svg:`<svg viewBox="0 0 440 250" role="img" aria-label="The shared layer provides the logic; a project layer provides only configuration, project logic and coverage data"><g font-family="IBM Plex Mono, monospace" font-size="11"><rect x="14" y="12" width="412" height="74" rx="3" fill="var(--surface-2)" stroke="var(--work)" stroke-width="1.5"/><text x="28" y="32" fill="var(--ink)" font-size="11.5">Shared layer</text><text x="28" y="50" fill="var(--muted)" font-size="8.5">Unit comms · fixture · flow transitions · measurement · error codes · record format</text><text x="28" y="66" fill="var(--muted)" font-size="8.5">Hardware config parsing · plug-in loading · unit conversion</text><text x="412" y="32" text-anchor="end" fill="var(--work)" font-size="9">One copy, inherited by every project</text><path d="M120,86 L120,108" stroke="var(--rule)" stroke-width="1.5" fill="none" marker-end="url(#arA)" color="var(--rule)"/><path d="M320,86 L320,108" stroke="var(--rule)" stroke-width="1.5" fill="none" marker-end="url(#arA)" color="var(--rule)"/><rect x="14" y="112" width="200" height="118" rx="3" fill="var(--surface)" stroke="var(--rule)"/><text x="28" y="132" fill="var(--ink-2)" font-size="11">Project A</text><rect x="28" y="142" width="172" height="22" rx="2" fill="var(--work-wash)"/><text x="38" y="157" fill="var(--work)" font-size="10">Station config</text><rect x="28" y="168" width="172" height="22" rx="2" fill="var(--work-wash)"/><text x="38" y="183" fill="var(--work)" font-size="10">Project logic</text><rect x="28" y="194" width="172" height="22" rx="2" fill="var(--own-wash)"/><text x="38" y="209" fill="var(--own)" font-size="10">Coverage data (CSV)</text><rect x="226" y="112" width="200" height="118" rx="3" fill="var(--surface)" stroke="var(--rule)"/><text x="240" y="132" fill="var(--ink-2)" font-size="11">Project B</text><rect x="240" y="142" width="172" height="22" rx="2" fill="var(--work-wash)"/><text x="250" y="157" fill="var(--work)" font-size="10">Station config</text><rect x="240" y="168" width="172" height="22" rx="2" fill="var(--work-wash)"/><text x="250" y="183" fill="var(--work)" font-size="10">Project logic</text><rect x="240" y="194" width="172" height="22" rx="2" fill="var(--own-wash)"/><text x="250" y="209" fill="var(--own)" font-size="10">Coverage data (CSV)</text></g></svg>`,
+      tro:[
+        ['The result','The leanest new project lands with three content files: station configuration, project logic, coverage data. Everything else is inherited.'],
+        ['The honest caveat','Not every project is that small. Some models have over a hundred coverage files on their own — that is the spec being large, not copy-paste.'],
+        ['How it held','Required reviewers meant every change to the shared layer went through my team; static analysis and CI kept non-conforming commits out. But what actually worked was making the shared layer easier to use than copying.']
+      ]
+    },
+    {
+      t:'Turning expert judgement into data a model can execute',
+      c:'Eight years of failure-analysis experience lived in the heads of a few senior engineers. I turned it into structured methodology documents — six tagged sections, each mapping to one stage of the execution pipeline. The program does the deciding; the model only does the reading.',
+      svg:`<svg viewBox="0 0 440 300" role="img" aria-label="Six sections of a methodology document drive the load, match, gather and produce stages; only failure types flagged as needing a model go through one"><g font-family="IBM Plex Mono, monospace" font-size="11"><rect x="14" y="10" width="150" height="180" rx="3" fill="var(--surface-2)" stroke="var(--work)" stroke-width="1.5"/><text x="28" y="30" fill="var(--ink)" font-size="11.5">Methodology document</text><text x="28" y="45" fill="var(--muted)" font-size="9">Maintained by senior engineers</text><g font-size="10" fill="var(--work)"><text x="28" y="68">@meta</text><text x="28" y="88">@match</text><text x="28" y="108">@gather</text><text x="28" y="128">@output</text><text x="28" y="148">@analysis</text><text x="28" y="168">@example</text></g><g color="var(--rule)"><path d="M164,62 L214,62" stroke="var(--rule)" stroke-width="1.2" fill="none" marker-end="url(#arA)"/><path d="M164,82 L214,82" stroke="var(--rule)" stroke-width="1.2" fill="none" marker-end="url(#arA)"/><path d="M164,102 L214,102" stroke="var(--rule)" stroke-width="1.2" fill="none" marker-end="url(#arA)"/><path d="M164,122 L214,122" stroke="var(--rule)" stroke-width="1.2" fill="none" marker-end="url(#arA)"/></g><rect x="218" y="50" width="208" height="24" rx="2" fill="var(--surface)" stroke="var(--rule)"/><text x="228" y="66" fill="var(--ink-2)" font-size="9.5">Load: parse into an executable structure</text><rect x="218" y="80" width="208" height="24" rx="2" fill="var(--surface)" stroke="var(--rule)"/><text x="228" y="96" fill="var(--ink-2)" font-size="9.5">Match: which failure type is this (deterministic)</text><rect x="218" y="110" width="208" height="24" rx="2" fill="var(--surface)" stroke="var(--rule)"/><text x="228" y="126" fill="var(--ink-2)" font-size="9.5">Gather: pull data from each listed source</text><rect x="218" y="140" width="208" height="24" rx="2" fill="var(--surface)" stroke="var(--rule)"/><text x="228" y="156" fill="var(--ink-2)" font-size="9.5">Produce: fill the template, emit the report</text><path d="M322,164 L322,188" stroke="var(--rule)" stroke-width="1.2" fill="none" marker-end="url(#arA)" color="var(--rule)"/><rect x="230" y="192" width="184" height="46" rx="3" fill="var(--own-wash)" stroke="var(--own)" stroke-dasharray="4 3"/><text x="322" y="211" text-anchor="middle" fill="var(--own)" font-size="10">Optional: local model interprets</text><text x="322" y="227" text-anchor="middle" fill="var(--own)" font-size="8.5">Only for types flagged as needing a model</text><rect x="60" y="248" width="320" height="40" rx="3" fill="none" stroke="var(--work)" stroke-width="1.2"/><text x="220" y="265" text-anchor="middle" fill="var(--ink)" font-size="10">The same log always classifies the same way</text><text x="220" y="280" text-anchor="middle" fill="var(--muted)" font-size="8.5">The reasoning is written in the document and can be looked up</text></g></svg>`,
+      tro:[
+        ['The flag is the key','Whether a model is needed is a field in the data, not an if in the code. A value out of spec is settled by one comparison — that class never touches the model at all.'],
+        ['Who writes the documents','A senior failure-analysis engineer writes the draft the way he already likes to write; an AI tool converts it into the six sections. I never asked the expert to learn my format — if I had, he would have written one and never a second. The tool absorbs the friction.'],
+        ['The cost','A custom format means maintaining your own parser, and there is no schema validation — a misspelled field name only surfaces at run time. The same pit as my own scripting language ten years earlier.']
+      ]
+    }
+  ],
+
+  strata:[
+    {no:'01', name:'In-house engine', yrs:'2015 – 2019', parts:[{c:'mine',f:100,t:'Execution engine · scripting language · instrument abstraction · line UI'}]},
+    {no:'02', name:'Platform toolbox, sequencing still ours', yrs:'2018 – 2020', parts:[{c:'mine',f:62,t:'Test plan format · coverage loading · verdicts'},{c:'theirs',f:38,t:'Runtime · language · GUI'}]},
+    {no:'03', name:'The official sequencer arrives', yrs:'2020 trial · 2021 production – 2023', parts:[{c:'mine',f:30,t:'Common code · adapter layer'},{c:'theirs',f:70,t:'Sequencer · sequencing · verdicts · record format'}]},
+    {no:'04', name:'Sequencer replaced again', yrs:'2023 – 2026', parts:[{c:'mine',f:16,t:'Common code · adapter layer'},{c:'theirs',f:84,t:'The platform decides nearly everything'}]}
+  ]
+};
+
+const PUBLIC_LINKS = {
+  _site:[
+    {l:'LinkedIn', h:'https://www.linkedin.com/in/chenghan-tsai'}
+  ]
+};
+
+/* ---------------------------------------------------------------- render */
+const $ = s => document.querySelector(s);
+const el = (t,c,h) => { const n=document.createElement(t); if(c)n.className=c; if(h!=null)n.innerHTML=h; return n; };
+const esc = s => String(s).replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+
+let MODE = 'pub';
+
+const sel = {track:new Set(), role:new Set(), era:new Set()};
+let openId = null;
+
+function itemName(it){
+  
+  return it.name;
+}
+
+function renderContact(){
+  const c=DATA.contact;
+  const rows=$('#st-rows'); rows.innerHTML='';
+  c.rows.forEach(([k,v])=>rows.append(el('div','st-item','<b>'+esc(k)+'</b>'+esc(v))));
+  const cta=$('#st-cta'); cta.innerHTML='';
+  const chip=(cls,href,ico,label)=>'<a class="cta'+cls+'" href="'+esc(href)+'"'+(href.startsWith('mailto:')?'':' target="_blank" rel="noopener"')+'><span class="ico">'+ico+'</span>'+esc(label)+'</a>';
+  let h = chip(' primary','mailto:'+c.email,'\u2709',c.emailLabel)
+        + chip('',c.linkedin,'in',c.linkedinLabel);
+  if(c.resume) h += chip('',c.resume,'\u2913',c.resumeLabel);
+  cta.innerHTML=h;
+}
+
+function renderTiles(){
+  const box=$('#tiles'); box.innerHTML='';
+  DATA.tiles.forEach(t=>{
+    const d=el('div','tile');
+    d.append(el('div','n',esc(t.n)), el('div','l',esc(t.l)), el('div','s',esc(t.s)));
+    box.append(d);
+  });
+}
+
+function renderGantt(){
+  const g=$('#gantt'); g.innerHTML='';
+  const span=Y1-Y0+1;
+  g.append(el('div','',''));
+  const yrs=el('div','gyears');
+  for(let y=Y0;y<=Y1;y++) yrs.append(el('span','',String(y).slice(2)));
+  g.append(yrs);
+
+  DATA.tracks.forEach(tr=>{
+    const b=el('button','grow-l','<span>'+esc(tr.name)+'</span><small>'+esc(tr.sub)+'</small>');
+    b.type='button';
+    b.setAttribute('aria-pressed', sel.track.has(tr.id)?'true':'false');
+    b.onclick=()=>{ sel.track.has(tr.id)?sel.track.delete(tr.id):sel.track.add(tr.id); openId=null; renderGantt(); renderFilters(); renderGrid(); $('#grid').scrollIntoView({behavior:'smooth',block:'start'}); };
+    g.append(b);
+
+    // lane packing: a span goes in the first lane where it doesn't overlap
+    const lanes=[];
+    const placed=tr.spans.map(sp=>{
+      const [a,z]=sp;
+      let li=lanes.findIndex(l=>l.every(([x,y])=>z<x||a>y));
+      if(li<0){ lanes.push([]); li=lanes.length-1; }
+      lanes[li].push([a,z]);
+      return {sp, lane:li};
+    });
+    const LH=18, GAP=3;
+    const track=el('div','gtrack');
+    track.style.height=(lanes.length*LH + (lanes.length-1)*GAP)+'px';
+    placed.forEach(({sp,lane})=>{
+      const [a,z,kind,label]=sp;
+      const left=((a-Y0)/span)*100, width=((z-a+1)/span)*100;
+      const cls='gbar '+(kind==='own'?'own':'work')+(kind==='work-faint'?' faint':'');
+      const bar=el('div',cls,esc(label||''));
+      bar.style.left=left+'%'; bar.style.width=width+'%';
+      bar.style.top=(lane*(LH+GAP))+'px';
+      bar.style.height=LH+'px';
+      bar.title=tr.name+': '+a+'\u2013'+z+(label?' ('+label+')':'');
+      track.append(bar);
+    });
+    g.append(track);
+  });
+
+  $('#ghint').textContent = sel.track.size
+    ? 'Filtered: '+[...sel.track].map(id=>DATA.tracks.find(t=>t.id===id).name).join(', ')+'. Click again to clear.'
+      : 'The two faded stretches, 2017–2019 and 2022–2024, are the periods when I was mainly leading the team and making architecture calls with only occasional commits — this row is honest; I was not writing code every single year.';
+}
+
+function renderFilters(){
+  const box=$('#filters'); box.innerHTML='';
+  const groups=[
+    {key:'role', label:'Role', opts:Object.entries(DATA.roles)},
+    {key:'track',label:'Capability', opts:DATA.tracks.map(t=>[t.id,t.name])},
+    {key:'era',  label:'Era', opts:Object.entries(DATA.eras)}
+  ];
+  groups.forEach(gr=>{
+    const row=el('div','frow');
+    row.append(el('span','flabel',gr.label));
+    gr.opts.forEach(([v,lab])=>{
+      const c=el('button','chip',esc(lab)); c.type='button';
+      c.setAttribute('aria-pressed', sel[gr.key].has(v)?'true':'false');
+      c.onclick=()=>{ sel[gr.key].has(v)?sel[gr.key].delete(v):sel[gr.key].add(v); openId=null; renderFilters(); renderGrid(); if(gr.key==='track') renderGantt(); };
+      row.append(c);
+    });
+    box.append(row);
+  });
+  const n=visible().length;
+  const foot=el('div','frow');
+  foot.append(el('span','fmeta', n+' / '+DATA.items.length+' projects'));
+  if(sel.role.size||sel.track.size||sel.era.size){
+    const b=el('button','fclear','Clear filters'); b.type='button';
+    b.onclick=()=>{ sel.role.clear(); sel.track.clear(); sel.era.clear(); openId=null; renderFilters(); renderGrid(); renderGantt(); };
+    foot.append(b);
+  }
+  box.append(foot);
+}
+
+function visible(){
+  return DATA.items.filter(it=>
+    (!sel.role.size || sel.role.has(it.role)) &&
+    (!sel.era.size  || sel.era.has(it.eraKey)) &&
+    (!sel.track.size|| it.tracks.some(t=>sel.track.has(t)))
+  );
+}
+
+function renderGrid(){
+  const grid=$('#grid'); grid.innerHTML='';
+  const items=visible();
+  if(!items.length){ grid.append(el('p','',  '<span style="color:var(--muted)">No projects match. Try a different combination.</span>')); return; }
+  items.forEach(it=>{
+    const card=el('div','card'+(openId===it.id?' open':''));
+    const head=el('button','chead'); head.type='button';
+    head.setAttribute('aria-expanded', openId===it.id?'true':'false');
+    const top=el('div','ctop');
+    top.append(el('h3','',esc(itemName(it))), el('span','cera',esc(it.era)));
+    head.append(top);
+    head.append(el('span','crole '+(it.role==='built'?'built':it.role==='arch'?'arch':it.role==='own'?'own':'led'), esc(DATA.roles[it.role])+' · '+esc(it.roleNote)));
+    head.append(el('p','ctag',esc(it.tagline)));
+    if(it.stats && it.stats.length){
+      const st=el('div','cstats');
+      it.stats.forEach(s=>st.append(el('div','','<b>'+esc(s.b)+'</b>'+esc(s.l))));
+      head.append(st);
+    }
+    const tc=el('div','ctech');
+    it.tech.forEach(t=>tc.append(el('span','',esc(t))));
+    head.append(tc);
+    head.append(el('div','cmore', openId===it.id?'\u25be Collapse':'\u25b8 Expand detail and links'));
+    head.onclick=()=>{ openId = openId===it.id ? null : it.id; renderGrid(); };
+    card.append(head);
+
+    if(openId===it.id){
+      const body=el('div','cbody');
+      if(it.fig && FIGS[it.fig]){
+        const f=el('div','cfig', FIGS[it.fig]());
+        body.append(f);
+      }
+      it.detail.forEach(d=>{
+        const b=el('div','dec');
+        b.append(el('h4','',esc(d.h)), el('p','',esc(d.p)));
+        body.append(b);
+      });
+      if(it.flaw){
+        const f=el('div','dec flawmark');
+        f.append(el('h4','','What I got wrong'), el('p','',esc(it.flaw)));
+        body.append(f);
+      }
+      
+      const links=[];
+      (it.links||[]).forEach(l=>links.push(l.soon
+        ? '<span class="lnk soon"><span class="ico">○</span>'+esc(l.l)+'</span>'
+        : '<a class="lnk" href="'+esc(l.h)+'" target="_blank" rel="noopener"><span class="ico">↗</span>'+esc(l.l)+'</a>'));
+      
+      if(links.length){
+        const lw=el('div','');
+        lw.append(el('h4','','Links'));
+        lw.append(el('div','links',links.join('')));
+        body.append(lw);
+      }
+      card.append(body);
+    }
+    grid.append(card);
+  });
+}
+
+function renderPats(){
+  const box=$('#pats'); box.innerHTML='';
+  DATA.patterns.forEach((p,i)=>{
+    const f=el('div','fig');
+    f.append(el('div','eyebrow','Pattern '+String.fromCharCode(65+i)));
+    f.append(el('h3','',esc(p.t)));
+    f.append(el('p','cap',esc(p.c)));
+    f.insertAdjacentHTML('beforeend', p.svg);
+    const t=el('div','tro');
+    p.tro.forEach(([h,b])=>t.append(el('div','','<b>'+esc(h)+'</b>'+esc(b))));
+    f.append(t);
+    box.append(f);
+  });
+}
+
+let openTool = null;
+function renderTools(){
+  const full = false;
+  const tb=$('#tooltiles'); tb.innerHTML='';
+  DATA.toolTiles.forEach(t=>{
+    const d=el('div','tile');
+    d.append(el('div','n',esc(t.n)), el('div','l',esc(t.l)), el('div','s',esc(t.s)));
+    tb.append(d);
+  });
+  
+
+  const box=$('#pareto'); box.innerHTML='';
+  const max = DATA.tools[0].share;
+  DATA.tools.forEach((t,i)=>{
+    const v = t.share;
+    const name = t.f;
+    const genTag = t.gen ? '<span class="pgen">same product line</span>' : '';
+    const b=el('button','pbtn',genTag+esc(name)); b.type='button';
+    b.setAttribute('aria-expanded', openTool===t.id?'true':'false');
+    b.onclick=()=>{ openTool = openTool===t.id?null:t.id; renderTools(); };
+    box.append(b);
+    const tr=el('div','ptrack');
+    const fl=el('div','pfill '+(t.dept==='out'?'out':t.dept==='both'?'both':'in'));
+    fl.style.width=Math.max(1.5,(v/max)*100)+'%';
+    tr.append(fl); box.append(tr);
+    box.append(el('div','pval', t.share.toFixed(1)+'%'));
+
+    if(openTool===t.id){
+      const d=el('div','pdet');
+      d.append(el('div','','<b>Audience</b>'+(t.dept==='out'?'Other departments':t.dept==='both'?'Started in my department, later adopted by other units':'My department')));
+      d.append(el('div','','<b>Cycle-time improvement</b>'+t.imp+'%'+(t.q?('\u2003\u00b7\u2003'+t.q+' development quarters'):'')));
+      d.append(el('div','','<b>Share of total benefit</b>'+t.share.toFixed(1)+'%'));
+      
+      box.append(d);
+      if(t.note){
+        box.append(el('div','pnote','<b>'+esc(t.noteH||'Note')+'</b>'+esc(t.note)));
+      }
+    }
+    if(i===9){
+      const c=el('div','pcut','<span>Top 10 \u00b7 87%\u2003|\u2003remaining 14 \u00b7 13% combined</span>');
+      box.append(c);
+    }
+  });
+  $('#punit').textContent = 'Bar length = share of total benefit';
+
+  const ls=$('#lessons'); ls.innerHTML='';
+  DATA.toolLessons.forEach(l=>{
+    const d=el('div','lesson');
+    d.append(el('h4','',esc(l.h)), el('p','',esc(l.p)));
+    ls.append(d);
+  });
+  
+}
+
+// Wrap on the rule: one CJK glyph = 1 unit, an ASCII word is never split
+function wrapCJK(str, budget){
+  const toks=str.match(/[A-Za-z0-9_.+×-]+|\s+|[^\s]/g)||[str];
+  const lines=[]; let cur='', w=0;
+  const width=t=>/^[A-Za-z0-9_.+×-]+$/.test(t)?t.length*0.62:(/^\s+$/.test(t)?0.5:1);
+  toks.forEach(t=>{
+    const tw=width(t);
+    if(w+tw>budget && cur.trim()){ lines.push(cur); cur=/^\s+$/.test(t)?'':t; w=/^\s+$/.test(t)?0:tw; }
+    else { cur+=t; w+=tw; }
+  });
+  if(cur.trim()) lines.push(cur);
+  return lines.length?lines:[str];
+}
+
+/* -- Inline card diagrams -------------------------------- */
+const FIGS = {
+  smt(){
+    const W=820, H=294;
+    const box=(x,y,w,h,kind)=>{
+      const f = kind==='us' ? 'var(--work)' : kind==='ext' ? 'var(--surface-3)' : 'var(--surface-2)';
+      const s = kind==='us' ? 'var(--work)' : kind==='ext' ? 'var(--rule)' : 'var(--own)';
+      const d = kind==='ext' ? ' stroke-dasharray="4 3"' : '';
+      return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="4" fill="${f}" stroke="${s}" stroke-width="1.4"${d}/>`;
+    };
+    const lab=(x,y,t,kind,sz)=>{
+      const c = kind==='us' ? 'var(--on-work)' : kind==='ext' ? 'var(--ink-2)' : 'var(--ink)';
+      return `<text x="${x}" y="${y}" text-anchor="middle" fill="${c}" font-size="${sz||12}" font-family="Archivo, system-ui, sans-serif">${t}</text>`;
+    };
+    const sub=(x,y,t)=>`<text x="${x}" y="${y}" text-anchor="middle" fill="var(--muted)" font-size="10" font-family="IBM Plex Mono, monospace">${t}</text>`;
+    const arrow=(x1,y1,x2,y2,txt,ty)=>{
+      let s=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="var(--rule)" stroke-width="1.4" marker-end="url(#fa)"/>`;
+      if(txt) s+=`<text x="${(x1+x2)/2}" y="${ty!==undefined?ty:y1-7}" text-anchor="middle" fill="var(--muted)" font-size="9.5" font-family="IBM Plex Mono, monospace">${txt}</text>`;
+      return s;
+    };
+    let g='';
+    g+=`<defs><marker id="fa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--rule)"/></marker></defs>`;
+
+    // Top row: four layers
+    const ys=30, bh=56;
+    g+=box(8,ys,150,bh,'ext')     + lab(83,ys+24,'Line controller (PLC)','ext',11.5) + sub(83,ys+40,'source of the line beat');
+    g+=box(228,ys,150,bh,'us')    + lab(303,ys+24,'Master console','us')             + `<text x="303" y="${ys+40}" text-anchor="middle" fill="var(--on-work)" font-size="10" font-family="IBM Plex Mono, monospace" opacity=".85">translate \u00b7 heartbeat</text>`;
+    g+=box(448,ys,150,bh,'us')    + lab(523,ys+24,'Station agent \u00d7N','us')        + `<text x="523" y="${ys+40}" text-anchor="middle" fill="var(--on-work)" font-size="10" font-family="IBM Plex Mono, monospace" opacity=".85">execute \u00b7 report</text>`;
+    g+=box(668,ys,144,26,'ours')  + lab(740,ys+18,'Fixture plug-in','ours',11);
+    g+=box(668,ys+32,144,24,'ext')+ lab(740,ys+48,'Handling robot','ext',11);
+
+    g+=arrow(160,ys+28,226,ys+28,'text commands',ys-8);
+    g+=arrow(380,ys+28,446,ys+28,'socket + heartbeat',ys-8);
+    g+=arrow(600,ys+28,666,ys+28,'serial \u00b7 microcontroller',ys-8);
+
+    // Reporting arrow
+    g+=`<path d="M523,${ys+bh} L523,${ys+bh+16} L303,${ys+bh+16} L303,${ys+bh}" fill="none" stroke="var(--own)" stroke-width="1.3" stroke-dasharray="3 3" marker-end="url(#fa)"/>`;
+    g+=`<text x="413" y="${ys+bh+29}" text-anchor="middle" fill="var(--own)" font-size="9.5" font-family="IBM Plex Mono, monospace">state reports \u00b7 exception escalation</text>`;
+
+    // Divider
+    g+=`<line x1="8" y1="150" x2="812" y2="150" stroke="var(--rule-soft)" stroke-width="1"/>`;
+    g+=`<text x="8" y="171" fill="var(--muted)" font-size="10" font-family="IBM Plex Mono, monospace" letter-spacing=".06em">every command is a state machine, not a single call</text>`;
+
+    // Bottom row: the state machine
+    const y2=188, sw=132, sh=42, gap=44;
+    const names=['Command in','Pending','Ongoing','Done'];
+    const subs=['controller issues it','console decides','agent executes','reported back'];
+    names.forEach((n,i)=>{
+      const x=20+i*(sw+gap);
+      g+=box(x,y2,sw,sh,i===0?'ext':'ours') + lab(x+sw/2,y2+20,n,i===0?'ext':'ours',12) + sub(x+sw/2,y2+34,subs[i]);
+      if(i<3) g+=arrow(x+sw,y2+21,x+sw+gap-4,y2+21);
+    });
+    // Exception branches
+    [1,2,3].forEach(i=>{
+      const x=20+i*(sw+gap)+sw/2;
+      g+=`<line x1="${x}" y1="${y2+sh}" x2="${x}" y2="${y2+sh+22}" stroke="var(--danger)" stroke-width="1.2" stroke-dasharray="3 3" marker-end="url(#fa)"/>`;
+    });
+    g+=box(232,y2+sh+22,352,26,'ours').replace('var(--own)','var(--danger)');
+    g+=`<text x="408" y="${y2+sh+39}" text-anchor="middle" fill="var(--danger)" font-size="11" font-family="Archivo, system-ui, sans-serif">Exception message \u2014 always escalated, never retried in place</text>`;
+    g+=`<text x="648" y="${y2+sh+16}" fill="var(--muted)" font-size="9.5" font-family="IBM Plex Mono, monospace">any stage fails</text>`;
+
+    return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="SMT line automation architecture: controller, master console, station agents, fixtures and handling robot, plus the command state machine">${g}</svg>`
+      + `<div class="fcap">Five commands implemented this way: reset \u00b7 open \u00b7 close \u00b7 start test \u00b7 clear result</div>`;
+  }
+};
+
+function renderStacks(){
+  const COL=228, GAP=20, X0=8, LH=38, LG=5, HEADH=46;
+  const maxN=Math.max(...DATA.stacks.map(s=>s.layers.length));
+  const W=X0*2+COL*4+GAP*3, H=HEADH+maxN*(LH+LG)+8;
+  const fill={us:'var(--work)',cust:'var(--own-wash)',both:'var(--own)',os:'var(--surface-3)'};
+  const stroke={us:'var(--work)',cust:'var(--own)',both:'var(--own)',os:'var(--rule)'};
+  const txt={us:'var(--on-work)',cust:'var(--own)',both:'var(--on-work)',os:'var(--ink-2)'};
+  let o='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Four generations of software stack side by side; dark layers are ours, light layers are the customer platform, and the number of layers we own shrinks each generation">';
+  o+='<g font-family="IBM Plex Mono, monospace">';
+  DATA.stacks.forEach((st,i)=>{
+    const x=X0+i*(COL+GAP);
+    o+='<text x="'+x+'" y="14" font-size="10" fill="var(--muted)">Gen '+st.g+'\u2003'+st.yrs+'</text>';
+    o+='<text x="'+x+'" y="31" font-size="12.5" font-weight="600" fill="var(--ink)">'+st.name+'</text>';
+    st.layers.forEach((L,j)=>{
+      const y=HEADH+j*(LH+LG);
+      const op = L.own==='both' ? ' stroke-dasharray="5 3" stroke-width="1.5"' : '';
+      o+='<rect x="'+x+'" y="'+y+'" width="'+COL+'" height="'+LH+'" rx="3" fill="'+fill[L.own]+'" stroke="'+stroke[L.own]+'" stroke-width="1"'+op+'/>';
+      const lines=wrapCJK(L.t, 19);
+      if(lines.length>1){
+        o+='<text x="'+(x+9)+'" y="'+(y+16)+'" font-size="10.5" fill="'+txt[L.own]+'">'+esc(lines[0])+'</text>';
+        o+='<text x="'+(x+9)+'" y="'+(y+29)+'" font-size="10.5" fill="'+txt[L.own]+'">'+esc(lines.slice(1).join(''))+'</text>';
+      } else {
+        o+='<text x="'+(x+9)+'" y="'+(y+23)+'" font-size="10.5" fill="'+txt[L.own]+'">'+esc(lines[0])+'</text>';
+      }
+    });
+  });
+  o+='</g></svg>';
+  $('#stack4').innerHTML=o;
+
+  const n=$('#stacknote'); n.innerHTML='';
+  DATA.stackNotes.forEach(([h,b])=>n.append(el('div','','<b>'+esc(h)+'</b>'+esc(b))));
+  
+
+  // dependency ladder
+  const DW=560, RH=46, RG=10, PAD=10;
+  const dh=PAD*2+DATA.dep.length*(RH+RG)-RG;
+  let d2='<svg viewBox="0 0 '+DW+' '+dh+'" role="img" aria-label="Dependency chain: model overlay depends on family shared components, family on per-technology shared components, those on the common code, and the common code binds to adapters and plug-ins">';
+  d2+='<defs><marker id="arD" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="var(--rule)"/></marker></defs>';
+  d2+='<g font-family="IBM Plex Mono, monospace">';
+  DATA.dep.forEach((r,i)=>{
+    const y=PAD+i*(RH+RG);
+    const inset=i*16, w=DW-40-inset*2, x=20+inset;
+    const last=i===DATA.dep.length-1;
+    d2+='<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+RH+'" rx="3" fill="'+(last?'var(--own-wash)':'var(--work-wash)')+'" stroke="'+(last?'var(--own)':'var(--work)')+'"/>';
+    d2+='<text x="'+(x+12)+'" y="'+(y+19)+'" font-size="11.5" fill="'+(last?'var(--own)':'var(--work)')+'" font-weight="600">'+esc(r.t)+'</text>';
+    d2+='<text x="'+(x+12)+'" y="'+(y+34)+'" font-size="9.5" fill="var(--muted)">'+esc(r.s)+'</text>';
+    if(r.n) d2+='<text x="'+(x+w-12)+'" y="'+(y+19)+'" font-size="10" text-anchor="end" fill="var(--ink-2)">'+esc(r.n)+'</text>';
+    if(!last){
+      const cx=DW/2, y1=y+RH, y2=y+RH+RG;
+      d2+='<path d="M'+cx+','+y1+' L'+cx+','+y2+'" stroke="var(--rule)" stroke-width="1.5" marker-end="url(#arD)"/>';
+      d2+='<text x="'+(cx+10)+'" y="'+(y1+9)+'" font-size="8.5" fill="var(--muted)">depends on</text>';
+    }
+  });
+  d2+='</g></svg>';
+  $('#stackdep').innerHTML=d2;
+  const dn=$('#depnote'); dn.innerHTML='';
+  DATA.depNotes.forEach(([h,b])=>dn.append(el('div','','<b>'+esc(h)+'</b>'+esc(b))));
+  
+}
+
+function renderStrata(){
+  const box=$('#strata'); box.innerHTML='';
+  DATA.strata.forEach(s=>{
+    const row=el('div','stratum');
+    const l=el('div','');
+    l.append(el('div','gn','Gen '+esc(s.no)), el('div','gname',esc(s.name)), el('div','gy',esc(s.yrs)));
+    row.append(l);
+    const bar=el('div','bar');
+    s.parts.forEach(p=>{
+      const sp=el('span',p.c,esc(p.t));
+      sp.style.flex=p.f+' 1 0';
+      bar.append(sp);
+    });
+    row.append(bar);
+    box.append(row);
+  });
+}
+
+function renderFooter(){
+  const links=PUBLIC_LINKS._site.map(l=>'<a class="lnk" href="'+esc(l.h)+'" target="_blank" rel="noopener"><span class="ico">↗</span>'+esc(l.l)+'</a>').join(' ');
+  $('#foot').innerHTML='<div class="links" style="margin-bottom:14px">'+links+'</div>'
+    + ('ChengHan Tsai \u00b7 Technical Portfolio \u00b7 2026');
+}
+
+function renderAll(){ renderContact(); renderTiles(); renderGantt(); renderFilters(); renderGrid(); renderTools(); renderStacks(); renderPats(); renderStrata(); renderFooter(); }
+
+function setMode(m){
+  MODE=m;
+  $('#m-pub')?.setAttribute('aria-pressed', m==='pub'?'true':'false');
+  $('#m-full')?.setAttribute('aria-pressed', m==='full'?'true':'false');
+  try{ localStorage.setItem('hk-mode',m); }catch(e){}
+  renderAll();
+}
+
+  renderAll();
+
+</script>
