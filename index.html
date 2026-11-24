@@ -451,7 +451,8 @@ const DATA = {
     rows:[
       ['Status','Left my previous role in June 2026; looking for the next one'],
       ['Looking for','Test automation and production systems \u00b7 applied AI \u00b7 engineering leadership'],
-      ['Based in','Taoyuan, Taiwan']
+      ['Based in','Taoyuan, Taiwan'],
+      ['English','Professional working \u00b7 TOEIC 815 (2026)']
     ],
     email:'tsai.schumi@gmail.com',
     emailLabel:'Email me',
@@ -636,6 +637,7 @@ const DATA = {
         {h:'The core design', p:'A methodology document describes each failure type in six tagged sections, and each section maps to a stage of the execution pipeline: load → match → gather → produce. One field marks whether that failure class needs a model at all — a value out of spec is decided by a single comparison and never touches the model; only a command response whose format does not parse needs a model to read the content.'},
         {h:'The hard part was the authoring flow, not the technology', p:'A senior failure-analysis engineer writes the first draft the way he already likes to write, and an AI tool converts it into the six-section structure. I did not ask the expert to learn my format — if I had, he would have written one document and never a second, and the whole thing would have stalled at version one. The tool absorbs the friction instead.'},
         {h:'Data never leaves the machine', p:'Test logs are customer property, so all inference runs on device. The model being limited turned out to help: it forced me to solve with code everything that code could solve.'},
+        {h:'A keyword lookup over past confirmed cases', p:'A later retrieval layer surfaces a small number of past confirmed root-cause cases and appends them to the prompt, with an explicit instruction to defer to the current data whenever they disagree. Retrieval is keyword full-text search re-ranked by term overlap, not a vector database; only cases a human has confirmed and edited are stored, the model’s own output is never saved automatically, and when the case store is empty the prompt is unchanged.'},
         {h:'How quality is enforced', p:'I wrote a twelve-rule engineering contract in the project root covering simplicity first, surgical changes, only letting the model make judgement calls, tests that verify intent rather than behaviour, and failing loudly. After a rule got violated once, I wrote a script that makes it impossible to violate again — the script’s header comment names the specific pull request whose mistake caused it to exist. Every pull request also gets an automatic AI review.'},
         {h:'Performance is a number, not a feeling', p:'Measured on every commit and stored as a comparable record. The target is written into the contract: a 100 MB file processed within 30 seconds, because a production engineer cannot wait longer than that.'},
         {h:'Collaboration', p:'I own the architecture, the methodology execution engine and the model layer; another engineer led UI and user-experience design and built some of the features. Of the 2,000-plus commits I wrote roughly half; the rest was written by the engineer I led.', flaw:false}
@@ -817,16 +819,31 @@ const DATA = {
       links:[{l:'GitHub (in preparation)',soon:true}]
     },
     {
-      id:'agentops', name:'Personal agent workflow framework', era:'2026', eraKey:'e3', role:'own',
-      roleNote:'100% mine',
+      id:'agentops', name:'Personal AI agent and MCP projects', era:'2026', eraKey:'e3', role:'own',
+      roleNote:'Designed and built by me with an AI coding agent; single human author',
       tracks:['ai','auto','handson'],
-      tech:['Shell','Scheduling','Event hooks','Messaging gateway'],
-      tagline:'The whole coding workflow — plan → execute → review → open a pull request → report back — written as deterministic scripts, driven by an agent and controlled remotely over messaging.',
-      stats:[{b:'10',l:'workflow scripts'},{b:'2',l:'custom skills'}],
+      tech:['Python','FastAPI','MCP','Claude API','Scheduled agents','SQLite FTS5'],
+      tagline:'After-hours projects on the same discipline as the day job — let deterministic code do everything it can, let the model only make the judgement calls — with the guardrails written in from the start.',
+      stats:[{b:'MCP',l:'server exposing read-only line-data tools'},{b:'daily',l:'scheduled agents that run on their own'},{b:'15',l:'prompt-injection attacks in the test corpus'}],
       detail:[
-        {h:'Same principle as the day job', p:'The scripts are deterministic and the agent only makes judgement calls — exactly what I did in the log diagnostics tool: if the program can answer it, the program answers it, and the model only does the judgement.'},
-        {h:'One detail worth mentioning', p:'I wrote a de-identification tool, because work scripts have to have paths and identifying information stripped before they can be shared. For someone carrying eleven years of experience into a job search, there is an engineering-grade way to handle that, not just a verbal promise.'}
+        {h:'An MCP server with least-privilege tools', p:'One Python core serves the same data over two front doors — a REST API and an MCP server — against fixed, simulated production-test data. Tools are opened by role: a viewer only reads one line, and only an engineer can make the single state-changing call, which requires a preview plus a confirmation code and an idempotency key so it can never fire twice. Every query runs on a read-only connection, and the audit table is barred from edits or deletes.'},
+        {h:'Treating model input as untrusted', p:'Free-text fields are tagged as untrusted, and the project ships a corpus of fifteen prompt-injection techniques exercised across each entry point. Past confirmed cases are retrieved with keyword full-text search — not a vector database — re-ranked by term overlap, and a human-written root cause is always labelled as an untrusted reference.'},
+        {h:'Scheduled agents that cannot overspend or invent numbers', p:'A separate set of scheduled agents produces a daily data report; a supervisor agent checks each run against an expected manifest, catching missed or duplicate sends. Numbers may only come from tools — estimation is forbidden — and every run has a spend cap, a turn cap and a JSON schema its output must satisfy. A new version runs beside the old for a few days and is compared before it takes over.'},
+        {h:'The same principle as the day job', p:'The scripts are deterministic and the agent only makes judgement calls — exactly the split I used in the log diagnostics tool. I also wrote a de-identification pass, because work scripts have to have paths and identifying information stripped before anything is shared.'}
       ]
+    },
+    {
+      id:'kids', name:'Kids Playground — a family of learning sites', era:'2026', eraKey:'e3', role:'own',
+      roleNote:'Built by me with an AI coding agent; live and public',
+      tracks:['handson','auto'],
+      tech:['Cloudflare Pages / Workers','TypeScript','OAuth 2.0 + PKCE','Email magic-link'],
+      tagline:'Ten small children’s learning sites — English read-along, phonics, maths, colouring, Go — free and ad-free, sharing one sign-in service I wrote myself.',
+      stats:[{b:'10',l:'learning sub-sites'},{b:'1',l:'shared auth service'},{b:'live',l:'at kidsplayground.tw'}],
+      detail:[
+        {h:'What it is', p:'A portal plus ten independent learning sites for children, each a small single-purpose app, all free and carrying no advertising. They run on Cloudflare Pages and Workers.'},
+        {h:'The auth service is the part worth calling out', p:'Rather than bolt a login onto each site, I wrote one shared sign-in service: OAuth 2.0 authorisation-code flow with PKCE, email magic-links so no password is ever stored, a cap on wrong codes, and a family / entitlement model. The pass it hands back is a short-lived signed token that does not carry the email. The point is not the features but choosing to build auth as its own service from the start.'}
+      ],
+      links:[{l:'kidsplayground.tw',h:'https://kidsplayground.tw'}]
     }
   ],
 
