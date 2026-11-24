@@ -11,6 +11,14 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="蔡政翰 ChengHan Tsai — 技術檔案">
 <meta name="twitter:description" content="從四人把測試軟體團隊做到八十人，同時親手寫 Swift 與裝置端 LLM。十一年、六條產品線、上百個工站。">
+<meta property="og:url" content="https://itschenghan.com/zh/">
+<meta property="og:image" content="https://itschenghan.com/zh/og-cover.png">
+<meta property="og:image:alt" content="蔡政翰 ChengHan Tsai — 技術檔案">
+<meta name="twitter:image" content="https://itschenghan.com/zh/og-cover.png">
+<link rel="canonical" href="https://itschenghan.com/zh/">
+<link rel="alternate" hreflang="en" href="https://itschenghan.com/">
+<link rel="alternate" hreflang="zh-Hant" href="https://itschenghan.com/zh/">
+<link rel="alternate" hreflang="x-default" href="https://itschenghan.com/">
 <title>蔡政翰 技術檔案</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -69,6 +77,10 @@
   .modeswitch button{appearance:none;background:none;border:0;cursor:pointer;font-family:var(--mono);font-size:.74rem;letter-spacing:.05em;color:var(--muted);padding:7px 15px}
   .modeswitch button[aria-pressed="true"]{background:var(--work);color:var(--on-work)}
   .modeswitch button:focus-visible{outline:2px solid var(--work);outline-offset:-2px}
+  .langswitch{display:inline-flex;border:1px solid var(--rule);border-radius:999px;overflow:hidden;background:var(--surface-2)}
+  .langswitch a{text-decoration:none;font-family:var(--mono);font-size:.74rem;letter-spacing:.05em;color:var(--muted);padding:7px 15px}
+  .langswitch a[aria-current="page"]{background:var(--work);color:var(--on-work)}
+  .langswitch a:focus-visible{outline:2px solid var(--work);outline-offset:-2px}
 
   .privbar{background:var(--danger-wash);border-bottom:1px solid var(--rule);font-size:.84rem;color:var(--ink-2)}
   .privbar .wrap{padding-block:10px;display:flex;gap:10px;align-items:baseline}
@@ -290,6 +302,10 @@
       <p class="tagline">從四人把測試軟體團隊做到八十人，同時親手寫 Swift 與裝置端 LLM。十一年、六條產品線、上百個工站。</p>
     </div>
 
+    <nav class="langswitch" aria-label="語言">
+      <a href="../" lang="en">EN</a>
+      <a href="./" aria-current="page" lang="zh-Hant">中文</a>
+    </nav>
   </div>
 </header>
 
