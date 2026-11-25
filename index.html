@@ -450,7 +450,7 @@ const DATA = {
   contact:{
     rows:[
       ['Status','Left my previous role in June 2026; looking for the next one'],
-      ['Looking for','Test automation and production systems \u00b7 applied AI \u00b7 engineering leadership'],
+      ['Looking for','Test and automation \u00b7 applied AI \u00b7 engineering management \u00b7 SoC test'],
       ['Based in','Taoyuan, Taiwan'],
       ['English','Professional working \u00b7 TOEIC 815 (2026)']
     ],
@@ -458,7 +458,7 @@ const DATA = {
     emailLabel:'Email me',
     linkedin:'https://www.linkedin.com/in/chenghan-tsai',
     linkedinLabel:'LinkedIn',
-    resume:null,
+    resume:'/resume/ChengHan_Tsai_Resume_EN.pdf',
     resumeLabel:'Resume (PDF)'
   },
 
@@ -626,7 +626,7 @@ const DATA = {
 
   items: [
     {
-      id:'logsight', name:'Production log diagnostics tool', era:'2025 – 2026', eraKey:'e3', role:'built',
+      id:'logdiag', name:'Production log diagnostics tool', era:'2025 – 2026', eraKey:'e3', role:'built',
       roleNote:'Principal author, roughly half the commits',
       tracks:['handson','ai','arch'],
       tech:['Swift','SwiftUI','On-device LLM','SPM','GRDB','GitHub Actions'],
@@ -637,12 +637,22 @@ const DATA = {
         {h:'The core design', p:'A methodology document describes each failure type in six tagged sections, and each section maps to a stage of the execution pipeline: load → match → gather → produce. One field marks whether that failure class needs a model at all — a value out of spec is decided by a single comparison and never touches the model; only a command response whose format does not parse needs a model to read the content.'},
         {h:'The hard part was the authoring flow, not the technology', p:'A senior failure-analysis engineer writes the first draft the way he already likes to write, and an AI tool converts it into the six-section structure. I did not ask the expert to learn my format — if I had, he would have written one document and never a second, and the whole thing would have stalled at version one. The tool absorbs the friction instead.'},
         {h:'Data never leaves the machine', p:'Test logs are customer property, so all inference runs on device. The model being limited turned out to help: it forced me to solve with code everything that code could solve.'},
-        {h:'A keyword lookup over past confirmed cases', p:'A later retrieval layer surfaces a small number of past confirmed root-cause cases and appends them to the prompt, with an explicit instruction to defer to the current data whenever they disagree. Retrieval is keyword full-text search re-ranked by term overlap, not a vector database; only cases a human has confirmed and edited are stored, the model’s own output is never saved automatically, and when the case store is empty the prompt is unchanged.'},
         {h:'How quality is enforced', p:'I wrote a twelve-rule engineering contract in the project root covering simplicity first, surgical changes, only letting the model make judgement calls, tests that verify intent rather than behaviour, and failing loudly. After a rule got violated once, I wrote a script that makes it impossible to violate again — the script’s header comment names the specific pull request whose mistake caused it to exist. Every pull request also gets an automatic AI review.'},
         {h:'Performance is a number, not a feeling', p:'Measured on every commit and stored as a comparable record. The target is written into the contract: a 100 MB file processed within 30 seconds, because a production engineer cannot wait longer than that.'},
         {h:'Collaboration', p:'I own the architecture, the methodology execution engine and the model layer; another engineer led UI and user-experience design and built some of the features. Of the 2,000-plus commits I wrote roughly half; the rest was written by the engineer I led.', flaw:false}
       ],
       flaw:'The custom methodology format has no schema validation, so a misspelled field name only surfaces at runtime — the same pit I fell into with my own scripting language ten years earlier, and this time I did not fix it. The data-gathering module is also over nine hundred lines; once the number of sources grows it should be split.'
+    },
+    {
+      id:'rag', name:'Past-case retrieval (RAG) prototype', era:'2026', eraKey:'e3', role:'own',
+      roleNote:'Designed by me',
+      tracks:['ai','handson'],
+      tech:['On-device LLM','Keyword full-text search','Term-overlap re-ranking'],
+      tagline:'Personal project: designed a past-case retrieval (RAG) prototype for an LLM root-cause analysis app \u2014 an extension of the log diagnostics tool beside it.',
+      detail:[
+        {h:'What it does', p:'It finds a small number of past root-cause cases that a person has already confirmed, and appends them to the prompt. The prompt also tells the model to trust the current data whenever the two disagree.'},
+        {h:'Design choices', p:'Retrieval is keyword full-text search re-ranked by term overlap, not a vector database. Only cases a human has confirmed and edited are stored; the model\u2019s own output is never saved automatically. When the case store is empty, the prompt is unchanged.'}
+      ]
     },
     {
       id:'engine', name:'In-house test station engine', era:'2015 – 2019', eraKey:'e1', role:'built',

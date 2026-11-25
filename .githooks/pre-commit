@@ -30,18 +30,54 @@ PATTERN="$PATTERN"'|ellenlin|hank_tsai|schumi|stevenxie|Quanta|廣達'
 PATTERN="$PATTERN"'|rdar://|adir://|/AppleInternal/|quantatw'
 PATTERN="$PATTERN"'|\bJ[0-9]{3}\b|MainTable|luacheckrc|CODEOWNERS'
 
+# ── 2b. 本機禁用詞清單：放在 repo 外面，永遠不 commit ──────────
+# 清單本身就是機密，所以新詞一律加在這個檔，不要加在這個 hook 裡。
+LOCAL_TERMS="$(git rev-parse --show-toplevel)/../_scrub_terms.txt"
+if [ ! -f "$LOCAL_TERMS" ]; then
+  echo "${RED}[擋下] 找不到本機禁用詞清單：${NC} $LOCAL_TERMS"
+  echo "        沒有這份清單就無法完成保密檢查。"
+  exit 1
+fi
+LOCAL_PAT=$(mktemp)
+grep -v '^#' "$LOCAL_TERMS" | grep . > "$LOCAL_PAT"
+trap 'rm -f "$LOCAL_PAT"' EXIT
+
+# 取出暫存區版本的文字內容。PDF 先轉成文字，其他二進位檔跳過。
+staged_text() {
+  case "$1" in
+    *.pdf|*.PDF)
+      command -v pdftotext >/dev/null || { echo "__NO_PDFTOTEXT__"; return; }
+      local tmp; tmp=$(mktemp)
+      git show ":$1" > "$tmp" 2>/dev/null
+      pdftotext -q "$tmp" - ; pdfinfo "$tmp" 2>/dev/null
+      rm -f "$tmp" ;;
+    *)
+      file "$1" | grep -qiE 'text|ASCII|UTF-8|HTML' || return
+      git show ":$1" 2>/dev/null ;;
+  esac
+}
+
 while IFS= read -r f; do
   [ -z "$f" ] && continue
   [ -f "$f" ] || continue
   # 這道 hook 自己跟 .gitignore 一定含禁用詞（那是它們的工作），跳過內容掃描。
   # 它們仍受上面的檔案層級檢查管轄，而且不是會被發布出去的內容。
   case "$f" in .githooks/*|.gitignore) continue ;; esac
-  # 只掃文字檔
-  file "$f" | grep -qiE 'text|ASCII|UTF-8|HTML' || continue
+  body=$(staged_text "$f")
+  if [ "$body" = "__NO_PDFTOTEXT__" ]; then
+    echo "${RED}[擋下] $f 是 PDF，但找不到 pdftotext，無法檢查。${NC}（brew install poppler）"
+    fail=1; continue
+  fi
+  [ -z "$body" ] && continue
   # -apple-system 與刻意公開的聯絡方式先扣掉，否則會誤判自己
-  hits=$(git show ":$f" 2>/dev/null \
-         | sed -e 's/-apple-system//g' -e 's/tsai\.schumi@gmail\.com//g' -e 's/chenghan-tsai//g' \
-         | grep -nEo "$PATTERN" | sort -u)
+  clean=$(printf '%s\n' "$body" \
+         | sed -e 's/-apple-system//g' -e 's/tsai\.schumi@gmail\.com//g' -e 's/chenghan-tsai//g')
+  # 履歷 PDF 可以寫前雇主名稱（2026-11-25 決定）。網站 HTML 仍然不行。
+  case "$f" in
+    resume/*.pdf) clean=$(printf '%s\n' "$clean" | sed -e 's/Quanta Computer//g' -e 's/Quanta//g' -e 's/廣達電腦//g' -e 's/廣達//g') ;;
+  esac
+  hits=$( { printf '%s\n' "$clean" | grep -nEo "$PATTERN";
+            printf '%s\n' "$clean" | grep -nEo -f "$LOCAL_PAT"; } | sort -u)
   if [ -n "$hits" ]; then
     echo "${RED}[擋下] $f 含禁用詞：${NC}"
     echo "$hits" | sed 's/^/        /'
