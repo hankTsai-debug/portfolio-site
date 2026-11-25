@@ -252,6 +252,15 @@
   .pull small{display:block;font-size:.8rem;color:var(--muted);font-weight:400;margin-top:7px;font-family:var(--mono)}
 
   /* patterns */
+  .socflow{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px;margin:4px 0 22px}
+  .socflow .st{flex:1 1 9.5rem;background:var(--surface);border:1px solid var(--rule-soft);border-top:3px solid var(--work);border-radius:4px;padding:12px 14px;box-shadow:var(--shadow)}
+  .socflow .st b{display:block;font-family:var(--mono);font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .socflow .st span{display:block;font-weight:600;font-size:.95rem;margin-top:4px}
+  .socflow .st p{font-size:.82rem;color:var(--ink-2);margin-top:6px}
+  .socflow .ar{align-self:center;color:var(--muted);font-family:var(--mono)}
+  .socscope{margin-top:18px;font-size:.86rem;color:var(--ink-2);border-left:3px solid var(--own);padding:8px 14px;background:var(--own-wash);border-radius:0 4px 4px 0}
+  .fig ul.soc{margin:10px 0 0;padding-left:1.1rem;display:grid;gap:6px;font-size:.86rem;color:var(--ink-2)}
+  .fig ol.soc{margin:10px 0 0;padding-left:1.3rem;display:grid;gap:6px;font-size:.86rem;color:var(--ink-2)}
   .pats{display:grid;grid-template-columns:repeat(auto-fit,minmax(21rem,1fr));gap:18px}
   .fig{background:var(--surface);border:1px solid var(--rule-soft);border-radius:4px;padding:20px;box-shadow:var(--shadow)}
   .fig h3{font-size:1rem;font-weight:600}
@@ -432,6 +441,98 @@
     <div class="pats" id="pats"></div>
   </section>
 
+  <section id="sec-soc">
+    <div class="sec-head">
+      <div class="eyebrow">SoC 測試</div>
+      <h2>我對 SoC 測試的理解</h2>
+      <p>整理自我團隊負責的 SoC 測試站，我不是站的負責人。這是組裝廠端的系統級測試：晶片已經焊在板子上，測試站把它開機，再加上負載。</p>
+    </div>
+    <div class="socflow" role="list" aria-label="SoC 測試在產線上的位置">
+      <div class="st"><b>板級段</b><span>SoC 站</span><p>在裸板階段找出矽和設計的弱點。</p></div>
+      <div class="ar" aria-hidden="true">&rarr;</div>
+      <div class="st"><b>板級段</b><span>裕度站</span><p>低電壓和記憶體裕度測試。篩掉「現在會過、但離失效很近」的晶片。</p></div>
+      <div class="ar" aria-hidden="true">&rarr;</div>
+      <div class="st"><b>整機段</b><span>SoC 站</span><p>出貨保證和收資料。跑需要整機才能測的項目：GPU 滿載、顯示輸出、真實散熱。</p></div>
+      <div class="ar" aria-hidden="true">&rarr;</div>
+      <div class="st"><b>整機測試之後</b><span>燒機</span><p>長時間壓力，抓早夭和間歇性失效。</p></div>
+    </div>
+    <div class="pats">
+      <div class="fig">
+        <h3>測試站檢查什麼</h3>
+        <p class="cap">測試站不在一般作業系統下測試。它把板子開進工廠測試 RTOS 或記憶體壓力環境，直接控制電壓、頻率、啟用的核心和 DDR 設定，所以結果可以重現。</p>
+        <ul class="soc">
+          <li>在多個性能狀態和關核組合下跑 CPU 壓力</li>
+          <li>加速器和多媒體 IP 負載，單獨跑或和 CPU 一起跑</li>
+          <li>DRAM 刷新、資料保持和 row-hammer 壓力</li>
+          <li>低電壓（Vmin）和記憶體裕度掃描</li>
+          <li>熱行為：最高溫、降頻、過熱事件</li>
+          <li>參數資料，以及從 fuse 讀出的晶片身分，和結果一起上傳</li>
+        </ul>
+      </div>
+      <div class="fig">
+        <h3>測試計畫是資料，不是程式</h3>
+        <p class="cap">改測項就是改表格。站的程式只決定怎麼跑。</p>
+        <ul class="soc">
+          <li><b>測試計畫</b>：每列一個指令，含 timeout、期望回應和重測策略</li>
+          <li><b>解析定義</b>：每個回應要擷取哪些欄位</li>
+          <li><b>限值</b>：每個擷取值的名稱、單位、型別和上下限</li>
+          <li><b>站程式</b>：上電、治具控制，以及執行計畫的迴圈</li>
+        </ul>
+        <div class="tro">
+          <div>列數很多，但真正不同的測項不多。列數來自「測項 &times; 性能狀態 &times; 核心組合」。</div>
+          <div>很多列只是設條件或 dump 狀態。這些 dump 是之後失效分析的原始資料。</div>
+        </div>
+      </div>
+      <div class="fig">
+        <h3>各段怎麼分覆蓋率</h3>
+        <p class="cap">把板級計畫和整機計畫逐列比對：兩邊都有、只在板級、只在整機。再逐條看「只在板級」的列，很多其實是同一個測項換了寫法。</p>
+        <ul class="soc">
+          <li>需要整機散熱、面板或外接埠的：只能放整機段</li>
+          <li>太長的測試會卡住板級產能，所以往後移</li>
+          <li>沒有風扇的產品不能靠整機散熱，所以測試留在板級段</li>
+        </ul>
+        <div class="tro">
+          <div><b>主要取捨：</b>把測試往後移，可以減少昂貴的板級設備；但越晚抓到失效，重工或報廢的代價越高。</div>
+        </div>
+      </div>
+      <div class="fig">
+        <h3>Yield bridge 與分流：先排除自己</h3>
+        <p class="cap">每個 build 的每個站都有一份 yield bridge。真失效和重測分成兩條 bridge，因為重測率高通常指向流程或治具，不是產品。</p>
+        <ol class="soc">
+          <li>測試軟體，以及站上的計畫或韌體版本</li>
+          <li>治具與連線：板子換到好的治具，好的板子換進這個治具</li>
+          <li>有沒有 hang：接上除錯工具，看板子本身是否 hang</li>
+          <li>熱：過熱失效通常是散熱問題，不是矽</li>
+          <li>流程：作業員步驟和站與站的交接</li>
+          <li>剩下的才交給晶片團隊做失效分析，附上 log、dump、fuse 資料和晶粒位置</li>
+        </ol>
+      </div>
+      <div class="fig">
+        <h3>裕度門檻來自 DOE 循環</h3>
+        <p class="cap">裕度門檻不能事先訂。</p>
+        <ol class="soc">
+          <li>釋出 DOE 版的計畫</li>
+          <li>小批量掃描，檢視 log</li>
+          <li>依分佈訂門檻</li>
+          <li>釋出更新後的計畫，再重複</li>
+        </ol>
+        <div class="tro">
+          <div>燒機段也跑過一套頻率 &times; 電壓 DOE。DOE 由客戶設計；我的團隊負責執行、收資料和初步分流。</div>
+        </div>
+      </div>
+      <div class="fig">
+        <h3>我學到的事</h3>
+        <p class="cap"></p>
+        <ul class="soc">
+          <li><b>Log 格式就是 API。</b>有一版計畫，兩個記憶體測項的名稱和指令對調了。兩個都有跑，沒有漏測，但每筆紀錄都掛錯名字，分析時會把結果判反。名稱和指令要一起驗。</li>
+          <li><b>放寬的限值是一筆債。</b>放寬限值可以讓 build 繼續跑，但要記下來，並在下一個 build 收回。</li>
+          <li><b>篩選時，把頻率和電壓鎖在固定值，比模擬實際使用更好。</b>動態降頻比較接近實際使用，但每台的頻率和電壓都會不同。把兩者鎖在固定值，每台都在相同條件下測試，結果才能互相比較，弱的晶片也比較容易被挑出來。</li>
+        </ul>
+      </div>
+    </div>
+    <p class="socscope">我的經驗在組裝廠端的系統級測試（SLT）。我沒有做過晶片廠端的 scan/ATPG 和 binning 設計。</p>
+  </section>
+
   <footer id="foot"></footer>
 </div>
 
@@ -450,7 +551,7 @@ const DATA = {
   contact:{
     rows:[
       ['目前狀態','2026 年 6 月結束前一份工作，正在找下一個位置'],
-      ['想找的方向','測試與自動化　·　應用 AI　·　工程團隊管理　·　SoC 測試'],
+      ['想找的方向','測試與自動化　·　應用 AI　·　工程團隊管理　·　SoC 測試',['SoC 測試','#sec-soc']],
       ['地點','桃園'],
       ['英文','Professional working　·　多益 815（2026）']
     ],
@@ -919,7 +1020,7 @@ function itemName(it){
 function renderContact(){
   const c=DATA.contact;
   const rows=$('#st-rows'); rows.innerHTML='';
-  c.rows.forEach(([k,v])=>rows.append(el('div','st-item','<b>'+esc(k)+'</b>'+esc(v))));
+  c.rows.forEach(([k,v,ln])=>{ let h=esc(v); if(ln) h=h.replace(esc(ln[0]),'<a href="'+esc(ln[1])+'">'+esc(ln[0])+'</a>'); rows.append(el('div','st-item','<b>'+esc(k)+'</b>'+h)); });
   const cta=$('#st-cta'); cta.innerHTML='';
   const chip=(cls,href,ico,label)=>'<a class="cta'+cls+'" href="'+esc(href)+'"'+(href.startsWith('mailto:')?'':' target="_blank" rel="noopener"')+'><span class="ico">'+ico+'</span>'+esc(label)+'</a>';
   let h = chip(' primary','mailto:'+c.email,'\u2709',c.emailLabel)

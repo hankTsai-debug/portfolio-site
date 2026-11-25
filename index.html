@@ -252,6 +252,15 @@
   .pull small{display:block;font-size:.8rem;color:var(--muted);font-weight:400;margin-top:7px;font-family:var(--mono)}
 
   /* patterns */
+  .socflow{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px;margin:4px 0 22px}
+  .socflow .st{flex:1 1 9.5rem;background:var(--surface);border:1px solid var(--rule-soft);border-top:3px solid var(--work);border-radius:4px;padding:12px 14px;box-shadow:var(--shadow)}
+  .socflow .st b{display:block;font-family:var(--mono);font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .socflow .st span{display:block;font-weight:600;font-size:.95rem;margin-top:4px}
+  .socflow .st p{font-size:.82rem;color:var(--ink-2);margin-top:6px}
+  .socflow .ar{align-self:center;color:var(--muted);font-family:var(--mono)}
+  .socscope{margin-top:18px;font-size:.86rem;color:var(--ink-2);border-left:3px solid var(--own);padding:8px 14px;background:var(--own-wash);border-radius:0 4px 4px 0}
+  .fig ul.soc{margin:10px 0 0;padding-left:1.1rem;display:grid;gap:6px;font-size:.86rem;color:var(--ink-2)}
+  .fig ol.soc{margin:10px 0 0;padding-left:1.3rem;display:grid;gap:6px;font-size:.86rem;color:var(--ink-2)}
   .pats{display:grid;grid-template-columns:repeat(auto-fit,minmax(21rem,1fr));gap:18px}
   .fig{background:var(--surface);border:1px solid var(--rule-soft);border-radius:4px;padding:20px;box-shadow:var(--shadow)}
   .fig h3{font-size:1rem;font-weight:600}
@@ -432,6 +441,98 @@
     <div class="pats" id="pats"></div>
   </section>
 
+  <section id="sec-soc">
+    <div class="sec-head">
+      <div class="eyebrow">SoC test</div>
+      <h2>How I understand SoC testing</h2>
+      <p>Organised from the SoC test stations my team was responsible for. I was not the owner of those stations. This is system-level test at the assembly plant: the chip is already on the board, and the station boots it and puts it under load.</p>
+    </div>
+    <div class="socflow" role="list" aria-label="Where SoC test sits in the line">
+      <div class="st"><b>Board stage</b><span>SoC station</span><p>Finds silicon and design weak points while the board is still bare.</p></div>
+      <div class="ar" aria-hidden="true">&rarr;</div>
+      <div class="st"><b>Board stage</b><span>Margin stations</span><p>Low-voltage and memory-margin tests. They catch parts that pass today but sit close to failing.</p></div>
+      <div class="ar" aria-hidden="true">&rarr;</div>
+      <div class="st"><b>Unit stage</b><span>SoC station</span><p>Ship assurance and data collection. Runs what needs the full unit: GPU load, display output, real cooling.</p></div>
+      <div class="ar" aria-hidden="true">&rarr;</div>
+      <div class="st"><b>After unit test</b><span>Burn-in</span><p>Long stress for early-life and intermittent failures.</p></div>
+    </div>
+    <div class="pats">
+      <div class="fig">
+        <h3>What the station checks</h3>
+        <p class="cap">The station boots the board into a factory RTOS or a memory-stress environment, not the normal OS. There it controls voltage, frequency, active cores and DDR settings directly, so a result repeats.</p>
+        <ul class="soc">
+          <li>CPU stress across performance states and core-down combinations</li>
+          <li>Accelerator and media IP loads, alone and together with the CPU</li>
+          <li>DRAM refresh, retention and row-hammer stress</li>
+          <li>Low-voltage (Vmin) and memory-margin sweeps</li>
+          <li>Thermal behaviour: peak temperature, throttling, over-temperature events</li>
+          <li>Parametric data and chip identity read from fuses, uploaded with the result</li>
+        </ul>
+      </div>
+      <div class="fig">
+        <h3>A test plan is data, not code</h3>
+        <p class="cap">Changing a test item means editing a table. The station code only decides how to run it.</p>
+        <ul class="soc">
+          <li><b>Test plan</b>: one row per command, with timeout, expected response and retest policy</li>
+          <li><b>Parse definitions</b>: which fields to extract from each response</li>
+          <li><b>Limits</b>: name, unit, type and bounds for each extracted value</li>
+          <li><b>Sequence</b>: power-up, fixture control and the loop that runs the plan</li>
+        </ul>
+        <div class="tro">
+          <div>Rows are many but distinct tests are few. The row count comes from test &times; performance state &times; core combination.</div>
+          <div>Many rows only set conditions or dump state. Those dumps are the raw material for failure analysis later.</div>
+        </div>
+      </div>
+      <div class="fig">
+        <h3>Splitting coverage between stages</h3>
+        <p class="cap">Compare the board plan and the unit plan row by row: in both, board only, unit only. Then read every &ldquo;board only&rdquo; row; many are the same test written another way.</p>
+        <ul class="soc">
+          <li>Needs unit cooling, a panel or external ports: unit stage only</li>
+          <li>Long tests block board-stage capacity, so they move later</li>
+          <li>A fanless product cannot rely on unit cooling, so its tests stay at the board stage</li>
+        </ul>
+        <div class="tro">
+          <div><b>The main trade-off:</b> moving tests later cuts expensive board-stage equipment, but a failure caught later costs more to rework or scrap.</div>
+        </div>
+      </div>
+      <div class="fig">
+        <h3>Yield bridge and triage: rule out our side first</h3>
+        <p class="cap">Each build gets a yield bridge per station. True failures and retests are bridged separately, because a high retest rate usually points at process or fixtures, not the product.</p>
+        <ol class="soc">
+          <li>Test software and the plan or firmware version on the station</li>
+          <li>Fixture and connection: swap the board to a good fixture, and a good board into the fixture</li>
+          <li>Hang or not: attach a debugger and see whether the board itself hung</li>
+          <li>Thermal: an over-temperature failure is usually cooling, not silicon</li>
+          <li>Process: operator steps and station hand-offs</li>
+          <li>Only what is left goes to the chip team for failure analysis, with logs, dumps, fuse data and die location</li>
+        </ol>
+      </div>
+      <div class="fig">
+        <h3>Margin limits come from a DOE loop</h3>
+        <p class="cap">A margin limit cannot be set in advance.</p>
+        <ol class="soc">
+          <li>Release a DOE version of the plan</li>
+          <li>Sweep a small batch and review the logs</li>
+          <li>Set the limit from the distribution</li>
+          <li>Release the updated plan, and repeat</li>
+        </ol>
+        <div class="tro">
+          <div>Burn-in also ran a frequency &times; voltage DOE. The customer designed it; my team ran it, collected the data and did first-pass triage.</div>
+        </div>
+      </div>
+      <div class="fig">
+        <h3>Lessons I took away</h3>
+        <p class="cap"></p>
+        <ul class="soc">
+          <li><b>The log format is an API.</b> In one plan, two memory tests had their names and commands swapped. Both ran, so nothing was missed, but every record carried the wrong name, and analysis would have read the result backwards. Check names and commands together.</li>
+          <li><b>A loosened limit is a debt.</b> Loosening a limit can keep a build moving, but it must be written down and taken back in the next build.</li>
+          <li><b>For screening, locking frequency and voltage beats mimicking real use.</b> Dynamic throttling is closer to real use, but then every unit runs at a different frequency and voltage. Locking both to fixed values puts every unit under the same conditions, so results can be compared and weak parts stand out.</li>
+        </ul>
+      </div>
+    </div>
+    <p class="socscope">My experience is system-level test (SLT) at the assembly plant. I have not worked on scan/ATPG or binning design, which happen at the chip maker.</p>
+  </section>
+
   <footer id="foot"></footer>
 </div>
 
@@ -450,7 +551,7 @@ const DATA = {
   contact:{
     rows:[
       ['Status','Left my previous role in June 2026; looking for the next one'],
-      ['Looking for','Test and automation \u00b7 applied AI \u00b7 engineering management \u00b7 SoC test'],
+      ['Looking for','Test and automation \u00b7 applied AI \u00b7 engineering management \u00b7 SoC test',['SoC test','#sec-soc']],
       ['Based in','Taoyuan, Taiwan'],
       ['English','Professional working \u00b7 TOEIC 815 (2026)']
     ],
@@ -922,7 +1023,7 @@ function itemName(it){
 function renderContact(){
   const c=DATA.contact;
   const rows=$('#st-rows'); rows.innerHTML='';
-  c.rows.forEach(([k,v])=>rows.append(el('div','st-item','<b>'+esc(k)+'</b>'+esc(v))));
+  c.rows.forEach(([k,v,ln])=>{ let h=esc(v); if(ln) h=h.replace(esc(ln[0]),'<a href="'+esc(ln[1])+'">'+esc(ln[0])+'</a>'); rows.append(el('div','st-item','<b>'+esc(k)+'</b>'+h)); });
   const cta=$('#st-cta'); cta.innerHTML='';
   const chip=(cls,href,ico,label)=>'<a class="cta'+cls+'" href="'+esc(href)+'"'+(href.startsWith('mailto:')?'':' target="_blank" rel="noopener"')+'><span class="ico">'+ico+'</span>'+esc(label)+'</a>';
   let h = chip(' primary','mailto:'+c.email,'\u2709',c.emailLabel)
